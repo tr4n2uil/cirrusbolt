@@ -1,0 +1,62 @@
+CirrusBolt
+Service Computing Platform Orchestration and Federation Services
+
+Vibhaj Rajan <vibhaj8@gmail.com>
+
+Features 
+	Snowblozm Experimental Service Computing Platform Kernel
+						for executing services and workflows
+	AquaDew SkyStore
+						for management of data stores
+	AquaDew Invocator
+						for management of process execution
+	AquaDew Block Transport Scheme and Application Layer Security
+						for secured transport
+	AquaDew Key-Chain-Web Mechanism
+						for access control
+	AquaDew Reference Framework
+						for managing application entities
+	AquaDew Tracking & Collation Extension
+						for access ease
+
+Acknowledgements
+	RC4 <http://farhadi.ir/works/rc4>
+	MD5 <http://pajhome.org.uk/crypt/md5/index.html>
+	jQuery Cookie <http://plugins.jquery.com/project/Cookie>
+	JSON2 <https://github.com/douglascrockford/JSON-js>
+		
+DataServices
+		Mysql
+Services	
+		curl
+		data
+		file
+		launch
+		mail
+		query
+		process
+		random
+		request
+		response
+		string
+		system
+Workflows
+	SkyStore
+		database
+		relation
+		query
+	Invocator 
+		launch
+		process
+	Block Transport Scheme and Application Layer Security
+		transport
+	Key-Chain-Web Mechanism
+		key
+		chain
+		web
+	Reference Framework
+		reference
+	Tracking & Collation Extension
+		
+		
+	
