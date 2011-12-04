@@ -66,4 +66,9 @@
 		'location' => 'local'
 	));
 	
+	/**
+	 *	@dependency PHPMailer
+	**/
+	define('PHPMAILER', CBROOT.'../../../libraries/phpmailer/PHPMailer.class.php');
+	
 ?>
