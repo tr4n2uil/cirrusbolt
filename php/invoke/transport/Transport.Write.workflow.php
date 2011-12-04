@@ -2,10 +2,10 @@
 require_once(SBSERVICE);
 
 /**
- *	@class SecureWriteWorkflow
+ *	@class TransportWriteWorkflow
  *	@desc Builds secure message to be used further
  *
- *	@param data string Data to be secured [memory] optional default array()
+ *	@param data object Data to be secured [memory] optional default array()
  *	@param type string Encode type [memory] ('json', 'wddx', 'xml', 'plain', 'html')
  *	@param crypt string Crypt type [memory] ('none', 'rc4', 'aes', 'blowfish', 'tripledes')
  *	@param key string Key used for encryption [memory] optional default false (generated from challenge)
@@ -41,38 +41,11 @@ class TransportWriteWorkflow implements Service {
 			$args = array('valid', 'msg', 'status', 'details', 'message', 'hash');
 		else
 			$args = array('user', 'challenge', 'message', 'hash', 'valid', 'msg', 'status', 'details');
-		 
-		$type = ($memory['crypt'] == 'none') ? 'none' : $memory['type'];
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.key.identify.workflow'
+			'service' => 'cypher.secure.write.workflow'
 		),
-		array(
-			'service' => 'adcore.data.encode.service',
-			'type' => $type,
-			'output' => array('result' => 'message')
-		));
-		
-		if($memory['crypt'] != 'none'){
-			array_push($workflow, 
-			array(
-				'service' => 'adcore.data.encrypt.service',
-				'input' => array('data' => 'message', 'type' => 'crypt'),
-				'output' => array('result' => 'message')
-			));
-		}
-		
-		if($memory['hash'] != 'none'){
-			array_push($workflow, 
-			array(
-				'service' => 'adcore.data.hash.service',
-				'input' => array('data' => 'message', 'type' => 'hash'),
-				'output' => array('result' => 'hash')
-			));
-		}
-		
-		array_push($workflow, 
 		array(
 			'service' => 'adcore.data.prepare.service',
 			'args' => $args,
@@ -84,7 +57,7 @@ class TransportWriteWorkflow implements Service {
 		),
 		array(
 			'service' => 'adcore.data.encode.service',
-			'input' => array('data' => 'result', 'type' => 'type')
+			'input' => array('data' => 'result')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

@@ -31,7 +31,7 @@ class DatabaseDropWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.query.execute.workflow',
+			'service' => 'rdbms.query.execute.workflow',
 			'args' => array('dbname'),
 			'query' => "revoke all privileges on \${dbname}.* from '\${dbname}'@'localhost';",
 			'rstype' => 1,
@@ -40,7 +40,7 @@ class DatabaseDropWorkflow implements Service {
 			'errormsg' => 'Invalid Database Name'
 		),
 		array(
-			'service' => 'ad.query.execute.workflow',
+			'service' => 'rdbms.query.execute.workflow',
 			'args' => array('dbname', 'dbpass'),
 			'query' => "drop user '\${dbname}'@'localhost';",
 			'rstype' => 1,
@@ -49,7 +49,7 @@ class DatabaseDropWorkflow implements Service {
 			'errormsg' => 'Invalid Database Name'
 		),
 		array(
-			'service' => 'ad.query.execute.workflow',
+			'service' => 'rdbms.query.execute.workflow',
 			'args' => array('dbname'),
 			'query' => "drop database \${dbname};",
 			'rstype' => 1,

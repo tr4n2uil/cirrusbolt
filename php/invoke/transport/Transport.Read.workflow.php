@@ -14,7 +14,7 @@ require_once(SBSERVICE);
  *	@param email string Email if user not set [memory] optional default false
  *	@param context string Application context for email [memory] optional default false
  *
- *	@return result string Unsecured message [memory]
+ *	@return result object Unsecured message [memory]
  *	@return key long int Key used for decryption [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -36,73 +36,15 @@ class TransportReadWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$flag = $memory['email'] ? true : ($memory['crypt']!='none');
-		
 		$workflow = array(
 		array(
-			'service' => 'adcore.data.decode.service',
+			'service' => 'cbcore.data.decode.service',
 			'output' => array('result' => 'message')
 		),
 		array(
-			'service' => 'adcore.data.select.service',
-			'args' => array('message'),
-			'opt' => true,
-			'params' => array('message.message' => 'data', 'message.hash' => 'value', 'message.user' => 'user', 'message.challenge' => 'challenge')
+			'service' => 'cypher.secure.read.workflow',
+			'input' => array('data' => 'message')
 		));
-		
-		if($memory['hash'] != 'none'){
-			array_push($workflow, 
-			array(
-				'service' => 'adcore.data.hash.service',
-				'input' => array('type' => 'hash')
-			),
-			array(
-				'service' => 'adcore.data.equal.service',
-				'input' => array('data' => 'result'),
-				'errormsg' => 'Message integrity check failed'
-			));
-		}
-		
-		if($flag){
-			array_push($workflow, 
-			array(
-				'service' => 'ad.key.identify.workflow'
-			));
-		}
-		
-		if($memory['crypt'] != 'none'){
-			array_push($workflow, 
-			array(
-				'service' => 'ad.key.identify.workflow'
-			),
-			array(
-				'service' => 'adcore.data.decrypt.service',
-				'input' => array('type' => 'crypt')
-			),
-			array(
-				'service' => 'adcore.data.decode.service',
-				'input' => array('data' => 'result')
-			));
-		}
-		
-		$memory = Snowblozm::execute($workflow, $memory);
-		
-		if($memory['valid']){
-			$memory['result'] = array_merge(is_array($memory['result']) ? $memory['result'] : array(), $memory['message']);
-			if(isset($memory['result']['challenge'])) 
-				unset($memory['result']['challenge']);
-			if(isset($memory['result']['message'])) 
-				unset($memory['result']['message']);
-			if(isset($memory['result']['hash'])) 
-				unset($memory['result']['hash']);
-			if(isset($memory['result']['keyid'])) 
-				unset($memory['result']['keyid']);
-			
-			if($flag) {
-				$memory['result']['keyid'] = $memory['keyid'];
-				$memory['result']['user'] = $memory['email'] ? $memory['email'] : $memory['user'];
-			}
-		}
 		
 		return $memory;
 	}

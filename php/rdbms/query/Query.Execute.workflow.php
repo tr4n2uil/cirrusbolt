@@ -59,21 +59,21 @@ class QueryExecuteWorkflow implements Service {
 		
 		if(count($numparam) != 0){
 			array_push($workflow, array(
-				'service' => 'adcore.data.numeric.service',
+				'service' => 'cbcore.data.numeric.service',
 				'args' => $numparam
 			));
 		}
 		
 		if(count($escparam) != 0){
 			array_push($workflow, array(
-				'service' => 'adcore.query.escape.service',
+				'service' => 'rdbms.query.escape.service',
 				'args' => $escparam
 			));
 		}
 		
 		if(count($args) != 0){
 			array_push($workflow, array(
-				'service' => 'adcore.data.substitute.service',
+				'service' => 'cbcore.data.substitute.service',
 				'args' => $args,
 				'input' => array('data' => 'query'),
 				'output' => array('result' => 'query')
@@ -81,13 +81,13 @@ class QueryExecuteWorkflow implements Service {
 		}
 		
 		array_push($workflow, array(
-			'service' => 'adcore.query.execute.service',
+			'service' => 'rdbms.query.execute.service',
 			'output' => array('sqlresult' => 'sqlresult', 'sqlrowcount' => 'sqlrc')
 		));
 		
 		if($memory['check']){
 			array_push($workflow, array(
-				'service' => 'adcore.data.equal.service',
+				'service' => 'cbcore.data.equal.service',
 				'input' => array('data' => 'sqlrc'),
 				'value' => $memory['count']
 			));

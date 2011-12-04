@@ -31,7 +31,7 @@ class DatabasePasswordWorkflow implements Service {
 		$memory['msg'] = 'Database password set successfully';
 		
 		$service = array(
-			'service' => 'ad.query.execute.workflow',
+			'service' => 'rdbms.query.execute.workflow',
 			'args' => array('dbname', 'dbpass'),
 			'query' => "set password for '\${dbname}'@'localhost' = password('\${dbpass}');",
 			'rstype' => 1,

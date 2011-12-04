@@ -32,7 +32,7 @@ class DatabaseCreateWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.query.execute.workflow',
+			'service' => 'rdbms.query.execute.workflow',
 			'args' => array('dbname', 'dbpass'),
 			'query' => "create user '\${dbname}'@'localhost' identified by '\${dbpass}';",
 			'rstype' => 1,
@@ -41,7 +41,7 @@ class DatabaseCreateWorkflow implements Service {
 			'errormsg' => 'Invalid Database Name / Password'
 		),
 		array(
-			'service' => 'ad.query.execute.workflow',
+			'service' => 'rdbms.query.execute.workflow',
 			'args' => array('dbname'),
 			'query' => "create database \${dbname};",
 			'rstype' => 1,
@@ -50,7 +50,7 @@ class DatabaseCreateWorkflow implements Service {
 			'errormsg' => 'Invalid Database Name'
 		),
 		array(
-			'service' => 'ad.query.execute.workflow',
+			'service' => 'rdbms.query.execute.workflow',
 			'args' => array('dbname'),
 			'query' => "grant all privileges on \${dbname}.* to '\${dbname}'@'localhost';",
 			'rstype' => 1,
