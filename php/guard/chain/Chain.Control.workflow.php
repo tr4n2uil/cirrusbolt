@@ -33,7 +33,7 @@ class ChainControlWorkflow implements Service {
 		$esc = $memory['multiple'] ? array('authorize', 'chainid') : array('authorize');
 		
 		$service = array(
-			'service' => 'ad.relation.update.workflow',
+			'service' => 'transpera.relation.update.workflow',
 			'args' => array('chainid', 'authorize'),
 			'conn' => 'adconn',
 			'relation' => '`chains`',

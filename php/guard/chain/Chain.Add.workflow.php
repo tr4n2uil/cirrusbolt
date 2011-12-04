@@ -31,7 +31,7 @@ class ChainAddWorkflow implements Service {
 		$memory['msg'] = 'Chain member added successfully';
 		
 		$service = array(
-			'service' => 'ad.relation.insert.workflow',
+			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('chainid', 'keyid'),
 			'conn' => 'adconn',
 			'relation' => '`members`',

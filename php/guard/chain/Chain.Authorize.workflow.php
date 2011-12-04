@@ -70,7 +70,7 @@ class ChainAuthorizeWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.relation.unique.workflow',
+			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('keyid', 'chainid', 'action'),
 			'conn' => 'adconn',
 			'relation' => '`chains`',
@@ -83,7 +83,7 @@ class ChainAuthorizeWorkflow implements Service {
 		
 		if($memory['admin']){
 			array_push($workflow, array(
-				'service' => 'adcore.data.select.service',
+				'service' => 'cbcore.data.select.service',
 				'args' => array('result'),
 				'params' => array('result.0.admin' => 'admin')
 			));

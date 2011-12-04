@@ -31,7 +31,7 @@ class KeyAddWorkflow implements Service {
 		$memory['msg'] = 'Key created successfully';
 		
 		$service = array(
-			'service' => 'ad.relation.insert.workflow',
+			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('key', 'email'),
 			'conn' => 'adconn',
 			'relation' => '`keys`',

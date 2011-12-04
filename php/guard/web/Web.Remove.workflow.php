@@ -29,7 +29,7 @@ class WebRemoveWorkflow implements Service {
 		$memory['msg'] = 'Web member removed successfully';
 		
 		$service = array(
-			'service' => 'ad.relation.delete.workflow',
+			'service' => 'transpera.relation.delete.workflow',
 			'args' => array('child', 'parent'),
 			'conn' => 'adconn',
 			'relation' => '`webs`',

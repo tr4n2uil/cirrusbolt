@@ -31,7 +31,7 @@ class WebEditWorkflow implements Service {
 		$memory['msg'] = 'Web member collation properties edited successfully';
 		
 		$service = array(
-			'service' => 'ad.relation.update.workflow',
+			'service' => 'transpera.relation.update.workflow',
 			'args' => array('child', 'parent', 'path', 'leaf'),
 			'conn' => 'adconn',
 			'relation' => '`webs`',

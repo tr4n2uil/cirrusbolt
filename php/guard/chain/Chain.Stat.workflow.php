@@ -30,7 +30,7 @@ class ChainStatWorkflow implements Service {
 		$memory['msg'] = 'Chain information returned successfully';
 		
 		$service = array(
-			'service' => 'ad.relation.unique.workflow',
+			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('chainid'),
 			'conn' => 'adconn',
 			'relation' => '`chains`',

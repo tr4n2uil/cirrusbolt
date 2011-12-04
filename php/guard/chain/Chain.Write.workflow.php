@@ -28,7 +28,7 @@ class ChainWriteWorkflow implements Service {
 		$memory['msg'] = 'Chain written successfully';
 		
 		$service = array(
-			'service' => 'ad.relation.update.workflow',
+			'service' => 'transpera.relation.update.workflow',
 			'args' => array('chainid'),
 			'conn' => 'adconn',
 			'relation' => '`chains`',

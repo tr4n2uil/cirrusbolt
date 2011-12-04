@@ -33,7 +33,7 @@ class ChainInfoWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.relation.unique.workflow',
+			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('chainid'),
 			'conn' => 'adconn',
 			'relation' => '`chains`',
@@ -42,7 +42,7 @@ class ChainInfoWorkflow implements Service {
 			'errormsg' => 'Invalid Chain ID'
 		),
 		array(
-			'service' => 'adcore.data.select.service',
+			'service' => 'cbcore.data.select.service',
 			'args' => array('result'),
 			'params' => array('result.0.masterkey' => 'masterkey', 'result.0.level' => 'level', 'result.0.authorize' => 'authorize')
 		));

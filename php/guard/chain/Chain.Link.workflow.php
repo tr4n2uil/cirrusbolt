@@ -31,7 +31,7 @@ class ChainLinkWorkflow implements Service {
 		$op = $memory['op']) ? '-' : '+';
 		
 		$service = array(
-			'service' => 'ad.relation.update.workflow',
+			'service' => 'transpera.relation.update.workflow',
 			'args' => array('chainid'),
 			'conn' => 'adconn',
 			'relation' => '`chains`',

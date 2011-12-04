@@ -39,7 +39,7 @@ class RelationUniqueWorkflow implements Service {
 	**/
 	public function run($memory){
 		$service = array(
-			'service' => 'ad.query.execute.workflow',
+			'service' => 'rdbms.query.execute.workflow',
 			'args' => $memory['args'],
 			'output' => array('sqlresult' => 'result'),
 			'query' => 'select '.$memory['sqlprj'].' from '.$memory['relation'].' '.$memory['sqlcnd'].';'

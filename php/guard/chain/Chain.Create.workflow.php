@@ -35,7 +35,7 @@ class ChainCreateWorkflow implements Service {
 		$memory['root'] = $memory['root'] ? $memory['root'] : '/'.$memory['masterkey'];
 		
 		$service = array(
-			'service' => 'ad.relation.insert.workflow',
+			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('masterkey', 'level', 'root', 'authorize'),
 			'conn' => 'adconn',
 			'relation' => '`chains`',

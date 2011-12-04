@@ -30,7 +30,7 @@ class ChainMemberWorkflow implements Service {
 		$memory['msg'] = 'Member keys returned successfully';
 		
 		$service = array(
-			'service' => 'ad.relation.select.workflow',
+			'service' => 'transpera.relation.select.workflow',
 			'args' => array('chainid'),
 			'conn' => 'adconn',
 			'relation' => '`members` m, `keys` k',

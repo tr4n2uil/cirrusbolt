@@ -28,7 +28,7 @@ class KeyRemoveWorkflow implements Service {
 		$memory['msg'] = 'Key removed successfully';
 		
 		$service = array(
-			'service' => 'ad.relation.delete.workflow',
+			'service' => 'transpera.relation.delete.workflow',
 			'args' => array('keyid'),
 			'conn' => 'adconn',
 			'relation' => '`keys`',

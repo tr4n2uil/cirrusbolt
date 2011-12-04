@@ -35,7 +35,7 @@ class WebAddWorkflow implements Service {
 		$memory['leaf'] = $memory['leaf'] ? $memory['leaf'] : $memory['child'];
 		
 		$service = array(
-			'service' => 'ad.relation.insert.workflow',
+			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('child', 'parent', 'path', 'leaf'),
 			'conn' => 'adconn',
 			'relation' => '`webs`',

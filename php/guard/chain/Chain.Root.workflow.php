@@ -29,7 +29,7 @@ class ChainRootWorkflow implements Service {
 		$memory['msg'] = 'Chain collation root edited successfully';
 		
 		$service = array(
-			'service' => 'ad.relation.update.workflow',
+			'service' => 'transpera.relation.update.workflow',
 			'args' => array('chainid', 'root'),
 			'conn' => 'adconn',
 			'relation' => '`chains`',

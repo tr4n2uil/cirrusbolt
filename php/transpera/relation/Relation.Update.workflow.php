@@ -36,7 +36,7 @@ class RelationUpdateWorkflow implements Service {
 	**/
 	public function run($memory){
 		$service = array(
-			'service' => 'ad.query.execute.workflow',
+			'service' => 'rdbms.query.execute.workflow',
 			'args' => $memory['args'],
 			'query' => 'update '.$memory['relation'].' '.$memory['sqlcnd'].';',
 			'rstype' => 1

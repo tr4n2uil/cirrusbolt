@@ -34,7 +34,7 @@ class KeyAuthenticateWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.relation.unique.workflow',
+			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('key', 'email', 'context'),
 			'conn' => 'adconn',
 			'relation' => '`keys`',
@@ -44,7 +44,7 @@ class KeyAuthenticateWorkflow implements Service {
 			'errormsg' => 'Invalid Credentials'
 		),
 		array(
-			'service' => 'adcore.data.select.service',
+			'service' => 'cbcore.data.select.service',
 			'args' => array('result'),
 			'params' => array('result.0.keyid' => 'keyid')
 		));

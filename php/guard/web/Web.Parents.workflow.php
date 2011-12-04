@@ -30,7 +30,7 @@ class WebParentsWorkflow implements Service {
 		$memory['msg'] = 'Web parents listed successfully';
 		
 		$service = array(
-			'service' => 'ad.relation.select.workflow',
+			'service' => 'transpera.relation.select.workflow',
 			'args' => array('child'),
 			'conn' => 'adconn',
 			'relation' => '`webs`',

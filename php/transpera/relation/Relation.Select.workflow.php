@@ -39,7 +39,7 @@ class RelationSelectWorkflow implements Service {
 		$relation = $memory['relation'];
 
 		$service = array(
-			'service' => 'ad.query.execute.workflow',
+			'service' => 'rdbms.query.execute.workflow',
 			'args' => $memory['args'],
 			'output' => array('sqlresult' => 'result'),
 			'query' => 'select '.$memory['sqlprj'].' from '.$relation.' '.$memory['sqlcnd'].';',

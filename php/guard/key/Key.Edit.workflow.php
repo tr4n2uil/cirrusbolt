@@ -29,7 +29,7 @@ class KeyEditWorkflow implements Service {
 		$memory['msg'] = 'Key edited successfully';
 		
 		$service = array(
-			'service' => 'ad.relation.update.workflow',
+			'service' => 'transpera.relation.update.workflow',
 			'args' => array('key', 'keyid'),
 			'conn' => 'adconn',
 			'relation' => '`keys`',

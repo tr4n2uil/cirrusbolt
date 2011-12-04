@@ -28,7 +28,7 @@ class ChainDeleteWorkflow implements Service {
 		$memory['msg'] = 'Chain deleted successfully';
 		
 		$service = array(
-			'service' => 'ad.relation.delete.workflow',
+			'service' => 'transpera.relation.delete.workflow',
 			'args' => array('chainid'),
 			'conn' => 'adconn',
 			'relation' => '`chains`',

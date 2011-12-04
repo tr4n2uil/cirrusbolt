@@ -36,7 +36,7 @@ class RelationDeleteWorkflow implements Service {
 	**/
 	public function run($memory){
 		$service = array(
-			'service' => 'ad.query.execute.workflow',
+			'service' => 'rdbms.query.execute.workflow',
 			'args' => $memory['args'],
 			'query' => 'delete from '.$memory['relation'].' '.$memory['sqlcnd'].';',
 			'rstype' => 1

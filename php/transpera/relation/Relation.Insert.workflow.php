@@ -34,7 +34,7 @@ class RelationInsertWorkflow implements Service {
 	**/
 	public function run($memory){
 		$service = array(
-			'service' => 'ad.query.execute.workflow',
+			'service' => 'rdbms.query.execute.workflow',
 			'args' => $memory['args'],
 			'output' => array('sqlresult' => 'id'),
 			'query' => 'insert into '.$memory['relation'].' '.$memory['sqlcnd'].';',

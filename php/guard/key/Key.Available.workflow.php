@@ -28,7 +28,7 @@ class KeyAvailableWorkflow implements Service {
 		$memory['msg'] = 'Email available for registration';
 		
 		$service = array(
-			'service' => 'ad.relation.unique.workflow',
+			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('email'),
 			'conn' => 'adconn',
 			'relation' => '`keys`',

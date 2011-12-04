@@ -42,7 +42,7 @@ class KeyIdentifyWorkflow implements Service {
 			
 			$workflow = array(
 			array(
-				'service' => 'ad.relation.unique.workflow',
+				'service' => 'transpera.relation.unique.workflow',
 				'args' => array('email', 'challenge', 'context'),
 				'conn' => 'adconn',
 				'relation' => '`keys`',
@@ -52,7 +52,7 @@ class KeyIdentifyWorkflow implements Service {
 				'errormsg' => 'Unable to identify key from email'
 			),
 			array(
-				'service' => 'adcore.data.select.service',
+				'service' => 'cbcore.data.select.service',
 				'args' => array('result'),
 				'params' => array('result.0.keyid' => 'keyid', 'result.0.key' => 'key')
 			));
