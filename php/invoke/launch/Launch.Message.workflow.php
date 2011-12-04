@@ -34,24 +34,24 @@ class LaunchMessageWorkflow implements Service {
 	public function run($memory){
 		$workflow = array(
 		array(
-			'service' => 'adcore.request.read.service'
+			'service' => 'invoke.http.read.service'
 		),
 		array(
-			'service' => 'ad.transport.read.workflow',
+			'service' => 'invoke.transport.read.workflow',
 			'input' => array('type' => 'reqtype')
 		),
 		array(
-			'service' => 'adcore.launch.message.service',
+			'service' => 'invoke.launch.message.service',
 			'input' => array('message' => 'result')
 		),
 		array(
-			'service' => 'ad.transport.write.workflow',
+			'service' => 'invoke.transport.write.workflow',
 			'args' => array('valid', 'msg', 'status', 'details'),
 			'input' => array('data' => 'response', 'type' => 'restype'),
 			'strict' => false
 		),
 		array(
-			'service' => 'adcore.response.write.service',
+			'service' => 'invoke.http.write.service',
 			'input' => array('data' => 'result', 'type' => 'restype')
 		));
 		
