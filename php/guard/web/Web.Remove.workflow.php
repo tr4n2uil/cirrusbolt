@@ -31,7 +31,7 @@ class WebRemoveWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.delete.workflow',
 			'args' => array('child', 'parent'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`webs`',
 			'sqlcnd' => "where `child`=\${child} and `parent`=\${parent}",
 			'errormsg' => 'Invalid Parent Chain ID'

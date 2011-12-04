@@ -32,7 +32,7 @@ class SessionInfoWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.relation.delete.workflow',
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`sessions`',
 			'sqlcnd' => "where `expiry` < now()",
 			'errormsg' => 'Invalid Session ID',
@@ -41,7 +41,7 @@ class SessionInfoWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('sessionid'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`sessions`',
 			'sqlcnd' => "where `sessionid`='\${sessionid}'",
 			'escparam' => array('sessionid'),

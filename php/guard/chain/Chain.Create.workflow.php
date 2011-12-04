@@ -37,7 +37,7 @@ class ChainCreateWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('masterkey', 'level', 'root', 'authorize'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`chains`',
 			'sqlcnd' => "(`masterkey`, `level`, `root`, `authorize`, `ctime`, `rtime`, `wtime`) values (\${masterkey}, \${level}, '\${root}', '\${authorize}', now(), now(), now())",
 			'escparam' => array('root', 'authorize')

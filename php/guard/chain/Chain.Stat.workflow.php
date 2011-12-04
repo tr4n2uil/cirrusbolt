@@ -32,7 +32,7 @@ class ChainStatWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('chainid'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`chains`',
 			'sqlprj' => '`links`, `reads`, `writes`, `ctime`, `rtime`, `wtime`',
 			'sqlcnd' => "where `chainid`=\${chainid}",

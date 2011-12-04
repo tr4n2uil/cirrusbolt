@@ -30,7 +30,7 @@ class KeyRemoveWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.delete.workflow',
 			'args' => array('keyid'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`keys`',
 			'sqlcnd' => "where `keyid`=\${keyid}",
 			'errormsg' => 'Invalid Service Key ID'

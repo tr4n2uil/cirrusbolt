@@ -34,7 +34,7 @@ class WebParentWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('child'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`webs`',
 			'sqlcnd' => "where `child`=\${child}",
 			'errormsg' => 'Unable to find unique parent'

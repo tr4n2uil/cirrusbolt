@@ -31,7 +31,7 @@ class ChainRootWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.update.workflow',
 			'args' => array('chainid', 'root'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`chains`',
 			'sqlcnd' => "set `root`='\${root}', `mtime`=now() where `chainid`=\${chainid}",
 			'errormsg' => 'Invalid Chain ID',

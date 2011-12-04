@@ -48,7 +48,7 @@ class SessionAddWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('sessionid', 'email'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`sessions`',
 			'sqlcnd' => "(`sessionid`, `email`, `expiry`) values ('\${sessionid}', '\${email}', (now() + interval ".$memory['expiry']." day))",
 			'escparam' => array('sessionid', 'email')

@@ -33,7 +33,7 @@ class WebEditWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.update.workflow',
 			'args' => array('child', 'parent', 'path', 'leaf'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`webs`',
 			'sqlcnd' => "set `path`='\${path}', `leaf`='\${leaf}' where `parent`=\${parent} and child=\${child}",
 			'escparam' => array('path', 'leaf')

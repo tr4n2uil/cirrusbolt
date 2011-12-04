@@ -33,7 +33,7 @@ class ChainLinkWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.update.workflow',
 			'args' => array('chainid'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`chains`',
 			'sqlcnd' => "set `links`=`links`".$op."1, `mtime`=now() where `chainid`=\${chainid}",
 			'errormsg' => 'Invalid Chain ID'

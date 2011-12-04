@@ -44,7 +44,7 @@ class KeyIdentifyWorkflow implements Service {
 			array(
 				'service' => 'transpera.relation.unique.workflow',
 				'args' => array('email', 'challenge', 'context'),
-				'conn' => 'adconn',
+				'conn' => 'cbconn',
 				'relation' => '`keys`',
 				'sqlprj' => "keyid, MD5(concat(`keyvalue`,'\${challenge}')) as `key`",
 				'sqlcnd' => "where `email`='\${email}' and `context` like '%\${context}%'",

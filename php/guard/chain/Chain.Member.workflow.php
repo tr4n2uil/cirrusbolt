@@ -32,7 +32,7 @@ class ChainMemberWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.select.workflow',
 			'args' => array('chainid'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`members` m, `keys` k',
 			'sqlprj' => 'k.`keyid`, k.`email`',
 			'sqlcnd' => "where m.`chainid`=\${chainid} and m.`keyid`=k.`keyid`",

@@ -33,7 +33,7 @@ class KeyAddWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('key', 'email'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`keys`',
 			'sqlcnd' => "(`email`, `keyvalue`) values ('\${email}', MD5('\${email}\${key}'))",
 			'escparam' => array('key', 'email')

@@ -72,7 +72,7 @@ class ChainAuthorizeWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('keyid', 'chainid', 'action'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`chains`',
 			'sqlprj' => $sqlprj,
 			'sqlcnd' => "where `chainid`=\${chainid} and (`authorize` not like '%\${action}%' or $query)",

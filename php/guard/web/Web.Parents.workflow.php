@@ -32,7 +32,7 @@ class WebParentsWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.select.workflow',
 			'args' => array('child'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`webs`',
 			'sqlcnd' => "where `child`=\${child}",
 			'output' => array('result' => 'parents')

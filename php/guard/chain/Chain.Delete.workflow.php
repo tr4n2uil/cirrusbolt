@@ -30,7 +30,7 @@ class ChainDeleteWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.delete.workflow',
 			'args' => array('chainid'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`chains`',
 			'sqlcnd' => "where `chainid`=\${chainid}",
 			'errormsg' => 'Invalid Chain ID'

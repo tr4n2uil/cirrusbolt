@@ -31,7 +31,7 @@ class KeyEditWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.update.workflow',
 			'args' => array('key', 'keyid'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`keys`',
 			'sqlcnd' => "set `keyvalue`=MD5(concat(`email`, '\${key}')) where `keyid`=\${keyid}",
 			'escparam' => array('key'),

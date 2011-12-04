@@ -35,7 +35,7 @@ class ChainInfoWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('chainid'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`chains`',
 			'sqlprj' => '`masterkey`, `level`, `authorize`',
 			'sqlcnd' => "where `chainid`=\${chainid}",

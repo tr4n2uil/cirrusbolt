@@ -36,7 +36,7 @@ class KeyAuthenticateWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('key', 'email', 'context'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`keys`',
 			'sqlprj' => 'keyid',
 			'sqlcnd' => "where `email`='\${email}' and `context` like '%\${context}%' and `keyvalue`=MD5('\${email}\${key}')",

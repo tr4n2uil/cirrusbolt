@@ -37,7 +37,7 @@ class WebAddWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('child', 'parent', 'path', 'leaf'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`webs`',
 			'sqlcnd' => "(`child`, `parent`, `path`, `leaf`) values (\${child}, \${parent}, '\${path}', '\${leaf}')",
 			'escparam' => array('path', 'leaf')

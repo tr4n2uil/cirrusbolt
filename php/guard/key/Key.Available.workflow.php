@@ -30,7 +30,7 @@ class KeyAvailableWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('email'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`keys`',
 			'sqlprj' => 'keyid',
 			'sqlcnd' => "where `email`='\${email}'",

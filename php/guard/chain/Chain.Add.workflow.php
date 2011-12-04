@@ -33,7 +33,7 @@ class ChainAddWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('chainid', 'keyid'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`members`',
 			'sqlcnd' => "(`chainid`, `keyid`) values (\${chainid}, \${keyid})"
 		);

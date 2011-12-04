@@ -35,7 +35,7 @@ class ChainControlWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.update.workflow',
 			'args' => array('chainid', 'authorize'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`chains`',
 			'sqlcnd' => "set `authorize`='\${authorize}', `mtime`=now() where `chainid`$query",
 			'errormsg' => 'Invalid Chain ID',

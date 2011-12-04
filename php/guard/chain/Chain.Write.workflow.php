@@ -30,7 +30,7 @@ class ChainWriteWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.update.workflow',
 			'args' => array('chainid'),
-			'conn' => 'adconn',
+			'conn' => 'cbconn',
 			'relation' => '`chains`',
 			'sqlcnd' => "set `writes`=`writes`+1, `wtime`=now() where `chainid`=\${chainid}",
 			'errormsg' => 'Invalid Chain ID'

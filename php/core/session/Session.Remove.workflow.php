@@ -30,7 +30,7 @@ class SessionRemoveWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.delete.workflow',
 			'args' => array('sessionid'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`sessions`',
 			'sqlcnd' => "where `sessionid`='\${sessionid}'",
 			'escparam' => array('sessionid'),
