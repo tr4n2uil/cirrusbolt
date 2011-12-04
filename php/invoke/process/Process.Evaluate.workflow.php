@@ -55,27 +55,27 @@ class ProcessEvaluateWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'adcore.data.numeric.service',
+			'service' => 'cbcore.data.numeric.service',
 			'args' => array('lmt_mem', 'lmt_stk', 'lmt_fo', 'lmt_fl', 'lmt_time', 'lmt_tm_max')
 		),
 		array(
-			'service' => 'adcore.data.substitute.service',
+			'service' => 'cbcore.data.substitute.service',
 			'args' => array('infile', 'outfile', 'cwd', 'lmt_mem', 'lmt_stk', 'lmt_fo', 'lmt_fl', 'lmt_time', 'lmt_tm_max', 'cmd'),
 			'data' => 'evaluator "i:${infile}" "o:${infile}" "d:${cwd}" "m:${lmt_mem}" "s:${lmt_stk}" "f:${lmt_fo}" "l:${lmt_fl}" "t:${lmt_time}" "x:${lmt_tm_max}" ${cmd}',
 			'output' => array('result' => 'evl_cmd')
 		),
 		array(
-			'service' => 'adcore.process.run.service',
+			'service' => 'invoke.process.run.service',
 			'input' => array('cmd' => 'evl_cmd'),
 			'cwd' => ADROOT.'../c/bin',
 			'output' => array('stdout' => 'data')
 		),
 		array(
-			'service' => 'adcore.data.decode.service',
+			'service' => 'cbcore.data.decode.service',
 			'type' => 'json'
 		),
 		array(
-			'service' => 'adcore.data.select.service',
+			'service' => 'cbcore.data.select.service',
 			'args' => array('result'),
 			'params' => array('result.exit_status' => 'exit_status', 'result.totaltime' => 'totaltime', 'result.usertime' => 'usertime', 'result.systime' => 'systime', 'result.memory' => 'memory', 'result.mjpf' => 'mjpf', 'result.mnpf' => 'mnpf', 'result.vcsw' => 'vcsw', 'result.ivcsw' => 'ivcsw', 'result.fsin' => 'fsin', 'result.fsout' => 'fsout', 'result.msgrcv' => 'msgrcv', 'result.msgsnd' => 'msgsnd', 'result.signals' => 'signals')
 		));

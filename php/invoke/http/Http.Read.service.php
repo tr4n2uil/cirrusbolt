@@ -2,7 +2,7 @@
 require_once(SBSERVICE);
 
 /**
- *	@class RequestReadService
+ *	@class HttpReadService
  *	@desc Reads HTTP request from input stream
  *
  *	@return data string Stream data [memory]
@@ -10,7 +10,7 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *	
 **/
-class RequestReadService implements Service {
+class HttpReadService implements Service {
 	
 	/**
 	 *	@interface Service

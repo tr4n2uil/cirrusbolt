@@ -2,7 +2,7 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ResponseWriteService
+ *	@class HttpWriteService
  *	@desc Writes HTTP response to output stream
  *
  *	@param data string Stream data [memory]
@@ -11,7 +11,7 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *	
 **/
-class ResponseWriteService implements Service {
+class HttpWriteService implements Service {
 	
 	/**
 	 *	@interface Service
