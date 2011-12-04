@@ -7,14 +7,14 @@ Components
 	Core : Core Services
 	Cypher : Security [Application Layer Security]
 	Echo : Replication & Consistency [Neighborhood Replicated Partitioning]
-	Gauge : Tracking 
+	Gauge : Tracking [Universal Tracking Parameters]
 	Guard : Access Control [Key-Chain-Web Mechanism]
 	Handle : Collation [Virtual Directory Nomenclature]
 	Invoke : Transport & Execution [Block Transport Scheme]
 	Journal : Concurrency & Fault Tolerance [Out of Phase Synchronization]
 	RDBMS : Database
 	System : Interfaces & Implementations
-	Transpera : Reference & Relation
+	Transpera : Reference & Relation [Extensible Object Reference Architecture]
 
 Acknowledgments
 	SnowBlozm <https://github.com/tr4n2uil/snowblozm>

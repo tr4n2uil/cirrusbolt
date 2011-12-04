@@ -2,7 +2,7 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ReferenceReadWorkflow
+ *	@class TrackReadWorkflow
  *	@desc Tracks reads of reference
  *
  *	@param id long int Reference ID [memory]
@@ -10,7 +10,7 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ReferenceReadWorkflow implements Service {
+class TrackReadWorkflow implements Service {
 	
 	/**
 	 *	@interface Service

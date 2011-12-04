@@ -2,7 +2,7 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ReferenceStatWorkflow
+ *	@class TrackStatWorkflow
  *	@desc Returns statistics of reference
  *
  *	@param id long int Reference ID [memory]
@@ -12,7 +12,7 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ReferenceStatWorkflow implements Service {
+class TrackStatWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
