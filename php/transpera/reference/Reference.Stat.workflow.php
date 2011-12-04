@@ -29,12 +29,12 @@ class ReferenceStatWorkflow implements Service {
 	public function run($memory){
 		$workflow = array(
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('chainid' => 'id'),
 			'action' => 'info'
 		),
 		array(
-			'service' => 'ad.chain.stat.workflow',
+			'service' => 'guard.chain.stat.workflow',
 			'input' => array('chainid' => 'id')
 		));
 		

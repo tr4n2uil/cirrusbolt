@@ -31,16 +31,16 @@ class ReferenceRemoveWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('id' => 'parent'),
 			'action' => 'remove'
 		),
 		array(
-			'service' => 'ad.chain.delete.workflow',
+			'service' => 'guard.chain.delete.workflow',
 			'input' => array('chainid' => 'id')
 		),
 		array(
-			'service' => 'ad.web.remove.workflow',
+			'service' => 'guard.web.remove.workflow',
 			'input' => array('child' => 'id')
 		));
 		

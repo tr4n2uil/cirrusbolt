@@ -33,12 +33,12 @@ class ReferenceControlWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('chainid' => 'id'),
 			'action' => 'edit'
 		),
 		array(
-			'service' => 'ad.chain.control.workflow',
+			'service' => 'guard.chain.control.workflow',
 			'input' => array('chainid' => 'id')
 		));
 		

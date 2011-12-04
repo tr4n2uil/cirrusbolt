@@ -39,11 +39,11 @@ class ReferenceAuthorizeWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.chain.info.workflow',
+			'service' => 'guard.chain.info.workflow',
 			'input' => array('chainid' => 'id')
 		),
 		array(
-			'service' => 'ad.chain.authorize.workflow',
+			'service' => 'guard.chain.authorize.workflow',
 			'input' => array('chainid' => 'id')
 		));
 		

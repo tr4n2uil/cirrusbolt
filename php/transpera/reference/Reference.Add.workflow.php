@@ -42,17 +42,17 @@ class ReferenceAddWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('id' => 'parent'),
 			'action' => 'add',
 			'output' => array('level' => $level, 'authorize' => $authorize)
 		),
 		array(
-			'service' => 'ad.chain.create.workflow',
+			'service' => 'guard.chain.create.workflow',
 			'input' => array('masterkey' => 'owner')
 		),
 		array(
-			'service' => 'ad.web.add.workflow',
+			'service' => 'guard.web.add.workflow',
 			'input' => array('child' => 'id'),
 			'output' => array('id' => 'webid')
 		));

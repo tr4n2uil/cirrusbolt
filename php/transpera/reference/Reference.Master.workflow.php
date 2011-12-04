@@ -31,11 +31,11 @@ class ReferenceMasterWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'transpera.reference.authorize.workflow',
 			'action' => 'edit'
 		),
 		array(
-			'service' => 'ad.key.edit.workflow',
+			'service' => 'guard.key.edit.workflow',
 			'input' => array('key' => 'keyvalue', 'keyid' => 'masterkey')
 		));
 		

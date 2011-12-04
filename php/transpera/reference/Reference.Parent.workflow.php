@@ -33,11 +33,11 @@ class ReferenceParentWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'transpera.reference.authorize.workflow',
 			'action' => 'list'
 		),
 		array(
-			'service' => 'ad.web.parent.workflow',
+			'service' => 'guard.web.parent.workflow',
 			'input' => array('child' => 'id')
 		));
 		

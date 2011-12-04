@@ -26,7 +26,7 @@ class ReferenceReadWorkflow implements Service {
 	**/
 	public function run($memory){
 		$service = array(
-			'service' => 'ad.chain.read.workflow',
+			'service' => 'guard.chain.read.workflow',
 			'input' => array('chainid' => 'id')
 		);
 		

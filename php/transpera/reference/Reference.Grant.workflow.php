@@ -33,11 +33,11 @@ class ReferenceGrantWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'guard.reference.authorize.workflow',
 			'action' => 'edit'
 		),
 		array(
-			'service' => 'ad.chain.add.workflow',
+			'service' => 'guard.chain.add.workflow',
 			'input' => array('chainid' => 'id', 'keyid' => 'childkeyid')
 		));
 		

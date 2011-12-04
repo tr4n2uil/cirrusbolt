@@ -26,7 +26,7 @@ class ReferenceAvailableWorkflow implements Service {
 	**/
 	public function run($memory){
 		$service = array(
-			'service' => 'ad.key.available.workflow'
+			'service' => 'guard.key.available.workflow'
 		);
 		
 		return Snowblozm::run($service, $memory);

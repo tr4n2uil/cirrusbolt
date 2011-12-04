@@ -31,11 +31,11 @@ class ReferenceRevokeWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'ad.reference.authorize.workflow',
+			'service' => 'transpera.reference.authorize.workflow',
 			'action' => 'edit'
 		),
 		array(
-			'service' => 'ad.chain.remove.workflow',
+			'service' => 'guard.chain.remove.workflow',
 			'input' => array('chainid' => 'id', 'keyid' => 'childkeyid')
 		));
 		
