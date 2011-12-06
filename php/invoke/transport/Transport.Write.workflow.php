@@ -44,7 +44,8 @@ class TransportWriteWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'cypher.secure.write.workflow'
+			'service' => 'cypher.secure.write.workflow',
+			'output' => array('result' => 'message')
 		),
 		array(
 			'service' => 'cbcore.data.prepare.service',
