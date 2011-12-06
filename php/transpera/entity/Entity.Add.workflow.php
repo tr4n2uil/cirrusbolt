@@ -48,7 +48,7 @@ class EntityAddWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.relation.insert.workflow',
-			'args' => array_merge($memory['args'], array('id'))
+			'args' => array_merge($memory['args'], array('id', 'owner', 'user'))
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

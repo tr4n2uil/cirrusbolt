@@ -47,7 +47,7 @@ class TransportWriteWorkflow implements Service {
 			'service' => 'cypher.secure.write.workflow'
 		),
 		array(
-			'service' => 'adcore.data.prepare.service',
+			'service' => 'cbcore.data.prepare.service',
 			'args' => $args,
 			'strict' => false,
 			'valid' => $memory['valid'],
@@ -56,7 +56,7 @@ class TransportWriteWorkflow implements Service {
 			'details' => $memory['details']
 		),
 		array(
-			'service' => 'adcore.data.encode.service',
+			'service' => 'cbcore.data.encode.service',
 			'input' => array('data' => 'result')
 		));
 		

@@ -84,7 +84,7 @@ class SecureReadWorkflow implements Service {
 		$memory = Snowblozm::execute($workflow, $memory);
 		
 		if($memory['valid']){
-			$memory['result'] = array_merge(is_array($memory['result']) ? $memory['result'] : array(), $memory['message']);
+			$memory['result'] = array_merge(is_array($memory['result']) ? $memory['result'] : array(), $memory['data']);
 			if(isset($memory['result']['challenge'])) 
 				unset($memory['result']['challenge']);
 			if(isset($memory['result']['message'])) 

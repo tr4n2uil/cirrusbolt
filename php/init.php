@@ -8,12 +8,12 @@
 	/** 
 	 *	@constants CirrusBolt
 	**/
-	define('CBMYSQL', CBROOT . 'lib/database/Mysql.class.php');
+	define('CBMYSQL', CBROOT . 'system/Mysql.class.php');
 	
 	/** 
 	 *	@initialize SnowBlozm
 	**/
-	require_once(CBROOT. '../../../snowblozm/php/init.php');
+	require_once(CBROOT. '../../snowblozm/php/init.php');
 	require_once(SBCORE);
 	
 	Snowblozm::add('cbcore', array(

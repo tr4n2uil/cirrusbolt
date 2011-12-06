@@ -12,7 +12,6 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string User email [memory]
  *	@param parent long int Parent ID [memory] optional default 0
- *	@param pname long int Parent name [memory] optional default ''
  *	@param action string Action to authorize [memory] optional default 'edit'
  *	@param errormsg string Error message [memory] optional default 'Invalid Entity ID'
  *	@param successmsg string Success message [memory] optional default 'Entity information successfully'
@@ -20,7 +19,6 @@ require_once(SBSERVICE);
  *	@param conn array DataService instance configuration key [memory]
  *
  *	@return entity long int Entity information [memory]
- *	@return pname string Parent name [memory]
  *	@return parent long int Parent ID [memory]
  *	@return admin integer Is admin [memory]
  *
@@ -35,7 +33,7 @@ class EntityInfoWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('conn', 'keyid', 'user', 'id', 'relation', 'sqlcnd'),
-			'optional' => array('parent' => 0, 'pname' => '', 'action' => 'edit', 'sqlprj' => '*', 'successmsg' => 'Entity information given successfully', 'errormsg' => 'Invalid Entity ID')
+			'optional' => array('parent' => 0, 'action' => 'edit', 'sqlprj' => '*', 'successmsg' => 'Entity information given successfully', 'errormsg' => 'Invalid Entity ID')
 		);
 	}
 	
@@ -71,7 +69,7 @@ class EntityInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('entity', 'pname', 'parent', 'admin');
+		return array('entity', 'parent', 'admin');
 	}
 	
 }

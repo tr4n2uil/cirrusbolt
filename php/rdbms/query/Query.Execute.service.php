@@ -1,6 +1,6 @@
 <?php 
 require_once(SBSERVICE);
-require_once(ADMYSQL);
+require_once(CBMYSQL);
 
 /**
  *	@class QueryExecuteService

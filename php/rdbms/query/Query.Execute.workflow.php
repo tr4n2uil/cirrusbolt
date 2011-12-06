@@ -49,7 +49,7 @@ class QueryExecuteWorkflow implements Service {
 		switch($conn['type']){
 			case 'mysql' :
 			default :
-				require_once(ADMYSQL);
+				require_once(CBMYSQL);
 				$dataservice = new Mysql($conn['database'], $conn['user'], $conn['pass'], $conn['host']);
 				break;
 		}

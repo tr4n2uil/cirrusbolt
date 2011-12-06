@@ -43,7 +43,7 @@ class EntityEditWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.relation.update.workflow',
-			'args' => $memory['args']
+			'args' => array_merge($memory['args'], array('id'))
 		),
 		array(
 			'service' => 'gauge.track.write.workflow'

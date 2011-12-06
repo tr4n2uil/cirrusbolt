@@ -58,8 +58,10 @@ class DataSelectService implements Service {
 				$result = $result[$tokens[$i]];
 			}
 			
-			$memory[$value] = $result;
-			array_push($this->output, $value);
+			if($result !== false){
+				$memory[$value] = $result;
+				array_push($this->output, $value);
+			}
 		}
 
 		$memory['valid'] = true;

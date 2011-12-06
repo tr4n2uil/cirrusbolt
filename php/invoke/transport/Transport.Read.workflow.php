@@ -46,7 +46,7 @@ class TransportReadWorkflow implements Service {
 			'input' => array('data' => 'message')
 		));
 		
-		return $memory;
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

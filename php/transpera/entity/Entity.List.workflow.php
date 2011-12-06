@@ -11,14 +11,12 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string User email [memory]
  *	@param id long int Parent ID [memory] optional default 0
- *	@param pname long int Parent name [memory] optional default ''
- *	@param action string Action to authorize [memory] optional default 'edit'
+ *	@param action string Action to authorize [memory] optional default 'add'
  *	@param successmsg string Success message [memory] optional default 'Entity information successfully'
  *
  *	@param conn array DataService instance configuration key [memory]
  *
  *	@return entities long int Entities information [memory]
- *	@return pname string Parent name [memory]
  *	@return id long int Parent ID [memory]
  *	@return admin integer Is admin [memory]
  *
@@ -33,7 +31,7 @@ class EntityListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('conn', 'keyid', 'user', 'id', 'relation', 'sqlcnd'),
-			'optional' => array('pname' => '', 'action' => 'edit', 'sqlprj' => '*', 'successmsg' => 'Entities information given successfully')
+			'optional' => array('action' => 'add', 'sqlprj' => '*', 'successmsg' => 'Entities information given successfully')
 		);
 	}
 	
@@ -72,7 +70,7 @@ class EntityListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('entities', 'id', 'pname', 'admin');
+		return array('entities', 'id', 'admin');
 	}
 	
 }
