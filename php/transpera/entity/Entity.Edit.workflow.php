@@ -13,6 +13,7 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string User email [memory]
  *	@param successmsg string Success message [memory] optional default 'Entity edited successfully'
+ *	@param init boolean init flag [memory] optional default true
  *
  *	@param conn array DataService instance configuration key [memory]
  *
@@ -27,7 +28,7 @@ class EntityEditWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('conn', 'keyid', 'user', 'id', 'relation', 'sqlcnd'),
-			'optional' => array('escparam' => array(), 'successmsg' => 'Entity edited successfully')
+			'optional' => array('escparam' => array(), 'successmsg' => 'Entity edited successfully', 'init' => true)
 		);
 	}
 	

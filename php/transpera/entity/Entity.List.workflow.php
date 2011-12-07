@@ -49,7 +49,7 @@ class EntityListWorkflow implements Service {
 			'service' => 'cbcore.data.list.service',
 			'args' => array('children'),
 			'attr' => 'child',
-			'default' => array(-1),
+			'default' => array(-1)
 		),
 		array(
 			'service' => 'transpera.relation.select.workflow',

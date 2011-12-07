@@ -10,11 +10,13 @@ Components
 	Gauge : Tracking [Universal Tracking Parameters]
 	Guard : Access Control [Key-Chain-Web Mechanism]
 	Handle : Collation [Virtual Directory Nomenclature]
+	Harmony : Load Balancing [Distributed Resource Identification]
 	Invoke : Transport & Execution [Block Transport Scheme]
 	Journal : Concurrency & Fault Tolerance [Out of Phase Synchronization]
-	RDBMS : Database
+	Pool : Caching [Dynamic Temporal Caching]
+	RDBMS : Database Management
 	System : Interfaces & Implementations
-	Transpera : Reference & Relation [Extensible Object Reference Architecture]
+	Transpera : Reference, Relation & Entity [Extensible Object Reference Architecture]
 
 Acknowledgments
 	SnowBlozm <https://github.com/tr4n2uil/snowblozm>
