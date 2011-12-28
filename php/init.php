@@ -69,6 +69,6 @@
 	/**
 	 *	@dependency PHPMailer
 	**/
-	define('PHPMAILER', CBROOT.'../../../libraries/phpmailer/PHPMailer.class.php');
+	//define('PHPMAILER', CBROOT.'../../../libraries/phpmailer/PHPMailer.class.php');
 	
 ?>

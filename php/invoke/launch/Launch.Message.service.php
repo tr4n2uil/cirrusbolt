@@ -45,7 +45,7 @@ class LaunchMessageService implements Service {
 			$memory['valid'] = false;
 			$memory['msg'] = 'Invalid Message';
 			$memory['status'] = 500;
-			$memory['details'] = 'Please specify service to be executed with param service=root.service.operation (Only workflows may be launched)';
+			$memory['details'] = 'Please specify service to be executed with param service=root.service.operation or service=map (Only workflows may be launched)';
 			return $memory;
 		}
 			
@@ -54,7 +54,6 @@ class LaunchMessageService implements Service {
 		**/
 		$uri = $message['service'];
 		list($root, $service, $operation) = explode('.' ,$uri);
-		$message['service'] = $uri = $uri.'.workflow';
 		
 		/**
 		 *	Remove args if set (for being on safe side)
@@ -79,31 +78,34 @@ class LaunchMessageService implements Service {
 		}
 		
 		if(!$flag){
-			$memory['valid'] = false;
-			$memory['msg'] = 'Access Denied';
-			$memory['status'] = 500;
-			$memory['details'] = "Access denied for the service";
-			return $memory;
+			if(isset($access['maps']) && isset($access['maps'][$message['service']])){
+				$uri = $access['maps'][$message['service']];
+			}
+			else {
+				$memory['valid'] = false;
+				$memory['msg'] = 'Access Denied';
+				$memory['status'] = 500;
+				$memory['details'] = "Access denied for the service : ".$message['service'];
+				return $memory;
+			}
 		}
 		
 		/**
 		 *	Run the service using WorkflowKernel
 		**/
 		unset($memory['msg']);
+		$message['service'] = $uri = $uri.'.workflow';
 		$memory = Snowblozm::run($message, $memory);
-		
-		if(!$memory['valid']){
-			return $memory;
-		}
 		
 		/**
 		 *	Read service output
 		**/
-		$service = Snowblozm::load($uri);
-		foreach($service->output() as $key){
-			$memory['response'][$key] = $memory[$key];
+		if($memory['valid']){
+			$instance = Snowblozm::load($uri);
+			foreach($instance->output() as $key){
+				$memory['response'][$key] = $memory[$key];
+			}
 		}
-		
 		
 		return $memory;
 	}
