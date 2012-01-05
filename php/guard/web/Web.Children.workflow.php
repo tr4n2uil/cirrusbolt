@@ -6,6 +6,7 @@ require_once(SBSERVICE);
  *	@desc Lists child chains of parent in the web
  *
  *	@param parent long int Chain ID [memory]
+ *	@param type string Type name [memory] optional default 'general'
  *
  *	@return children array Children IDs [memory]
  *
@@ -19,7 +20,8 @@ class WebChildrenWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('parent')
+			'required' => array('parent'),
+			'optional' => array('type' => 'general')
 		);
 	}
 	
@@ -31,11 +33,11 @@ class WebChildrenWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.relation.select.workflow',
-			'args' => array('parent'),
+			'args' => array('parent', 'type'),
 			'conn' => 'cbconn',
 			'relation' => '`webs`',
 			'sqlprj' => '`child`, `parent`, `path`, `leaf`',
-			'sqlcnd' => "where `parent`=\${parent}",
+			'sqlcnd' => "where `parent`=\${parent} and `type`='\${type}'",
 			'check' => false,
 			'output' => array('result' => 'children')
 		);

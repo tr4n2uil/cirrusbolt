@@ -5,7 +5,6 @@ require_once(SBSERVICE);
  *	@class EntityAddWorkflow
  *	@desc Adds new entity
  *
- *	@param id long int Entity ID [memory] optional default false
  *	@param relation string Relation name [memory]
  *	@param sqlcnd string SQL condition [memory]
  *	@param args array Query parameters [args]
@@ -13,6 +12,7 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string User email [memory]
  *	@param parent long int Parent ID [memory] optional default 0
+ *	@param type string Type name [memory] optional default 'general'
  *	@param level integer Web level [memory] optional default false (inherit parent admin access)
  *	@param authorize string Authorize control value [memory] optional default 'edit:child:list'
  *	@param owner long int Owner ID [memory] optional default keyid
@@ -34,7 +34,7 @@ class EntityAddWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('conn', 'keyid', 'user', 'relation', 'sqlcnd'),
-			'optional' => array('id' => false, 'parent' => 0, 'level' => false, 'authorize' => 'edit:child:list', 'owner' => false, 'escparam' => array(), 'successmsg' => 'Entity added successfully', 'construct' => false)
+			'optional' => array('parent' => 0, 'type' => 'general', 'level' => false, 'authorize' => 'edit:child:list', 'owner' => false, 'escparam' => array(), 'successmsg' => 'Entity added successfully', 'construct' => false)
 		);
 	}
 	
@@ -45,14 +45,10 @@ class EntityAddWorkflow implements Service {
 		$memory['msg'] = $memory['successmsg'];
 		$memory['owner'] = $memory['owner'] ? $memory['owner'] : $memory['keyid'];
 		
-		$workflow = array();
-		
-		if($memory['id'] === false){
-			$workflow = array_push($workflow,
-			array(
-				'service' => 'transpera.reference.add.workflow'
-			));
-		}
+		$workflow = array(
+		array(
+			'service' => 'transpera.reference.add.workflow'
+		));
 		
 		if($memory['construct']){
 			$workflow = array_push($workflow, $memory['construct']);

@@ -7,6 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param child long int Chain ID [memory]
  *	@param parent long int Chain ID [memory]
+ *	@param type string Type name [memory] optional default 'general'
  *	@param path string Collation path [memory] optional default '/'
  *	@param leaf string Collation leaf [memory] optional default 'Child ID'
  *
@@ -23,7 +24,7 @@ class WebAddWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('child', 'parent'),
-			'optional' => array('path' => '/', 'leaf' => false)
+			'optional' => array('type' => 'general', 'path' => '/', 'leaf' => false)
 		);
 	}
 	
@@ -36,11 +37,11 @@ class WebAddWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.relation.insert.workflow',
-			'args' => array('child', 'parent', 'path', 'leaf'),
+			'args' => array('child', 'parent', 'type', 'path', 'leaf'),
 			'conn' => 'cbconn',
 			'relation' => '`webs`',
-			'sqlcnd' => "(`child`, `parent`, `path`, `leaf`) values (\${child}, \${parent}, '\${path}', '\${leaf}')",
-			'escparam' => array('path', 'leaf')
+			'sqlcnd' => "(`child`, `parent`, `type`, `path`, `leaf`) values (\${child}, \${parent}, '\${type}', '\${path}', '\${leaf}')",
+			'escparam' => array('type', 'path', 'leaf')
 		);
 		
 		return Snowblozm::run($service, $memory);

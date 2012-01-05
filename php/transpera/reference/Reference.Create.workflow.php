@@ -12,6 +12,7 @@ require_once(SBSERVICE);
  *	@param keyvalue string Key value [memory]
  *	@param authorize string Authorize control value [memory] optional default 'edit:child:list'
  *	@param root string Collation root [memory] optional default '/masterkey'
+ *	@param type string Type name [memory] optional default 'general'
  *	@param path string Collation path [memory] optional default '/'
  *	@param leaf string Collation leaf [memory] optional default 'Child ID'
  *
@@ -29,7 +30,7 @@ class ReferenceCreateWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'parent', 'email', 'keyvalue'),
-			'optional' => array('level' => 0, 'root' => false, 'path' => '/', 'leaf' => false, 'authorize' => 'edit:add:remove:list')
+			'optional' => array('level' => 0, 'root' => false, 'type' => 'general', 'path' => '/', 'leaf' => false, 'authorize' => 'edit:add:remove:list')
 		);
 	}
 	

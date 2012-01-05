@@ -14,6 +14,7 @@ require_once(SBSERVICE);
  *	@param pname long int Parent name [memory] optional default ''
  *	@param errormsg string Error message [memory] optional default 'Invalid Entity ID'
  *	@param successmsg string Success message [memory] optional default 'Entity information successfully'
+ *	@param destruct array Destruction Workflow [memory] optional default false
  *
  *	@param conn array DataService instance configuration key [memory]
  *
@@ -28,7 +29,7 @@ class EntityRemoveWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('conn', 'keyid', 'user', 'id', 'relation', 'sqlcnd'),
-			'optional' => array('parent' => 0, 'successmsg' => 'Entity removed successfully', 'errormsg' => 'Invalid Entity ID')
+			'optional' => array('parent' => 0, 'successmsg' => 'Entity removed successfully', 'errormsg' => 'Invalid Entity ID', 'destruct' => false)
 		);
 	}
 	
@@ -42,7 +43,13 @@ class EntityRemoveWorkflow implements Service {
 		array(
 			'service' => 'transpera.reference.authorize.workflow',
 			'action' => 'remove'
-		),
+		));
+		
+		if($memory['destruct']){
+			$workflow = array_push($workflow, $memory['destruct']);
+		}
+		
+		$workflow = array_push($workflow,
 		array(
 			'service' => 'transpera.reference.remove.workflow'
 		),
