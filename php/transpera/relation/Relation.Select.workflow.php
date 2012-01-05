@@ -55,7 +55,7 @@ class RelationSelectWorkflow implements Service {
 					'not' => false
 				);
 				
-				Snowblozm::run($service, $memory);
+				$memory = Snowblozm::run($service, $memory);
 				if(!$memory['valid'])
 					return $memory;
 				
@@ -65,8 +65,6 @@ class RelationSelectWorkflow implements Service {
 			$limit = ' limit '.($pgsz*$memory['pgno']).','.$pgsz;
 		}
 		
-		
-
 		$service = array(
 			'service' => 'rdbms.query.execute.workflow',
 			'args' => $memory['args'],

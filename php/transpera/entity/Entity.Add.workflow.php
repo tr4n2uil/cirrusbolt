@@ -14,7 +14,7 @@ require_once(SBSERVICE);
  *	@param parent long int Parent ID [memory] optional default 0
  *	@param type string Type name [memory] optional default 'general'
  *	@param level integer Web level [memory] optional default false (inherit parent admin access)
- *	@param authorize string Authorize control value [memory] optional default 'edit:child:list'
+ *	@param authorize string Authorize control value [memory] optional default 'add:remove:edit:list' (false to inherit parent control)
  *	@param owner long int Owner ID [memory] optional default keyid
  *	@param successmsg string Success message [memory] optional default 'Entity added successfully'
  *	@param construct array Construction Workflow [memory] optional default false
@@ -34,7 +34,7 @@ class EntityAddWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('conn', 'keyid', 'user', 'relation', 'sqlcnd'),
-			'optional' => array('parent' => 0, 'type' => 'general', 'level' => false, 'authorize' => 'edit:child:list', 'owner' => false, 'escparam' => array(), 'successmsg' => 'Entity added successfully', 'construct' => false)
+			'optional' => array('parent' => 0, 'type' => 'general', 'level' => false, 'authorize' => 'add:remove:edit:list', 'owner' => false, 'escparam' => array(), 'successmsg' => 'Entity added successfully', 'construct' => false)
 		);
 	}
 	
