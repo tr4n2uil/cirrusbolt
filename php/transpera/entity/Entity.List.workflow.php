@@ -7,12 +7,15 @@ require_once(SBSERVICE);
  *
  *	@param relation string Relation name [memory]
  *	@param sqlcnd string SQL condition [memory]
-  *	@param sqlprj string SQL projection [memory] optional default *
+ *	@param sqlprj string SQL projection [memory] optional default *
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string User email [memory]
  *	@param id long int Parent ID [memory] optional default 0
  *	@param action string Action to authorize [memory] optional default 'add'
  *	@param successmsg string Success message [memory] optional default 'Entity information successfully'
+ *	@param pgsz long int Paging Size [memory] optional default false
+ *	@param pgno long int Paging Index [memory] optional default 1
+ *	@param total long int Paging Total [memory] optional default false
  *
  *	@param conn array DataService instance configuration key [memory]
  *
@@ -31,7 +34,7 @@ class EntityListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('conn', 'keyid', 'user', 'id', 'relation', 'sqlcnd'),
-			'optional' => array('action' => 'add', 'sqlprj' => '*', 'successmsg' => 'Entities information given successfully')
+			'optional' => array('action' => 'add', 'sqlprj' => '*', 'successmsg' => 'Entities information given successfully', 'pgsz' => false, 'pgno' => 0, 'total' => false)
 		);
 	}
 	

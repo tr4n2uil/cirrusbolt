@@ -46,7 +46,7 @@ class EntityInfoWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.relation.unique.workflow',
-			'args' => array('id')
+			'args' => array_merge(array('id'), $memory['args'])
 		),
 		array(
 			'service' => 'cbcore.data.select.service',

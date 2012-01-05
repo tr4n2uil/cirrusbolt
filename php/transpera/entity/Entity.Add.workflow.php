@@ -5,6 +5,7 @@ require_once(SBSERVICE);
  *	@class EntityAddWorkflow
  *	@desc Adds new entity
  *
+ *	@param id long int Entity ID [memory] optional default false
  *	@param relation string Relation name [memory]
  *	@param sqlcnd string SQL condition [memory]
  *	@param args array Query parameters [args]
@@ -16,6 +17,7 @@ require_once(SBSERVICE);
  *	@param authorize string Authorize control value [memory] optional default 'edit:child:list'
  *	@param owner long int Owner ID [memory] optional default keyid
  *	@param successmsg string Success message [memory] optional default 'Entity added successfully'
+ *	@param construct array Construction Workflow [memory] optional default false
  *
  *	@param conn array DataService instance configuration key [memory]
  *
@@ -32,7 +34,7 @@ class EntityAddWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('conn', 'keyid', 'user', 'relation', 'sqlcnd'),
-			'optional' => array('parent' => 0, 'level' => false, 'authorize' => 'edit:child:list', 'owner' => false, 'escparam' => array(), 'successmsg' => 'Entity added successfully')
+			'optional' => array('id' => false, 'parent' => 0, 'level' => false, 'authorize' => 'edit:child:list', 'owner' => false, 'escparam' => array(), 'successmsg' => 'Entity added successfully', 'construct' => false)
 		);
 	}
 	
@@ -43,10 +45,20 @@ class EntityAddWorkflow implements Service {
 		$memory['msg'] = $memory['successmsg'];
 		$memory['owner'] = $memory['owner'] ? $memory['owner'] : $memory['keyid'];
 		
-		$workflow = array(
-		array(
-			'service' => 'transpera.reference.add.workflow'
-		),
+		$workflow = array();
+		
+		if($memory['id'] === false){
+			$workflow = array_push($workflow,
+			array(
+				'service' => 'transpera.reference.add.workflow'
+			));
+		}
+		
+		if($memory['construct']){
+			$workflow = array_push($workflow, $memory['construct']);
+		}
+		
+		$workflow = array_push($workflow,
 		array(
 			'service' => 'transpera.relation.insert.workflow',
 			'args' => array_merge($memory['args'], array('id', 'owner', 'user')),
