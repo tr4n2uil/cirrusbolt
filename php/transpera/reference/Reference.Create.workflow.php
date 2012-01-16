@@ -10,7 +10,9 @@ require_once(SBSERVICE);
  *	@param level integer Web level [memory] optional default 0
  *	@param email string Email [memory]
  *	@param keyvalue string Key value [memory]
- *	@param authorize string Authorize control value [memory] optional default 'edit:child:list'
+ *	@param authorize string Authorize control value [memory] optional default (inherit)
+ *	@param control string Authorize control value [memory] optional default false='info:'.(inherit) true=(inherit)
+ *	@param state string State value [memory] optional default 'A'
  *	@param root string Collation root [memory] optional default '/masterkey'
  *	@param type string Type name [memory] optional default 'general'
  *	@param path string Collation path [memory] optional default '/'
@@ -30,7 +32,7 @@ class ReferenceCreateWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'parent', 'email', 'keyvalue'),
-			'optional' => array('level' => 0, 'root' => false, 'type' => 'general', 'path' => '/', 'leaf' => false, 'authorize' => 'edit:add:remove:list')
+			'optional' => array('level' => 0, 'root' => false, 'type' => 'general', 'path' => '/', 'leaf' => false, 'authorize' => false, 'control' => false, 'state' => 'A')
 		);
 	}
 	
@@ -39,15 +41,18 @@ class ReferenceCreateWorkflow implements Service {
 	**/
 	public function run($memory){
 		$memory['msg'] = 'Reference created successfully';
+		$level = $memory['level'] ? 'inhlevel' : 'level';
+		$authorize = $memory['authorize'] ? 'inhauthorize' : 'authorize';
 		
 		$workflow = array(
 		array(
-			'service' => 'transpera.reference.authorize.workflow',
-			'input' => array('id' => 'parent'),
-			'action' => 'add'
+			'service' => 'guard.key.available.workflow'
 		),
 		array(
-			'service' => 'guard.key.available.workflow'
+			'service' => 'transpera.reference.authorize.workflow',
+			'input' => array('id' => 'parent'),
+			'action' => 'add',
+			'output' => array('level' => $level, 'authorize' => $authorize)
 		),
 		array(
 			'service' => 'guard.key.add.workflow',

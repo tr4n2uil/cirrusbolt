@@ -6,7 +6,7 @@ require_once(SBSERVICE);
  *	@desc Creates new chain
  *
  *	@param masterkey long int Key ID [memory]
- *	@param authorize string Authorize control value [memory] optional default 'edit:child:list'
+ *	@param authorize string Authorize control value [memory] optional default 'edit:add:remove:list'
  *	@param root string Collation root [memory] optional default '/masterkey'
  *	@param level integer Web level [memory] optional default 0
  *
@@ -23,7 +23,7 @@ class ChainCreateWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('masterkey'),
-			'optional' => array('level' => 0, 'root' => false, 'authorize' => 'edit:child:list')
+			'optional' => array('level' => 0, 'root' => false, 'authorize' => 'edit:add:remove:list')
 		);
 	}
 	

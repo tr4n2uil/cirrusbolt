@@ -9,6 +9,7 @@ require_once(SBSERVICE);
  *	@param keyid long int Key ID [memory]
  *	@param level integer Web level [memory] optional default 0
  *	@param action string Action to authorize [memory] optional default 'edit'
+ *	@param type string Type name [memory] optional default 'general'
  *	@param init boolean init flag [memory] optional default true
  *	@param admin boolean Is return admin flag [memory] optional default false
  *
@@ -26,7 +27,7 @@ class ChainAuthorizeWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'chainid'),
-			'optional' => array('level' => 0, 'action' => 'edit', 'admin' => false, 'init' => true)
+			'optional' => array('level' => 0, 'action' => 'edit', 'type' => 'general', 'admin' => false, 'init' => true)
 		);
 	}
 	
@@ -43,7 +44,7 @@ class ChainAuthorizeWorkflow implements Service {
 		$masterend = " and `masterkey`=\${keyid})";
 		$chain = "(select `keyid` from `members` where `chainid` in ";
 		$chainend = " and `keyid`=\${keyid})";
-		$child = 'select `parent` from `webs` where `child` in ';
+		$child = "select `parent` from `webs` where `state` <> '0' and `type`='\${type}' and `control` like '%\${action}%' and `child` in ";
 		
 		$query = $memory['init'] ? ($master.$init.$masterend.' or '.$chain.$init.$chainend) : 'false';
 		
