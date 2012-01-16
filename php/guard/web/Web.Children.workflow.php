@@ -38,6 +38,7 @@ class WebChildrenWorkflow implements Service {
 			'relation' => '`webs`',
 			'sqlprj' => '`child`, `parent`, `path`, `leaf`',
 			'sqlcnd' => "where `parent`=\${parent} and `type`='\${type}'",
+			'escparam' => array('type'),
 			'check' => false,
 			'output' => array('result' => 'children')
 		);

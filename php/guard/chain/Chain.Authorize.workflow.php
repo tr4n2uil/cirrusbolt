@@ -42,7 +42,7 @@ class ChainAuthorizeWorkflow implements Service {
 		$init = "(\${chainid})";
 		$master = "(select `masterkey` from `chains` where `chainid` in ";
 		$masterend = " and `masterkey`=\${keyid})";
-		$chain = "(select `keyid` from `members` where `chainid` in ";
+		$chain = "(select `keyid` from `members` where `state` <> '0' and `type`='\${type}' and `control` like '%\${action}%' and `chainid` in ";
 		$chainend = " and `keyid`=\${keyid})";
 		$child = "select `parent` from `webs` where `state` <> '0' and `type`='\${type}' and `control` like '%\${action}%' and `child` in ";
 		
@@ -72,12 +72,12 @@ class ChainAuthorizeWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.relation.unique.workflow',
-			'args' => array('keyid', 'chainid', 'action'),
+			'args' => array('keyid', 'chainid', 'action', 'type'),
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
 			'sqlprj' => $sqlprj,
 			'sqlcnd' => "where `chainid`=\${chainid} and (`authorize` not like '%\${action}%' or $query)",
-			'escparam' => array('action'),
+			'escparam' => array('action', 'type'),
 			'errormsg' => 'Unable to Authorize',
 			'errstatus' => 403
 		));

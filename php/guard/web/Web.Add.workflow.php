@@ -44,7 +44,7 @@ class WebAddWorkflow implements Service {
 			'args' => array('child', 'parent', 'type', 'control', 'state', 'path', 'leaf'),
 			'conn' => 'cbconn',
 			'relation' => '`webs`',
-			'sqlcnd' => "(`child`, `parent`, `type`, `control`, `state`, `path`, `leaf`) values (\${child}, \${parent}, '\${type}', '\${control}', '\${state}', '\${path}', '\${leaf}')",
+			'sqlcnd' => "(`child`, `parent`, `type`, `control`, `state`, `path`, `leaf`, `ctime`) values (\${child}, \${parent}, '\${type}', '\${control}', '\${state}', '\${path}', '\${leaf}', now())",
 			'escparam' => array('type', 'control', 'state', 'path', 'leaf')
 		);
 		

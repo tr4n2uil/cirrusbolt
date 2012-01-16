@@ -12,6 +12,7 @@ require_once(SBSERVICE);
  *	@param user string User email [memory]
  *	@param id long int Parent ID [memory] optional default 0
  *	@param action string Action to authorize [memory] optional default 'list'
+ *	@param escparam array Escape params [memory] optional default array()
  *	@param successmsg string Success message [memory] optional default 'Entity information successfully'
  *	@param pgsz long int Paging Size [memory] optional default false
  *	@param pgno long int Paging Index [memory] optional default 1
@@ -35,7 +36,7 @@ class EntityListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('conn', 'keyid', 'user', 'id', 'relation', 'sqlcnd'),
-			'optional' => array('action' => 'list', 'type' => 'general', 'sqlprj' => '*', 'successmsg' => 'Entities information given successfully', 'pgsz' => false, 'pgno' => 0, 'total' => false)
+			'optional' => array('action' => 'list', 'type' => 'general', 'sqlprj' => '*', 'successmsg' => 'Entities information given successfully', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'escparam' => array())
 		);
 	}
 	

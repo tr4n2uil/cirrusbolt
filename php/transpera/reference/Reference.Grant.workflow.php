@@ -8,6 +8,12 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key ID [memory]
  *	@param id long int Reference ID [memory]
  *	@param childkeyid long int Key ID to be granted [memory]
+ *	@param type string Type name [memory] optional default 'general'
+ *	@param authorize string Parent control [memory] optional default 'edit:add:remove:list'
+ *	@param control string Authorize control value [memory] optional default false='info:'.$authorize true=$authorize
+ *	@param state string State value [memory] optional default 'A'
+ *	@param path string Collation path [memory] optional default '/'
+ *	@param leaf string Collation leaf [memory] optional default 'Child ID'
  *
  *	@return return id long int Chain member ID [memory]
  *
@@ -21,7 +27,8 @@ class ReferenceGrantWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'id', 'childkeyid')
+			'required' => array('keyid', 'id', 'childkeyid'),
+			'optional' => array('type' => 'general', 'authorize' => 'edit:add:remove:list', 'control' => false, 'state' => 'A', 'path' => '/', 'leaf' => false)
 		);
 	}
 	
