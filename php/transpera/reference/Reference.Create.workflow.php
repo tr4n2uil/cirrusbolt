@@ -60,7 +60,7 @@ class ReferenceCreateWorkflow implements Service {
 			'output' => array('id' => 'owner')
 		),
 		array(
-			'service' => 'guard.chain.create.workflow',
+			'service' => 'guard.chain.add.workflow',
 			'input' => array('masterkey' => 'owner')
 		),
 		array(

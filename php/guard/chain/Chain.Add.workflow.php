@@ -3,18 +3,14 @@ require_once(SBSERVICE);
 
 /**
  *	@class ChainAddWorkflow
- *	@desc Adds member key to Chain
+ *	@desc Creates new chain
  *
- *	@param keyid long int Key ID [memory]
- *	@param chainid long int Chain ID [memory]
- *	@param type string Type name [memory] optional default 'general'
- *	@param authorize string Parent control [memory] optional default 'edit:add:remove:list'
- *	@param control string Authorize control value [memory] optional default false='info:'.$authorize true=$authorize
- *	@param state string State value [memory] optional default 'A'
- *	@param path string Collation path [memory] optional default '/'
- *	@param leaf string Collation leaf [memory] optional default 'Child ID'
+ *	@param masterkey long int Key ID [memory]
+ *	@param authorize string Authorize control value [memory] optional default 'edit:add:remove:list'
+ *	@param root string Collation root [memory] optional default '/masterkey'
+ *	@param level integer Web level [memory] optional default 0
  *
- *	@return return id long int Chain member key ID [memory]
+ *	@return return id long int Chain ID [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -26,8 +22,8 @@ class ChainAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'chainid'),
-			'optional' => array('type' => 'general', 'authorize' => 'edit:add:remove:list', 'control' => false, 'state' => 'A', 'path' => '/', 'leaf' => false)
+			'required' => array('masterkey'),
+			'optional' => array('level' => 0, 'root' => false, 'authorize' => 'edit:add:remove:list')
 		);
 	}
 	
@@ -35,17 +31,16 @@ class ChainAddWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = 'Chain member added successfully';
-		$memory['leaf'] = $memory['leaf'] ? $memory['leaf'] : $memory['child'];
-		$memory['control'] = $memory['control'] ? ($memory['control'] === true ? $memory['authorize'] : $memory['control']) : 'info:'.$memory['authorize'];
+		$memory['msg'] = 'Chain added successfully';
+		$memory['root'] = $memory['root'] ? $memory['root'] : '/'.$memory['masterkey'];
 		
 		$service = array(
 			'service' => 'transpera.relation.insert.workflow',
-			'args' => array('chainid', 'keyid', 'type', 'control', 'state', 'path', 'leaf'),
+			'args' => array('masterkey', 'level', 'root', 'authorize'),
 			'conn' => 'cbconn',
-			'relation' => '`members`',
-			'sqlcnd' => "(`chainid`, `keyid`, `type`, `control`, `state`, `path`, `leaf`, `ctime`) values (\${chainid}, \${keyid}, '\${type}', '\${control}', '\${state}', '\${path}', '\${leaf}', now())",
-			'escparam' => array('type', 'control', 'state', 'path', 'leaf')
+			'relation' => '`chains`',
+			'sqlcnd' => "(`masterkey`, `level`, `root`, `authorize`, `ctime`, `rtime`, `wtime`) values (\${masterkey}, \${level}, '\${root}', '\${authorize}', now(), now(), now())",
+			'escparam' => array('root', 'authorize')
 		);
 		
 		return Snowblozm::run($service, $memory);

@@ -51,7 +51,7 @@ class ReferenceAddWorkflow implements Service {
 			'output' => array('level' => $level, 'authorize' => $authorize)
 		),
 		array(
-			'service' => 'guard.chain.create.workflow',
+			'service' => 'guard.chain.add.workflow',
 			'input' => array('masterkey' => 'owner')
 		),
 		array(

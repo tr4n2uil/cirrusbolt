@@ -2,24 +2,24 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ChainControlWorkflow
- *	@desc Edits chain authorize control value
+ *	@class ChainStateWorkflow
+ *	@desc Edits chain state control value
  *
  *	@param chainid long int/string Chain ID(s) [memory]
- *	@param authorize string Control value [memory]
- *	@param miltiple boolean Is multiple [memory] optional default false
+ *	@param state string State value [memory]
+ *	@param multiple boolean Is multiple [memory] optional default false
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ChainControlWorkflow implements Service {
+class ChainStateWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('chainid', 'authorize'),
+			'required' => array('chainid', 'state'),
 			'optional' => array('multiple' => false)
 		);
 	}
@@ -28,18 +28,18 @@ class ChainControlWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = 'Chain control value edited successfully';
+		$memory['msg'] = 'Chain state value edited successfully';
 		$query = $memory['multiple'] ? ' in \${chainid}' : '=\${chainid}';
-		$esc = $memory['multiple'] ? array('authorize', 'chainid') : array('authorize');
+		$esc = $memory['multiple'] ? array('state', 'chainid') : array('state');
 		
 		$service = array(
 			'service' => 'transpera.relation.update.workflow',
-			'args' => array('chainid', 'authorize'),
+			'args' => array('chainid', 'state'),
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
-			'sqlcnd' => "set `authorize`='\${authorize}', `mtime`=now() where `chainid`$query",
+			'sqlcnd' => "set `state`='\${state}', `mtime`=now() where `chainid`$query",
 			'errormsg' => 'Invalid Chain ID',
-			'escparam' => array('authorize')
+			'escparam' => array('state')
 		);
 		
 		return Snowblozm::run($service, $memory);
