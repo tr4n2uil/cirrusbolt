@@ -7,6 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param child long int Chain ID [memory]
  *	@param parent long int Chain ID [memory]
+ *	@param type string Type name [memory] optional default 'general'
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -18,7 +19,8 @@ class WebRemoveWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('child', 'parent')
+			'required' => array('child', 'parent'),
+			'optional' => array('type' => 'general')
 		);
 	}
 	
@@ -30,10 +32,11 @@ class WebRemoveWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.relation.delete.workflow',
-			'args' => array('child', 'parent'),
+			'args' => array('child', 'parent', 'type'),
 			'conn' => 'cbconn',
 			'relation' => '`webs`',
-			'sqlcnd' => "where `child`=\${child} and `parent`=\${parent}",
+			'sqlcnd' => "where `type`='\${type}' and `child`=\${child} and `parent`=\${parent}",
+			'escparam' => array('type'),
 			'errormsg' => 'Invalid Parent Chain ID'
 		);
 		
