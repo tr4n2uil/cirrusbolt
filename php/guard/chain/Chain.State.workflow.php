@@ -6,7 +6,7 @@ require_once(SBSERVICE);
  *	@desc Edits chain state control value
  *
  *	@param chainid long int/string Chain ID(s) [memory]
- *	@param state string State value [memory]
+ *	@param state string State value [memory] optional default '0'
  *	@param multiple boolean Is multiple [memory] optional default false
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -19,8 +19,8 @@ class ChainStateWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('chainid', 'state'),
-			'optional' => array('multiple' => false)
+			'required' => array('chainid'),
+			'optional' => array('multiple' => false, 'state' => '0')
 		);
 	}
 	
@@ -39,7 +39,7 @@ class ChainStateWorkflow implements Service {
 			'relation' => '`chains`',
 			'sqlcnd' => "set `state`='\${state}', `mtime`=now() where `chainid`$query",
 			'errormsg' => 'Invalid Chain ID',
-			'escparam' => array('state')
+			'escparam' => $esc
 		);
 		
 		return Snowblozm::run($service, $memory);

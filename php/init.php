@@ -61,6 +61,11 @@
 		'location' => 'local'
 	));
 	
+	Snowblozm::add('store', array(
+		'root' => CBROOT.'store/',
+		'location' => 'local'
+	));
+	
 	Snowblozm::add('transpera', array(
 		'root' => CBROOT.'transpera/',
 		'location' => 'local'

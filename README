@@ -6,17 +6,20 @@ Vibhaj Rajan <vibhaj8@gmail.com>
 Components
 	Core : Core Services
 	Cypher : Security [Application Layer Security]
-	Echo : Replication & Consistency [Neighborhood Replicated Partitioning]
 	Gauge : Tracking [Universal Tracking Parameters]
-	Guard : Access Control [Key-Chain-Web Mechanism]
-	Handle : Collation [Virtual Directory Nomenclature]
-	Harmony : Load Balancing [Distributed Resource Identification]
+	Guard : Access Control [Key-Chain-Web (KCW+) Mechanism]
 	Invoke : Transport & Execution [Block Scale Transport Protocol]
-	Journal : Concurrency & Fault Tolerance [Out of Phase Synchronization]
-	Pool : Caching [Dynamic Temporal Caching]
 	RDBMS : Database Management
 	System : Interfaces & Implementations
-	Transpera : Reference, Relation & Entity [Extensible Object Reference Architecture]
+	Store : Data Storage & Organization
+	Transpera : Reference, Relation & Entity [Extensible Contained Object Reference Element (XCORE) Architecture]
+	
+Planned
+	Echo : Replication & Consistency [Neighborhood Replicated Partitioning]
+	Handle : Collation [Virtual Directory Nomenclature]
+	Harmony : Load Balancing [Distributed Resource Identification]
+	Journal : Concurrency & Fault Tolerance [Out of Phase Synchronization]
+	Pool : Caching [Dynamic Temporal Caching]
 
 Acknowledgments
 	SnowBlozm <https://github.com/tr4n2uil/snowblozm>

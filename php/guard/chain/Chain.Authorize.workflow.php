@@ -8,7 +8,10 @@ require_once(SBSERVICE);
  *	@param chainid long int Chain ID [memory]
  *	@param keyid long int Key ID [memory]
  *	@param level integer Web level [memory] optional default 0
- *	@param action string Action to authorize [memory] optional default 'edit'
+ *	@param action string Action to authorize member [memory] optional default 'edit'
+ *	@param state string State to authorize member [memory] optional default false (true= Not '0')
+ *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
+ *	@param istate string State to authorize inherit [memory] optional default false (true= Not '0')
  *	@param init boolean init flag [memory] optional default true
  *	@param admin boolean Is return admin flag [memory] optional default false
  *
@@ -26,7 +29,7 @@ class ChainAuthorizeWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'chainid'),
-			'optional' => array('level' => 0, 'action' => 'edit', 'transfer' => 'W', 'admin' => false, 'init' => true)
+			'optional' => array('level' => 0, 'action' => 'edit', 'iaction' => 'edit', 'state' => false, 'istate' => false, 'admin' => false, 'init' => true)
 		);
 	}
 	
@@ -34,22 +37,40 @@ class ChainAuthorizeWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$sqlprj = $memory['admin'] ? 'count(`chainid`) as `admin`' : '`chainid`';
-		
 		$next = $level = $memory['level'];
 		
-		$init = "(\${chainid})";
-		$master = "(select `masterkey` from `chains` where `chainid` in ";
-		$masterend = " and `masterkey`=\${keyid})";
-		$chain = "(select `keyid` from `members` where `state` <> '0' and `type`='\${type}' and `chainid` in ";
-		$chainend = " and `keyid`=\${keyid} and `control` like '%\${action}%' )";
-		$child = "select `parent` from `webs` where `state` <> '0' and `type`='\${type}' and `control` like '%\${action}%' and `child` in ";
+		$last = '';
+		$args = array('keyid', 'chainid', 'action', 'iaction');
+		$escparam = array('action', 'iaction');
+		if($memory['state'] === true){
+			$last = " and `state`<>'0' ";
+		}
+		else if($memory['state']){
+			$last = " and `state`='\${state}' ";
+			array_push($escparam, 'state');
+			array_push($args, 'state');
+		}		
 		
-		$query = $memory['init'] ? ($master.$init.$masterend.' or '.$chain.$init.$chainend) : 'false';
+		$ilast = '';
+		if($memory['istate'] === true){
+			$ilast = " and `state`<>'0' ";
+		}
+		else if($memory['istate']){
+			$ilast = " and `state`='\${istate}' ";
+			array_push($escparam, 'istate');
+			array_push($args, 'istate');
+		}
+		
+		$query = $memory['init'] ? "(select `chainid` from `members` where `chainid`=\${chainid} and `keyid`=\${keyid} and `control` like '%\${action}%' $last)" : 'false';
+		
+		$init = "(\${chainid})";
+		$chain = "(select `chainid` from `members` where `chainid` in ";
+		$chainend = " and `keyid`=\${keyid} and `control` like '%\${iaction}%' $ilast)";
+		$child = "select `parent` from `webs` where `control` like '%\${iaction}%' $ilast and `child` in ";
 		
 		while($level--){
 			$init = '('.$child.$init.')';
-			$query = $query.' or '.$master.$init.$masterend.' or '.$chain.$init.$chainend;
+			$query = $query.' or '.$chain.$init.$chainend;
 		}
 		
 		/*$join = '`chainid` in ';
@@ -68,28 +89,28 @@ class ChainAuthorizeWorkflow implements Service {
 		$memory['msg'] = 'Key authorized successfully';
 		$memory['level'] = $next + 1;
 		
-		$workflow = array(
-		array(
+		$service = array(
 			'service' => 'transpera.relation.unique.workflow',
-			'args' => array('keyid', 'chainid', 'action', 'type'),
+			'args' => $args,
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
-			'sqlprj' => $sqlprj,
+			'sqlprj' => '`chainid`',
 			'sqlcnd' => "where `chainid`=\${chainid} and (`authorize` not like '%\${action}%' or $query)",
-			'escparam' => array('action', 'type'),
+			'escparam' => $escparam,
 			'errormsg' => 'Unable to Authorize',
 			'errstatus' => 403
-		));
+		);
 		
-		if($memory['admin']){
-			array_push($workflow, array(
-				'service' => 'cbcore.data.select.service',
-				'args' => array('result'),
-				'params' => array('result.0.admin' => 'admin')
-			));
+		$memory = Snowblozm::run($service, $memory);
+		if($memory['admin'] && !$memory['valid']){
+			$memory['admin'] = false;
+			$memory['valid'] = true;
+			$memory['msg'] = 'Successfully Executed';
+			$memory['status'] = 200;
+			$memory['details'] = 'Successfully executed';
 		}
 		
-		return Snowblozm::execute($workflow, $memory);
+		return $memory;
 	}
 	
 	/**

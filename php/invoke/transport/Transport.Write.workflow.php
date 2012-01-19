@@ -38,9 +38,9 @@ class TransportWriteWorkflow implements Service {
 	**/
 	public function run($memory){
 		if($memory['keyid'] === false)
-			$args = array('valid', 'msg', 'status', 'details', 'message', 'hash');
+			$args = array('message', 'hash');
 		else
-			$args = array('user', 'challenge', 'message', 'hash', 'valid', 'msg', 'status', 'details');
+			$args = array('user', 'challenge', 'message', 'hash');
 		
 		$workflow = array(
 		array(

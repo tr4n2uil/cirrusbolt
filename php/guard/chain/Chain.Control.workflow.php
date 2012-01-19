@@ -7,7 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param chainid long int/string Chain ID(s) [memory]
  *	@param authorize string Control value [memory]
- *	@param miltiple boolean Is multiple [memory] optional default false
+ *	@param multiple boolean Is multiple [memory] optional default false
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *

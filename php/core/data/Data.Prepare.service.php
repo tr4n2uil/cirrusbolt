@@ -27,6 +27,7 @@ class DataPrepareService implements Service {
 		if(isset($result['service'])) unset($result['service']);
 		if(isset($result['args'])) unset($result['args']);
 		if(isset($result['strict'])) unset($result['strict']);
+		if(!$memory['valid']) $result['message'] = array();
 		
 		$memory['result'] = $result;
 		$memory['valid'] = true;

@@ -51,11 +51,7 @@ class LaunchWorkflowWorkflow implements Service {
 		array(
 			'service' => 'cbcore.data.prepare.service',
 			'args' => array('valid', 'msg', 'status', 'details', 'message'),
-			'strict' => false,
-			'valid' => $memory['valid'],
-			'msg' => $memory['msg'],
-			'status' => $memory['status'],
-			'details' => $memory['details']
+			'strict' => false
 		),
 		array(
 			'service' => 'cbcore.data.encode.service',

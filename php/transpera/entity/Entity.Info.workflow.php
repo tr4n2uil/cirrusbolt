@@ -72,6 +72,7 @@ class EntityInfoWorkflow implements Service {
 		array(
 			'service' => 'transpera.reference.authorize.workflow',
 			//'input' => array('id' => 'parent'), ?
+			'authorize' => 'edit', 
 			'admin' => true
 		));
 		

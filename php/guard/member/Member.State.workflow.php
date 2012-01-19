@@ -7,7 +7,6 @@ require_once(SBSERVICE);
  *
  	@param keyid long int Key ID [memory]
  *	@param chainid long int Chain ID [memory]
- *	@param type string Type name [memory] optional default 'general'
  *	@param state string State value [memory] optional default '0'
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -21,7 +20,7 @@ class MemberStateWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'chainid'),
-			'optional' => array('type' => 'general', 'state' => '0')
+			'optional' => array('state' => '0')
 		);
 	}
 	
@@ -33,12 +32,12 @@ class MemberStateWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.relation.update.workflow',
-			'args' => array('keyid', 'chainid', 'state', 'type'),
+			'args' => array('keyid', 'chainid', 'state'),
 			'conn' => 'cbconn',
 			'relation' => '`members`',
-			'sqlcnd' => "set `state`='\${state}' where `type`='\${type}' and `chainid`=\${chainid} and `keyid`=\${keyid}",
+			'sqlcnd' => "set `state`='\${state}' where `chainid`=\${chainid} and `keyid`=\${keyid}",
 			'errormsg' => 'Invalid Member ID',
-			'escparam' => array('state', 'type')
+			'escparam' => array('state')
 		);
 		
 		return Snowblozm::run($service, $memory);

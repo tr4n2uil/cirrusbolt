@@ -10,6 +10,7 @@ require_once(SBSERVICE);
  *	@return masterkey long int Master key ID [memory]
  *	@return level integer Level [memory]
  *	@return authorize string Authorization Control [memory]
+ *	@return state string State [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -37,14 +38,14 @@ class ChainInfoWorkflow implements Service {
 			'args' => array('chainid'),
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
-			'sqlprj' => '`masterkey`, `level`, `authorize`',
+			'sqlprj' => '`masterkey`, `level`, `authorize`, `state`',
 			'sqlcnd' => "where `chainid`=\${chainid}",
 			'errormsg' => 'Invalid Chain ID'
 		),
 		array(
 			'service' => 'cbcore.data.select.service',
 			'args' => array('result'),
-			'params' => array('result.0.masterkey' => 'masterkey', 'result.0.level' => 'level', 'result.0.authorize' => 'authorize')
+			'params' => array('result.0.masterkey' => 'masterkey', 'result.0.level' => 'level', 'result.0.authorize' => 'authorize', 'result.0.state' => 'state')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);
@@ -54,7 +55,7 @@ class ChainInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('masterkey', 'level', 'authorize');
+		return array('masterkey', 'level', 'authorize', 'state');
 	}
 	
 }

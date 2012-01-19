@@ -8,7 +8,9 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key ID [memory]
  *	@param id long int Reference ID [memory]
  *	@param action string Action to authorize [memory] optional default 'edit'
- 	@param type string Type name [memory] optional default 'general'
+ *	@param state string State to authorize member [memory] optional default false (true= Not '0')
+ *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
+ *	@param istate string State to authorize inherit [memory] optional default false (true= Not '0')
  *	@param init boolean init flag [memory] optional default true
  *	@param admin boolean Is return admin flag [memory] optional default false
  *
@@ -16,6 +18,7 @@ require_once(SBSERVICE);
  *	@return admin boolean Is admin [memory]
  *	@return level integer Level [memory]
  *	@return authorize string Authorization Control [memory]
+ *	@return state string State [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -28,7 +31,7 @@ class ReferenceAuthorizeWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'id'),
-			'optional' => array('action' => 'edit', 'admin' => false, 'init' => true, 'type' => 'general')
+			'optional' => array('action' => 'edit', 'state' => false, 'iaction' => 'edit', 'istate' => false, 'admin' => false, 'init' => true)
 		);
 	}
 	
@@ -64,7 +67,7 @@ class ReferenceAuthorizeWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('masterkey', 'admin', 'level', 'authorize');
+		return array('masterkey', 'admin', 'level', 'authorize', 'state');
 	}
 	
 }

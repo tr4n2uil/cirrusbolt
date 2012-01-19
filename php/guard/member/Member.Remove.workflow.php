@@ -7,7 +7,6 @@ require_once(SBSERVICE);
  *
  *	@param keyid long int Key ID [memory]
  *	@param chainid long int Chain ID [memory]
- *	@param type string Type name [memory] optional default 'general'
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -19,8 +18,7 @@ class MemberRemoveWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'chainid'),
-			'optional' => array('type' => 'general')
+			'required' => array('keyid', 'chainid')
 		);
 	}
 
@@ -32,11 +30,10 @@ class MemberRemoveWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.relation.delete.workflow',
-			'args' => array('keyid', 'chainid', 'type'),
+			'args' => array('keyid', 'chainid'),
 			'conn' => 'cbconn',
 			'relation' => '`members`',
-			'sqlcnd' => "where `type`='\${type}' and `keyid`=\${keyid} and `chainid`=\${chainid}",
-			'escparam' => array('type'),
+			'sqlcnd' => "where `chainid`=\${chainid} and `keyid`=\${keyid}",
 			'errormsg' => 'Invalid Member ID'
 		);
 		
