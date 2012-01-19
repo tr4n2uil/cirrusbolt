@@ -35,7 +35,7 @@ class ReferenceRevokeWorkflow implements Service {
 			'action' => 'edit'
 		),
 		array(
-			'service' => 'guard.chain.remove.workflow',
+			'service' => 'guard.member.remove.workflow',
 			'input' => array('chainid' => 'id', 'keyid' => 'childkeyid')
 		));
 		

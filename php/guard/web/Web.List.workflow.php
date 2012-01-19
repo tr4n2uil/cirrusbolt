@@ -2,11 +2,13 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ChainListWorkflow
- *	@desc Returns chain IDs in chain for member key ID in type
+ *	@class WebListWorkflow
+ *	@desc Returns chain IDs in web for member key ID
  *
  *	@param keyid long int Key ID [memory]
+ *	@param parent long int Parent Chain ID [memory]
  *	@param state string State [memory] optional default false (true= Not '0')
+ *	@param istate string State Inherit [memory] optional default false (true= Not '0')
  *	@param type string Type name [memory] optional default 'general'
  *	@param pgsz long int Paging Size [memory] optional default false
  *	@param pgno long int Paging Index [memory] optional default 1
@@ -18,15 +20,15 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class MemberAccessWorkflow implements Service {
+class WebListWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid'),
-			'optional' => array('type' => 'general', 'state' => false, 'pgsz' => false, 'pgno' => 0, 'total' => false)
+			'required' => array('keyid', 'parent'),
+			'optional' => array('type' => 'general', 'state' => false, 'istate' => false, 'pgsz' => false, 'pgno' => 0, 'total' => false)
 		);
 	}
 	
@@ -34,22 +36,30 @@ class MemberAccessWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = 'Access chains returned successfully';
-		$last = '';
+		$memory['msg'] = 'Web chains returned successfully';
+		$last = $ilast '';
+		$args = array('keyid', 'parent', 'type', 'state');
 		$escparam = array('type');
 		
 		if($memory['state']){
 			$last = " and `state`='\${state}' ";
+			array_push($args, 'state');
 			array_push($escparam, 'state');
+		}
+		
+		if($memory['istate']){
+			$ilast = " and `state`='\${istate}' ";
+			array_push($args, 'istate');
+			array_push($escparam, 'istate');
 		}
 		
 		$service = array(
 			'service' => 'transpera.relation.select.workflow',
-			'args' => array('keyid', 'type', 'state'),
+			'args' => $args,
 			'conn' => 'cbconn',
-			'relation' => '`members`',
-			'sqlprj' => '`chainid`',
-			'sqlcnd' => "where `type`='\${type}' and `keyid`=\${keyid} $last",
+			'relation' => '`webs`',
+			'sqlprj' => "case `inherit` when 1 then `child` when 0 then (select `chainid` from `members` where `chainid`=`child` and `keyid`=\${keyid} $last) end",
+			'sqlcnd' => "where `type`='\${type}' and `parent`=\${parent} $ilast)",
 			'escparam' => $escparam,
 			'errormsg' => 'No Access'
 		);

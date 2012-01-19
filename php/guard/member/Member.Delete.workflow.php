@@ -2,7 +2,7 @@
 require_once(SBSERVICE);
 
 /**
- *	@class MemberRemoveWorkflow
+ *	@class MemberDeleteWorkflow
  *	@desc Removes member key from chain
  *
  *	@param keyid long int Key ID [memory]
@@ -11,7 +11,7 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class MemberRemoveWorkflow implements Service {
+class MemberDeleteWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
@@ -26,15 +26,15 @@ class MemberRemoveWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = 'Member removed successfully';
+		$memory['msg'] = 'Members removed successfully';
 		
 		$service = array(
 			'service' => 'transpera.relation.delete.workflow',
 			'args' => array('keyid', 'chainid'),
 			'conn' => 'cbconn',
 			'relation' => '`members`',
-			'sqlcnd' => "where `chainid`=\${chainid} and `keyid`=\${keyid}",
-			'errormsg' => 'Invalid Member'
+			'sqlcnd' => "where `chainid`=\${chainid}",
+			'errormsg' => 'Invalid Chain ID'
 		);
 		
 		return Snowblozm::run($service, $memory);

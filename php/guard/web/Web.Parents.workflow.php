@@ -7,6 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param child long int Chain ID [memory]
  *	@param type string Type name [memory] optional default 'general'
+ *	@param state string State [memory] optional default false (true= Not '0')
  *	@param pgsz long int Paging Size [memory] optional default false
  *	@param pgno long int Paging Index [memory] optional default 1
  *	@param total long int Paging Total [memory] optional default false
@@ -25,7 +26,7 @@ class WebParentsWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('child'),
-			'optional' => array('type' => 'general', 'pgsz' => false, 'pgno' => 0, 'total' => false)
+			'optional' => array('type' => 'general', 'state' => false, 'pgsz' => false, 'pgno' => 0, 'total' => false)
 		);
 	}
 	
@@ -35,13 +36,26 @@ class WebParentsWorkflow implements Service {
 	public function run($memory){
 		$memory['msg'] = 'Web parents listed successfully';
 		
+		$last = '';
+		$args = array('child', 'type');
+		$escparam =array('type');
+		
+		if($memory['state'] === true){
+			$last = " and `state`<>'0' ";
+		}
+		else if($memory['state']){
+			$last = " and `state`='\${state}' ";
+			array_push($escparam, 'state');
+			array_push($args, 'state');
+		}	
+		
 		$service = array(
 			'service' => 'transpera.relation.select.workflow',
-			'args' => array('child', 'type'),
+			'args' => $args,
 			'conn' => 'cbconn',
 			'relation' => '`webs`',
-			'sqlcnd' => "where `type`='\${type}' and `child`=\${child}",
-			'escparam' => array('type'),
+			'sqlcnd' => "where `type`='\${type}' and `child`=\${child} $last",
+			'escparam' => $escparam,
 			'output' => array('result' => 'parents')
 		);
 		

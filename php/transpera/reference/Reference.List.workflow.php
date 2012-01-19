@@ -2,24 +2,26 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ReferenceParentsWorkflow
- *	@desc Manages parents listing of existing reference 
+ *	@class ReferenceListWorkflow
+ *	@desc Manages reference listing for existing key and of specific type
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param id long int Reference ID [memory]
  *	@param type string Type name [memory] optional default 'general'
  *	@param state string State [memory] optional default false (true= Not '0')
+ *	@param istate string State Inherit [memory] optional default false (true= Not '0')
  *	@param pgsz long int Paging Size [memory] optional default false
  *	@param pgno long int Paging Index [memory] optional default 1
  *	@param total long int Paging Total [memory] optional default false
  *
- *	@return parents array Chain parents information [memory]
+ *	@return children array Chain reference information [memory]
+ *	@return level integer Parent Authorization Level [memory]
  *	@return total long int Paging total [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ReferenceParentsWorkflow implements Service {
+class ReferenceListWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
@@ -27,7 +29,7 @@ class ReferenceParentsWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'id'),
-			'optional' => array('type' => 'general', 'state' => true, 'pgsz' => false, 'pgno' => 0, 'total' => false)
+			'optional' => array('type' => 'general', 'state' => true, 'istate' => true, 'pgsz' => false, 'pgno' => 0, 'total' => false)
 		);
 	}
 	
@@ -35,7 +37,7 @@ class ReferenceParentsWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = 'Reference parents listed successfully';
+		$memory['msg'] = 'Reference access listed successfully';
 		
 		$workflow = array(
 		array(
@@ -43,8 +45,8 @@ class ReferenceParentsWorkflow implements Service {
 			'action' => 'list'
 		),
 		array(
-			'service' => 'guard.web.parents.workflow',
-			'input' => array('child' => 'id')
+			'service' => 'guard.web.list.workflow',
+			'input' => array('parent' => 'id')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);
@@ -54,7 +56,7 @@ class ReferenceParentsWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('parents', 'total');
+		return array('children', 'level', 'total');
 	}
 	
 }

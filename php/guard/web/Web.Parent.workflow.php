@@ -7,6 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param child long int Chain ID [memory]
  *	@param type string Type name [memory] optional default 'general'
+ *	@param state string State [memory] optional default false (true= Not '0')
  *
  *	@return web array Web member information [memory]
  *	@return parent long int Chain ID [memory]
@@ -22,7 +23,7 @@ class WebParentWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('child'),
-			'optional' => array('type' => 'general')
+			'optional' => array('type' => 'general', 'state' => false)
 		);
 	}
 	
@@ -32,14 +33,27 @@ class WebParentWorkflow implements Service {
 	public function run($memory){
 		$memory['msg'] = 'Web parent given successfully';
 		
+		$last = '';
+		$args = array('child', 'type');
+		$escparam = array('type');
+		
+		if($memory['state'] === true){
+			$last = " and `state`<>'0' ";
+		}
+		else if($memory['state']){
+			$last = " and `state`='\${state}' ";
+			array_push($escparam, 'state');
+			array_push($args, 'state');
+		}	
+		
 		$workflow = array(
 		array(
 			'service' => 'transpera.relation.unique.workflow',
-			'args' => array('child', 'type'),
+			'args' => $args,
 			'conn' => 'cbconn',
 			'relation' => '`webs`',
-			'sqlcnd' => "where `type`='\${type}' and `child`=\${child}",
-			'escparam' => array('type'),
+			'sqlcnd' => "where `type`='\${type}' and `child`=\${child} $last",
+			'escparam' => $escparam,
 			'errormsg' => 'Unable to find unique parent'
 		),
 		array(

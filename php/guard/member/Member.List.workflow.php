@@ -36,18 +36,21 @@ class MemberListWorkflow implements Service {
 		$memory['msg'] = 'Member keys returned successfully';
 		
 		$last = '';
+		$args = array('chainid');
 		$escparam = array();
+		
 		if($memory['state'] === true){
 			$last = " and `state`<>'0' ";
 		}
 		else if($memory['state']){
 			$last = " and `state`='\${state}' ";
-			$escparam = array('state');
-		}
+			array_push($escparam, 'state');
+			array_push($args, 'state');
+		}	
 		
 		$service = array(
 			'service' => 'transpera.relation.select.workflow',
-			'args' => array('chainid', 'state'),
+			'args' => $args,
 			'conn' => 'cbconn',
 			'relation' => '`members`',
 			'sqlprj' => '`keyid`',

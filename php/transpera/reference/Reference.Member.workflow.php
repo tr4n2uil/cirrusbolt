@@ -2,25 +2,31 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ReferenceChainWorkflow
- *	@desc Manages chain member listing of existing reference 
+ *	@class ReferenceMemberWorkflow
+ *	@desc Manages member listing of existing reference 
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param id long int Reference ID [memory]
+ *	@param state string State [memory] optional default false (true= Not '0')
+ *	@param pgsz long int Paging Size [memory] optional default false
+ *	@param pgno long int Paging Index [memory] optional default 1
+ *	@param total long int Paging Total [memory] optional default false
  *
- *	@return chain array Chain member information [memory]
+ *	@return members array Members information [memory]
+ *	@return total long int Paging total [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ReferenceChainWorkflow implements Service {
+class ReferenceMemberWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'id')
+			'required' => array('keyid', 'id'),
+			'optional' => array('state' => false, 'pgsz' => false, 'pgno' => 0, 'total' => false)
 		);
 	}
 	
@@ -38,7 +44,7 @@ class ReferenceChainWorkflow implements Service {
 		array(
 			'service' => 'guard.chain.member.workflow',
 			'input' => array('chainid' => 'id'),
-			'output' => array('result' => 'chain')
+			'output' => array('result' => 'members')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);
@@ -48,7 +54,7 @@ class ReferenceChainWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('chain');
+		return array('members', 'total');
 	}
 	
 }

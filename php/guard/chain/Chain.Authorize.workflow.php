@@ -39,9 +39,10 @@ class ChainAuthorizeWorkflow implements Service {
 	public function run($memory){
 		$next = $level = $memory['level'];
 		
-		$last = '';
+		$last = $ilast = '';
 		$args = array('keyid', 'chainid', 'action', 'iaction');
 		$escparam = array('action', 'iaction');
+
 		if($memory['state'] === true){
 			$last = " and `state`<>'0' ";
 		}
@@ -51,7 +52,6 @@ class ChainAuthorizeWorkflow implements Service {
 			array_push($args, 'state');
 		}		
 		
-		$ilast = '';
 		if($memory['istate'] === true){
 			$ilast = " and `state`<>'0' ";
 		}
@@ -66,7 +66,7 @@ class ChainAuthorizeWorkflow implements Service {
 		$init = "(\${chainid})";
 		$chain = "(select `chainid` from `members` where `chainid` in ";
 		$chainend = " and `keyid`=\${keyid} and `control` like '%\${iaction}%' $ilast)";
-		$child = "select `parent` from `webs` where `control` like '%\${iaction}%' $ilast and `child` in ";
+		$child = "select `parent` from `webs` where `inherit` and `control` like '%\${iaction}%' $ilast and `child` in ";
 		
 		while($level--){
 			$init = '('.$child.$init.')';
@@ -95,7 +95,7 @@ class ChainAuthorizeWorkflow implements Service {
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
 			'sqlprj' => '`chainid`',
-			'sqlcnd' => "where `chainid`=\${chainid} and (`authorize` not like '%\${action}%' or $query)",
+			'sqlcnd' => "where `chainid`=\${chainid} and (`masterkey`=\${keyid} or `authorize` not like '%\${action}%' or $query)",
 			'escparam' => $escparam,
 			'errormsg' => 'Unable to Authorize',
 			'errstatus' => 403

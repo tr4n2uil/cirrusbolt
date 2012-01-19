@@ -44,7 +44,7 @@ class ReferenceGrantWorkflow implements Service {
 			'action' => 'edit'
 		),
 		array(
-			'service' => 'guard.chain.add.workflow',
+			'service' => 'guard.member.add.workflow',
 			'input' => array('chainid' => 'id', 'keyid' => 'childkeyid')
 		));
 		

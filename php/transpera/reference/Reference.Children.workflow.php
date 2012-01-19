@@ -8,6 +8,7 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key ID [memory]
  *	@param id long int Reference ID [memory]
  *	@param type string Type name [memory] optional default 'general'
+ *	@param state string State [memory] optional default false (true= Not '0')
  *	@param pgsz long int Paging Size [memory] optional default false
  *	@param pgno long int Paging Index [memory] optional default 1
  *	@param total long int Paging Total [memory] optional default false
@@ -27,7 +28,7 @@ class ReferenceChildrenWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'id'),
-			'optional' => array('type' => 'general', 'pgsz' => false, 'pgno' => 0, 'total' => false)
+			'optional' => array('type' => 'general', 'state' => true, 'pgsz' => false, 'pgno' => 0, 'total' => false)
 		);
 	}
 	

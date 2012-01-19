@@ -8,7 +8,7 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key ID [memory]
  *	@param id long int Reference ID [memory]
  *	@param state string State value [memory]
- *	@param miltiple boolean Is multiple [memory] optional default false
+ *	@param multiple boolean Is multiple [memory] optional default false
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
