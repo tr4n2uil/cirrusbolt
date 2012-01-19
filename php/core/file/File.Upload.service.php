@@ -86,7 +86,7 @@ class FileUploadService implements Service {
 			$memory['valid'] = false;
 			$memory['msg'] = "Internal Error";
 			$memory['status'] = 503;
-			$memory['details'] = 'Error moving file : '.$file['tmp_name'].' @file.upload.service';
+			$memory['details'] = 'Error moving file : '.$file['tmp_name'].' @file.upload.service'.json_encode($memory);
 			return $memory;
 		}
 		

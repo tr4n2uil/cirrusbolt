@@ -36,7 +36,16 @@ class EntityListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('conn', 'keyid', 'user', 'id', 'relation', 'sqlcnd'),
-			'optional' => array('action' => 'list', 'type' => 'general', 'sqlprj' => '*', 'successmsg' => 'Entities information given successfully', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'escparam' => array())
+			'optional' => array(
+				'action' => 'list', 
+				'type' => 'general', 
+				'sqlprj' => '*', 
+				'successmsg' => 'Entities information given successfully', 
+				'pgsz' => false, 
+				'pgno' => 0, 
+				'total' => false, 
+				'escparam' => array()
+			)
 		);
 	}
 	

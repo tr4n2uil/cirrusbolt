@@ -7,6 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param id long int Reference ID [memory]
+ *	@param type string Type name [memory] optional default 'general'
  *
  *	@return web array Web member information [memory]
  *	@return parent long int Chain ID [memory]
@@ -21,7 +22,8 @@ class ReferenceParentWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'id')
+			'required' => array('keyid', 'id'),
+			'optional' => array('type' => 'general')
 		);
 	}
 	

@@ -5,7 +5,7 @@ require_once(SBSERVICE);
  *	@class ReferenceAddWorkflow
  *	@desc Manages addition of new reference 
  *
- *	@param keyid long int Usage Key ID [memory]
+ *	@param keyid long int Usage Key ID [memory] optional default false
  *	@param parent long int Reference ID [memory]
  *	@param level integer Web level [memory] optional default (inherit)
  *	@param owner long int Owner Key ID [memory] optional default keyid

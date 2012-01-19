@@ -19,7 +19,7 @@ require_once(SBSERVICE);
  *	@param conn array DataService instance configuration key [memory]
  *
  *	@return result array Resultset [memory] 
- *	@result total long int Paging total [memory]
+ *	@return total long int Paging total [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *

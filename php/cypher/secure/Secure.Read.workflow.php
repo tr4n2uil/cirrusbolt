@@ -43,7 +43,7 @@ class SecureReadWorkflow implements Service {
 			'service' => 'cbcore.data.select.service',
 			'args' => array('data'),
 			'opt' => true,
-			'params' => array('data.message' => 'data', 'data.hash' => 'value', 'data.user' => 'user', 'data.challenge' => 'challenge')
+			'params' => array('data.hash' => 'value', 'data.user' => 'user', 'data.challenge' => 'challenge', 'data.message' => 'data')
 		));
 		
 		if($memory['hash'] != 'none'){

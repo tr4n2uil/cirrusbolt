@@ -18,7 +18,7 @@ class KeyVerifyWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('key', 'context')
+			'required' => array('keyid', 'context')
 		);
 	}
 	
@@ -30,10 +30,10 @@ class KeyVerifyWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.relation.update.workflow',
-			'args' => array('key', 'keyid'),
+			'args' => array('context', 'keyid'),
 			'conn' => 'cbconn',
 			'relation' => '`keys`',
-			'sqlcnd' => "set `context`=concat(`context`, ':\${context}')) where `keyid`=\${keyid}",
+			'sqlcnd' => "set `context`=concat(`context`, ':\${context}') where `keyid`=\${keyid}",
 			'escparam' => array('context'),
 			'errormsg' => 'Invalid Key ID'
 		);

@@ -6,6 +6,7 @@ require_once(SBSERVICE);
  *	@desc Returns unique parent chain of child in the web
  *
  *	@param child long int Chain ID [memory]
+ *	@param type string Type name [memory] optional default 'general'
  *
  *	@return web array Web member information [memory]
  *	@return parent long int Chain ID [memory]
@@ -20,7 +21,8 @@ class WebParentWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('child')
+			'required' => array('child'),
+			'optional' => array('type' => 'general')
 		);
 	}
 	
@@ -33,10 +35,11 @@ class WebParentWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.relation.unique.workflow',
-			'args' => array('child'),
+			'args' => array('child', 'type'),
 			'conn' => 'cbconn',
 			'relation' => '`webs`',
-			'sqlcnd' => "where `child`=\${child}",
+			'sqlcnd' => "where `type`='\${type}' and `child`=\${child}",
+			'escparam' => array('type'),
 			'errormsg' => 'Unable to find unique parent'
 		),
 		array(

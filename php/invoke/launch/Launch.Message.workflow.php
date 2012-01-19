@@ -27,7 +27,7 @@ class LaunchMessageWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('reqtype', 'restype', 'crypt' , 'hash'),
-			'optional' => array('access' => array(), 'email' => false, 'context' => false, 'interface' => 'encode', 'raw' => false)
+			'optional' => array('access' => array(), 'email' => false, 'context' => false, 'raw' => false)
 		);
 	}
 	
@@ -44,8 +44,11 @@ class LaunchMessageWorkflow implements Service {
 			'input' => array('type' => 'reqtype')
 		),
 		array(
-			'service' => 'invoke.launch.message.service',
+			'service' => 'invoke.launch.check.service',
 			'input' => array('message' => 'result')
+		),
+		array(
+			'service' => 'invoke.launch.message.service'
 		),
 		array(
 			'service' => 'invoke.transport.write.workflow',

@@ -7,8 +7,12 @@ require_once(SBSERVICE);
  *
  *	@param parent long int Chain ID [memory]
  *	@param type string Type name [memory] optional default 'general'
+ *	@param pgsz long int Paging Size [memory] optional default false
+ *	@param pgno long int Paging Index [memory] optional default 1
+ *	@param total long int Paging Total [memory] optional default false
  *
  *	@return children array Children IDs [memory]
+ *	@return total long int Paging total [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -21,7 +25,7 @@ class WebChildrenWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('parent'),
-			'optional' => array('type' => 'general')
+			'optional' => array('type' => 'general', 'pgsz' => false, 'pgno' => 0, 'total' => false)
 		);
 	}
 	
@@ -50,7 +54,7 @@ class WebChildrenWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('children');
+		return array('children', 'total');
 	}
 	
 }

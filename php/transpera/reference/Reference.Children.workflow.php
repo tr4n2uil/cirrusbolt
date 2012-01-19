@@ -8,9 +8,13 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key ID [memory]
  *	@param id long int Reference ID [memory]
  *	@param type string Type name [memory] optional default 'general'
+ *	@param pgsz long int Paging Size [memory] optional default false
+ *	@param pgno long int Paging Index [memory] optional default 1
+ *	@param total long int Paging Total [memory] optional default false
  *
  *	@return children array Chain children information [memory]
  *	@return level integer Parent Authorization Level [memory]
+ *	@return total long int Paging total [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -23,7 +27,7 @@ class ReferenceChildrenWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'id'),
-			'optional' => array('type' => 'general')
+			'optional' => array('type' => 'general', 'pgsz' => false, 'pgno' => 0, 'total' => false)
 		);
 	}
 	
@@ -50,7 +54,7 @@ class ReferenceChildrenWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('children', 'level');
+		return array('children', 'level', 'total');
 	}
 	
 }

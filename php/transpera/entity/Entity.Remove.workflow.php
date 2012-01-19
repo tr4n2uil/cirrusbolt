@@ -12,6 +12,7 @@ require_once(SBSERVICE);
  *	@param user string User email [memory]
  *	@param parent long int Parent ID [memory] optional default 0
  *	@param pname long int Parent name [memory] optional default ''
+ *	@param type string Type name [memory] optional default 'general'
  *	@param errormsg string Error message [memory] optional default 'Invalid Entity ID'
  *	@param successmsg string Success message [memory] optional default 'Entity information successfully'
  *	@param destruct array Destruction Workflow [memory] optional default false
@@ -29,7 +30,13 @@ class EntityRemoveWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('conn', 'keyid', 'user', 'id', 'relation', 'sqlcnd'),
-			'optional' => array('parent' => 0, 'successmsg' => 'Entity removed successfully', 'errormsg' => 'Invalid Entity ID', 'destruct' => false)
+			'optional' => array(
+				'parent' => 0, 
+				'type' => 'general', 
+				'successmsg' => 'Entity removed successfully', 
+				'errormsg' => 'Invalid Entity ID', 
+				'destruct' => false
+			)
 		);
 	}
 	

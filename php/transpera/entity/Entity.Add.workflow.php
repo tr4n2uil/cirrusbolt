@@ -10,7 +10,7 @@ require_once(SBSERVICE);
  *	@param args array Query parameters [args]
  *	@param escparam array Escape parameters [memory] optional default array()
  *	@param keyid long int Usage Key ID [memory]
- *	@param user string User email [memory]
+ *	@param user string User email [memory] optional default unknown@entity.add
  *	@param parent long int Parent ID [memory] optional default 0
  *	@param type string Type name [memory] optional default 'general'
  *	@param level integer Web level [memory] optional default false (inherit parent admin access)
@@ -35,8 +35,9 @@ class EntityAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('conn', 'keyid', 'user', 'relation', 'sqlcnd'),
+			'required' => array('conn', 'keyid', 'relation', 'sqlcnd'),
 			'optional' => array(
+				'user' => 'unknown@entity.add',
 				'parent' => 0, 
 				'type' => 'general', 
 				'level' => false, 
@@ -64,10 +65,10 @@ class EntityAddWorkflow implements Service {
 		));
 		
 		if($memory['construct']){
-			$workflow = array_push($workflow, $memory['construct']);
+			array_push($workflow, $memory['construct']);
 		}
 		
-		$workflow = array_push($workflow,
+		array_push($workflow,
 		array(
 			'service' => 'transpera.relation.insert.workflow',
 			'args' => array_merge($memory['args'], array('id', 'owner', 'user')),
