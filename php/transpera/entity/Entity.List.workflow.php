@@ -93,7 +93,7 @@ class EntityListWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'transpera.reference.'.$memory['selection'].'.workflow'
+			'service' => 'transpera.reference.'.$memory['selection'].'.workflow',
 		),
 		array(
 			'service' => 'cbcore.data.list.service',
@@ -109,9 +109,19 @@ class EntityListWorkflow implements Service {
 			'output' => array('result' => 'entities')
 		),
 		array(
+			'service' => 'guard.chain.list.workflow',
+			'input' => array('chainid' => 'list')
+		),
+		array(
 			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
 			'admin' => true,
+		),
+		array(
+			'service' => 'cbcore.data.merge.service',
+			'args' => array('entities', 'chains'),
+			'params' => array('entities' => array(0, 'entity'), 'chains' => array(0, 'chain')),
+			'output' => array('result' => 'entities')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

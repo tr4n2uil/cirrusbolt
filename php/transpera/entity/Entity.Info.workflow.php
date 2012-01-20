@@ -33,6 +33,8 @@ require_once(SBSERVICE);
  *	@return entity long int Entity information [memory]
  *	@return parent long int Parent ID [memory]
  *	@return admin integer Is admin [memory]
+ *	@return authorize string Authorize [memory]
+ *	@return state string State [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -92,6 +94,10 @@ class EntityInfoWorkflow implements Service {
 			//'input' => array('id' => 'parent'),
 			'input' => array('action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
 			'admin' => true
+		),
+		array(
+			'service' => 'guard.chain.info.workflow',
+			'input' => array('chainid' => 'id')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);
@@ -101,7 +107,7 @@ class EntityInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('entity', 'parent', 'admin');
+		return array('entity', 'parent', 'admin', 'authorize', 'state');
 	}
 	
 }

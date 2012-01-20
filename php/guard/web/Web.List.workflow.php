@@ -37,17 +37,23 @@ class WebListWorkflow implements Service {
 	**/
 	public function run($memory){
 		$memory['msg'] = 'Web chains returned successfully';
-		$last = $ilast '';
+		$last = $ilast = '';
 		$args = array('keyid', 'parent', 'type', 'state');
 		$escparam = array('type');
 		
-		if($memory['state']){
+		if($memory['state'] === true){
+			$last = " and `state`<>'0' ";
+		}
+		else if($memory['state']){
 			$last = " and `state`='\${state}' ";
 			array_push($args, 'state');
 			array_push($escparam, 'state');
 		}
 		
-		if($memory['istate']){
+		if($memory['istate'] === true){
+			$ilast = " and `state`<>'0' ";
+		}
+		else if($memory['istate']){
 			$ilast = " and `state`='\${istate}' ";
 			array_push($args, 'istate');
 			array_push($escparam, 'istate');
@@ -58,8 +64,8 @@ class WebListWorkflow implements Service {
 			'args' => $args,
 			'conn' => 'cbconn',
 			'relation' => '`webs`',
-			'sqlprj' => "case `inherit` when 1 then `child` when 0 then (select `chainid` from `members` where `chainid`=`child` and `keyid`=\${keyid} $last) end",
-			'sqlcnd' => "where `type`='\${type}' and `parent`=\${parent} $ilast)",
+			'sqlprj' => "(case `inherit` when 1 then `child` when 0 then (select `chainid` from `members` where `chainid`=`child` and `keyid`=\${keyid} $last) end) as `child`",
+			'sqlcnd' => "where `type`='\${type}' and `parent`=\${parent} $ilast",
 			'escparam' => $escparam,
 			'errormsg' => 'No Access'
 		);
