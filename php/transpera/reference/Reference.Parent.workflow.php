@@ -10,6 +10,11 @@ require_once(SBSERVICE);
  *	@param type string Type name [memory] optional default 'general'
  *	@param state string State [memory] optional default false (true= Not '0')
  *
+ *	@param action string Action to authorize member [memory] optional default 'list'
+ *	@param astate string State to authorize member [memory] optional default true (false= None)
+ *	@param iaction string Action to authorize inherit [memory] optional default 'list'
+ *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
+ *
  *	@return web array Web member information [memory]
  *	@return parent long int Chain ID [memory]
  *
@@ -24,7 +29,14 @@ class ReferenceParentWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'id'),
-			'optional' => array('type' => 'general', 'state' => true)
+			'optional' => array(
+				'type' => 'general', 
+				'state' => true,
+				'action' => 'list', 
+				'astate' => true, 
+				'iaction' => 'list', 
+				'aistate' => true
+			)
 		);
 	}
 	
@@ -36,8 +48,7 @@ class ReferenceParentWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'transpera.reference.authorize.workflow',
-			'action' => 'list'
+			'service' => 'transpera.reference.authorize.workflow'
 		),
 		array(
 			'service' => 'guard.web.parent.workflow',

@@ -8,9 +8,9 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key ID [memory]
  *	@param id long int Reference ID [memory]
  *	@param action string Action to authorize [memory] optional default 'edit'
- *	@param state string State to authorize member [memory] optional default true (false= All)
+ *	@param astate string State to authorize member [memory] optional default true (false= All)
  *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
- *	@param istate string State to authorize inherit [memory] optional default true (false= All)
+ *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *	@param init boolean init flag [memory] optional default true
  *	@param admin boolean Is return admin flag [memory] optional default false
  *
@@ -31,7 +31,7 @@ class ReferenceAuthorizeWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'id'),
-			'optional' => array('action' => 'edit', 'state' => true, 'iaction' => 'edit', 'istate' => true, 'admin' => false, 'init' => true)
+			'optional' => array('action' => 'edit', 'astate' => true, 'iaction' => 'edit', 'aistate' => true, 'admin' => false, 'init' => true)
 		);
 	}
 	
@@ -57,7 +57,7 @@ class ReferenceAuthorizeWorkflow implements Service {
 		),
 		array(
 			'service' => 'guard.chain.authorize.workflow',
-			'input' => array('chainid' => 'id')
+			'input' => array('chainid' => 'id', 'state' => 'astate', 'istate' => 'aistate')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

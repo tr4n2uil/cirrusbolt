@@ -20,6 +20,11 @@ require_once(SBSERVICE);
  *	@param path string Collation path [memory] optional default '/'
  *	@param leaf string Collation leaf [memory] optional default 'Child ID'
  *
+ *	@param action string Action to authorize member [memory] optional default 'add'
+ *	@param astate string State to authorize member [memory] optional default true (false= None)
+ *	@param iaction string Action to authorize inherit [memory] optional default 'add'
+ *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
+ *
  *	@return return id long int Reference ID [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -45,7 +50,11 @@ class ReferenceAddWorkflow implements Service {
 				'control' => false, 
 				'state' => 'A', 
 				'icontrol' => false, 
-				'istate' => 'A'
+				'istate' => 'A',
+				'action' => 'add', 
+				'astate' => true, 
+				'iaction' => 'add', 
+				'aistate' => true
 			)
 		);
 	}
@@ -63,7 +72,6 @@ class ReferenceAddWorkflow implements Service {
 		array(
 			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('id' => 'parent'),
-			'action' => 'add',
 			'output' => array('level' => $level, 'authorize' => $authorize)
 		),
 		array(

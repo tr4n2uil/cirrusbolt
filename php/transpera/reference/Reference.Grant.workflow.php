@@ -15,6 +15,11 @@ require_once(SBSERVICE);
  *	@param path string Collation path [memory] optional default '/'
  *	@param leaf string Collation leaf [memory] optional default 'Child ID'
  *
+ *	@param action string Action to authorize member [memory] optional default 'edit'
+ *	@param astate string State to authorize member [memory] optional default true (false= None)
+ *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
+ *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
+ *
  *	@return return id long int Chain member ID [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -28,7 +33,18 @@ class ReferenceGrantWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'id', 'childkeyid'),
-			'optional' => array('type' => 'general', 'authorize' => 'edit:add:remove:list', 'control' => false, 'state' => 'A', 'path' => '/', 'leaf' => false)
+			'optional' => array(
+				'type' => 'general', 
+				'authorize' => 'edit:add:remove:list', 
+				'control' => false, 
+				'state' => 'A', 
+				'path' => '/', 
+				'leaf' => false,
+				'action' => 'edit', 
+				'astate' => true, 
+				'iaction' => 'edit', 
+				'aistate' => true
+			)
 		);
 	}
 	
@@ -40,8 +56,7 @@ class ReferenceGrantWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'guard.reference.authorize.workflow',
-			'action' => 'edit'
+			'service' => 'guard.reference.authorize.workflow'
 		),
 		array(
 			'service' => 'guard.member.add.workflow',

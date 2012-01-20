@@ -7,7 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param parent long int Chain ID [memory]
  *	@param type string Type name [memory] optional default 'general'
- *	@param state string State [memory] optional default false (true= Not '0')
+ *	@param istate string State [memory] optional default false (true= Not '0')
  *	@param pgsz long int Paging Size [memory] optional default false
  *	@param pgno long int Paging Index [memory] optional default 1
  *	@param total long int Paging Total [memory] optional default false
@@ -26,7 +26,7 @@ class WebChildrenWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('parent'),
-			'optional' => array('type' => 'general', 'state' => false, 'pgsz' => false, 'pgno' => 0, 'total' => false)
+			'optional' => array('type' => 'general', 'istate' => false, 'pgsz' => false, 'pgno' => 0, 'total' => false)
 		);
 	}
 	
@@ -40,13 +40,13 @@ class WebChildrenWorkflow implements Service {
 		$args = array('parent', 'type');
 		$escparam = array('type');
 		
-		if($memory['state'] === true){
+		if($memory['istate'] === true){
 			$last = " and `state`<>'0' ";
 		}
-		else if($memory['state']){
-			$last = " and `state`='\${state}' ";
-			array_push($escparam, 'state');
-			array_push($args, 'state');
+		else if($memory['istate']){
+			$last = " and `state`='\${istate}' ";
+			array_push($escparam, 'istate');
+			array_push($args, 'istate');
 		}	
 		
 		$service = array(

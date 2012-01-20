@@ -10,6 +10,11 @@ require_once(SBSERVICE);
  *	@param parent long int Reference ID [memory]
  *	@param type string Type name [memory] optional default 'general'
  *
+ *	@param action string Action to authorize member [memory] optional default 'remove'
+ *	@param astate string State to authorize member [memory] optional default true (false= None)
+ *	@param iaction string Action to authorize inherit [memory] optional default 'remove'
+ *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
+ *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
@@ -21,7 +26,13 @@ class ReferenceRemoveWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'parent', 'id'),
-			'optional' => array('type' => 'general')
+			'optional' => array(
+				'type' => 'general',
+				'action' => 'remove', 
+				'astate' => true, 
+				'iaction' => 'remove', 
+				'aistate' => true
+			)
 		);
 	}
 	
@@ -34,8 +45,7 @@ class ReferenceRemoveWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.reference.authorize.workflow',
-			'input' => array('id' => 'parent'),
-			'action' => 'remove'
+			'input' => array('id' => 'parent')
 		),
 		array(
 			'service' => 'guard.chain.remove.workflow',

@@ -10,6 +10,12 @@ require_once(SBSERVICE);
  *	@param authorize string Control value [memory]
  *	@param miltiple boolean Is multiple [memory] optional default false
  *
+ *	@param action string Action to authorize member [memory] optional default 'edit'
+ *	@param astate string State to authorize member [memory] optional default true (false= None)
+ *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
+ *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
+ 
+ *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
@@ -21,7 +27,13 @@ class ReferenceControlWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'id', 'authorize'),
-			'optional' => array('multiple' => false)
+			'optional' => array(
+				'multiple' => false,
+				'action' => 'edit', 
+				'astate' => true, 
+				'iaction' => 'edit', 
+				'aistate' => true
+			)
 		);
 	}
 	
@@ -34,8 +46,7 @@ class ReferenceControlWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.reference.authorize.workflow',
-			'input' => array('chainid' => 'id'),
-			'action' => 'edit'
+			'input' => array('chainid' => 'id')
 		),
 		array(
 			'service' => 'guard.chain.control.workflow',
