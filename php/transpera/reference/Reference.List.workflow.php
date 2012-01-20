@@ -20,7 +20,7 @@ require_once(SBSERVICE);
  *	@param iaction string Action to authorize inherit [memory] optional default 'list'
  *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
  *
- *	@return children array Chain reference information [memory]
+ *	@return list array Chain reference information [memory]
  *	@return level integer Parent Authorization Level [memory]
  *	@return total long int Paging total [memory]
  *
@@ -62,7 +62,8 @@ class ReferenceListWorkflow implements Service {
 		),
 		array(
 			'service' => 'guard.web.list.workflow',
-			'input' => array('parent' => 'id')
+			'input' => array('parent' => 'id'),
+			'output' => array('result' => 'list')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);
@@ -72,7 +73,7 @@ class ReferenceListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('children', 'level', 'total');
+		return array('list', 'level', 'total');
 	}
 	
 }

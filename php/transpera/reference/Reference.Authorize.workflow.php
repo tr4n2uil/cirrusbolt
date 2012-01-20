@@ -31,7 +31,14 @@ class ReferenceAuthorizeWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'id'),
-			'optional' => array('action' => 'edit', 'astate' => true, 'iaction' => 'edit', 'aistate' => true, 'admin' => false, 'init' => true)
+			'optional' => array(
+				'action' => 'edit', 
+				'astate' => true, 
+				'iaction' => 'edit', 
+				'aistate' => true, 
+				'admin' => false, 
+				'init' => true
+			)
 		);
 	}
 	

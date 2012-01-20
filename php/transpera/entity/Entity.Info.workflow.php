@@ -6,16 +6,27 @@ require_once(SBSERVICE);
  *	@desc Returns entity information by ID
  *
  *	@param id long int Entity ID [memory]
+ *	@param user string User email [memory] optional default 'unknown@entity.info'
  *	@param relation string Relation name [memory]
  *	@param sqlcnd string SQL condition [memory]
  *	@param sqlprj string SQL projection [memory] optional default *
- *	@param keyid long int Usage Key ID [memory]
- *	@param user string User email [memory] optional default 'unknown@entity.info'
- *	@param parent long int Parent ID [memory] optional default 0
- *	@param action string Action to authorize [memory] optional default 'edit'
- *	@param type string Type name [memory] optional default 'general'
  *	@param errormsg string Error message [memory] optional default 'Invalid Entity ID'
  *	@param successmsg string Success message [memory] optional default 'Entity information successfully'
+ *
+ *	@param keyid long int Usage Key ID [memory]
+ *	@param parent long int Parent ID [memory] optional default 0
+ *
+ *	@param action string Action to authorize [memory] optional default 'edit'
+ *	@param astate string State to authorize member [memory] optional default true (false= All)
+ *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
+ *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
+ *	@param init boolean init flag [memory] optional default true
+ *
+ *	@param saction string Action to authorize [memory] optional default 'edit'
+ *	@param sastate string State to authorize member [memory] optional default true (false= All)
+ *	@param siaction string Action to authorize inherit [memory] optional default 'edit'
+ *	@param saistate string State to authorize inherit [memory] optional default true (false= All)
+ *	@param sinit boolean init flag [memory] optional default true
  *
  *	@param conn array DataService instance configuration key [memory]
  *
@@ -37,11 +48,19 @@ class EntityInfoWorkflow implements Service {
 			'optional' => array(
 				'user' => 'unknown@entity.add',
 				'parent' => 0, 
-				'action' => 'edit', 
-				'type' => 'general',
 				'sqlprj' => '*', 
 				'successmsg' => 'Entity information given successfully', 
-				'errormsg' => 'Invalid Entity ID'
+				'errormsg' => 'Invalid Entity ID',
+				'action' => 'info', 
+				'astate' => true, 
+				'iaction' => 'info', 
+				'aistate' => true, 
+				'init' => true,
+				'saction' => 'edit', 
+				'sastate' => true, 
+				'siaction' => 'edit', 
+				'saistate' => true, 
+				'sinit' => true
 			)
 		);
 	}
@@ -54,8 +73,7 @@ class EntityInfoWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'transpera.reference.authorize.workflow',
-			'action' => 'info'
+			'service' => 'transpera.reference.authorize.workflow'
 		),
 		array(
 			'service' => 'transpera.relation.unique.workflow',
@@ -71,8 +89,8 @@ class EntityInfoWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.reference.authorize.workflow',
-			//'input' => array('id' => 'parent'), ?
-			'authorize' => 'edit', 
+			//'input' => array('id' => 'parent'),
+			'input' => array('action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
 			'admin' => true
 		));
 		

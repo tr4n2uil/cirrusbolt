@@ -5,17 +5,29 @@ require_once(SBSERVICE);
  *	@class EntityRemoveWorkflow
  *	@desc Removes entity by ID
  *
- *	@param id long int Entity ID [memory]
  *	@param relation string Relation name [memory]
  *	@param sqlcnd string SQL condition [memory]
- *	@param keyid long int Usage Key ID [memory]
  *	@param user string User email [memory]
- *	@param parent long int Parent ID [memory] optional default 0
- *	@param pname long int Parent name [memory] optional default ''
- *	@param type string Type name [memory] optional default 'general'
  *	@param errormsg string Error message [memory] optional default 'Invalid Entity ID'
  *	@param successmsg string Success message [memory] optional default 'Entity information successfully'
+ *
+ *	@param keyid long int Usage Key ID [memory]
+ *	@param id long int Reference ID [memory]
+ *	@param parent long int Reference ID [memory]
+ *	@param type string Type name [memory] optional default 'general'
+ *
+ *	@param action string Action to authorize member [memory] optional default 'remove'
+ *	@param astate string State to authorize member [memory] optional default true (false= None)
+ *	@param iaction string Action to authorize inherit [memory] optional default 'remove'
+ *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
+ *
  *	@param destruct array Destruction Workflow [memory] optional default false
+ *
+ *	@param saction string Action to authorize [memory] optional default 'edit'
+ *	@param sastate string State to authorize member [memory] optional default true (false= All)
+ *	@param siaction string Action to authorize inherit [memory] optional default 'edit'
+ *	@param saistate string State to authorize inherit [memory] optional default true (false= All)
+ *	@param sinit boolean init flag [memory] optional default true
  *
  *	@param conn array DataService instance configuration key [memory]
  *
@@ -32,7 +44,16 @@ class EntityRemoveWorkflow implements Service {
 			'required' => array('conn', 'keyid', 'user', 'id', 'relation', 'sqlcnd'),
 			'optional' => array(
 				'parent' => 0, 
-				'type' => 'general', 
+				'type' => 'general',
+				'action' => 'remove', 
+				'astate' => true, 
+				'iaction' => 'remove', 
+				'aistate' => true
+				'saction' => 'remove', 
+				'sastate' => true, 
+				'siaction' => 'remove', 
+				'saistate' => true, 
+				'sinit' => true
 				'successmsg' => 'Entity removed successfully', 
 				'errormsg' => 'Invalid Entity ID', 
 				'destruct' => false
@@ -48,8 +69,7 @@ class EntityRemoveWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'transpera.reference.authorize.workflow',
-			'action' => 'remove'
+			'service' => 'transpera.reference.authorize.workflow'
 		));
 		
 		if($memory['destruct']){
@@ -58,7 +78,8 @@ class EntityRemoveWorkflow implements Service {
 		
 		$workflow = array_push($workflow,
 		array(
-			'service' => 'transpera.reference.remove.workflow'
+			'service' => 'transpera.reference.remove.workflow',
+			'input' => array('action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
 		),
 		array(
 			'service' => 'transpera.relation.delete.workflow',

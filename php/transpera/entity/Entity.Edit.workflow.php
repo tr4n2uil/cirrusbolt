@@ -5,17 +5,20 @@ require_once(SBSERVICE);
  *	@class EntityEditWorkflow
  *	@desc Edits entity using ID
  *
- *	@param id long int Entity ID [memory]
+ *	@param keyid long int Usage Key ID [memory]
+ *	@param id long int Reference ID [memory]
+ *	@param action string Action to authorize [memory] optional default 'edit'
+ *	@param astate string State to authorize member [memory] optional default true (false= All)
+ *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
+ *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
+ *	@param init boolean init flag [memory] optional default true
+ *
+ *	@param user string User email [memory]
  *	@param relation string Relation name [memory]
  *	@param sqlcnd string SQL condition [memory]
  *	@param args array Query parameters [args]
  *	@param escparam array Escape parameters [memory] optional default array()
- *	@param keyid long int Usage Key ID [memory]
- *	@param user string User email [memory]
  *	@param successmsg string Success message [memory] optional default 'Entity edited successfully'
- *	@param action string Action to authorize [memory] optional default 'edit'
- *	@param type string Type name [memory] optional default 'general'
- *	@param init boolean init flag [memory] optional default true
  *
  *	@param conn array DataService instance configuration key [memory]
  *
@@ -32,10 +35,12 @@ class EntityEditWorkflow implements Service {
 			'required' => array('conn', 'keyid', 'user', 'id', 'relation', 'sqlcnd'),
 			'optional' => array(
 				'action' => 'edit', 
-				'type' => 'general', 
+				'astate' => true, 
+				'iaction' => 'edit', 
+				'aistate' => true, 
+				'init' => true,
 				'escparam' => array(), 
-				'successmsg' => 'Entity edited successfully', 
-				'init' => true
+				'successmsg' => 'Entity edited successfully'
 			)
 		);
 	}
