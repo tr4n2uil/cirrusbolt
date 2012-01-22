@@ -14,7 +14,8 @@ require_once(SBSERVICE);
  *	@param context string Application context for email [memory] optional default false
  * 	@param raw boolean Raw output required [memory] optional default false
  *
- *	@result result object Result [memory]
+ *	@result result string Result [memory]
+ *	@result response object Response [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -71,7 +72,7 @@ class LaunchMessageWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('result');
+		return array('result', 'response');
 	}
 	
 }

@@ -10,7 +10,9 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key [memory] optional default false
  *	@param type string response type [memory] ('json', 'wddx', 'xml', 'plain', 'html') optional default 'json'
  *
- *	@result result object Result [memory]
+ *	@result result string Result [memory]
+ *	@result message object Response [memory]
+ *	@result keyid long int Usage Key [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -65,7 +67,7 @@ class LaunchWorkflowWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('result', 'keyid');
+		return array('message', 'result', 'keyid');
 	}
 	
 }

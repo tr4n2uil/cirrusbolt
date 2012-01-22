@@ -5,6 +5,8 @@ require_once(SBSERVICE);
  *	@class EntityListWorkflow
  *	@desc Returns all entity information in parent
  *
+ *	@param chadm boolean Is chack admin [memory] optional default true
+ *	@param mgchn boolean Is merge chain [memory] optional default true
  *	@param selection string Selection operation [memory] optional default 'list' ('list', 'children', 'parents')
  *
  *	@param keyid long int Usage Key ID [memory]
@@ -54,6 +56,8 @@ class EntityListWorkflow implements Service {
 		return array(
 			'required' => array('conn', 'keyid', 'user', 'id', 'relation', 'sqlcnd'),
 			'optional' => array(
+				'chadm' => true,
+				'mgchn' => true,
 				'selection' => 'list',
 				'type' => 'general', 
 				'state' => true, 
@@ -82,6 +86,7 @@ class EntityListWorkflow implements Service {
 	**/
 	public function run($memory){
 		$memory['msg'] = $memory['successmsg'];
+		$memory['admin'] = 0;
 		
 		if(!in_array($memory['selection'], array('list', 'children', 'parents'))){
 			$memory['valid'] = false;
@@ -107,22 +112,30 @@ class EntityListWorkflow implements Service {
 			'escparam' => array_merge($memory['escparam'], array('list')),
 			'check' => false,
 			'output' => array('result' => 'entities')
-		),
-		array(
-			'service' => 'guard.chain.list.workflow',
-			'input' => array('chainid' => 'list')
-		),
-		array(
-			'service' => 'transpera.reference.authorize.workflow',
-			'input' => array('action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
-			'admin' => true,
-		),
-		array(
-			'service' => 'cbcore.data.merge.service',
-			'args' => array('entities', 'chains'),
-			'params' => array('entities' => array(0, 'entity'), 'chains' => array(0, 'chain')),
-			'output' => array('result' => 'entities')
 		));
+		
+		if($memory['chadm']){
+			array_push($workflow,
+			array(
+				'service' => 'transpera.reference.authorize.workflow',
+				'input' => array('action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
+				'admin' => true,
+			));
+		}
+		
+		if($memory['mgchn']){
+			array_push($workflow,
+			array(
+				'service' => 'guard.chain.list.workflow',
+				'input' => array('chainid' => 'list')
+			),
+			array(
+				'service' => 'cbcore.data.merge.service',
+				'args' => array('entities', 'chains'),
+				'params' => array('entities' => array(0, 'entity'), 'chains' => array(0, 'chain')),
+				'output' => array('result' => 'entities')
+			));
+		}
 		
 		return Snowblozm::execute($workflow, $memory);
 	}

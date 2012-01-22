@@ -55,6 +55,11 @@ class InterfaceTileService implements Service {
 		else if(isset($memory['templates'][$memory['page']])){
 			$memory['execute'] = true;
 			$page = $memory['templates'][$memory['page']];
+			$idkey = $page['id'];
+			$tile = $page['tile'];
+			$ins = $page['ins'];
+			$tpl = $page['tpl'];
+			$page = $page['page'];
 		}
 		else {
 			$page = $memory['pages']['error'];
@@ -80,11 +85,14 @@ class InterfaceTileService implements Service {
 				'raw' => true
 			), $memory);
 			
+			$id = $memory['response'][$idkey];
+			$pg = str_replace('.', '-', $memory['page']);
 			$memory['html'] .= '
 				<script type="text/javascript">
-					var TileUI = TileUI || {};
-					TileUI.global = TileUI.global || {};
-					TileUI.global.data = '.$memory['result'].';
+					Snowblozm.Registry.save("ui-'.$pg.'-'.$id.'", {
+						data : '.$memory['result'].'
+					});
+					window.location.hash = "#inittile:key=ui-'.$pg.':id='.$id.':ins='.$ins.':tpl='.$tpl.':tile='.$tile.$id.'";
 				</script>';
 		}
 		
