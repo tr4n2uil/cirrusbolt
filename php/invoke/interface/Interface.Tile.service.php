@@ -8,22 +8,25 @@ require_once(SBSERVICE);
  *	@param cookiename string Cookie name [memory]
  *	@param cookieexpiry string Cookie expiry [memory]
  *	@param rootpath string Rootpath [memory]
+ *
  *	@param page string Tile UI content [memory] optional default 'home'
  *	@param pages object Array of static html pages [memory] optional default array()
-  *	@param templates object Array of static tpl pages [memory] optional default array()
+ *	@param ui object UI data [memory] optional default array()
+ *
  *	@param reqtype string request type [memory] ('get', 'post', 'json', 'wddx', 'xml')
  *	@param restype string response types [memory] ('json', 'wddx', 'xml', 'plain', 'html'),
  *	@param crypt string Crypt types [memory] ('none', 'rc4', 'aes', 'blowfish', 'tripledes')
  *	@param hash string Hash types [memory] ('none', 'md5', 'sha1', 'crc32')
  *	@param access array allowed service provider names [memory] optional default false
+ *
  *	@param email string Identification email to be used if not set in message [memory] optional default false
  *	@param context string Application context for email [memory] optional default false
+ *
  *	@param html string Tile UI html [memory] optional default ''
  *	@param tiles string Tile UI tiles [memory] optional default ''
  *
  *	@return html string Tile UI html [memory]
  *	@return tiles string Tile UI tiles [memory]
- *	@return ui boolean UI flag [memory]
  *	@return execute boolean Service execute flag [memory]
  *	@return email string Email [memory]
  *
@@ -38,7 +41,7 @@ class InterfaceTileService implements Service {
 	public function input(){
 		return array(
 			'required' => array('reqtype', 'restype', 'crypt' , 'hash'),
-			'optional' => array('page' => 'home', 'pages' => array(), 'templates' => array(), 'access' => array(), 'email' => false, 'context' => false, 'html' => '', 'tiles' => '')
+			'optional' => array('page' => 'home', 'pages' => array(), 'ui' => array(), 'access' => array(), 'email' => false, 'context' => false, 'html' => '', 'tiles' => '')
 		);
 	}
 	
@@ -46,20 +49,19 @@ class InterfaceTileService implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['ui'] = true;
 		$memory['execute'] = false;
 		
 		if(isset($memory['pages'][$memory['page']])){
 			$page = $memory['pages'][$memory['page']];
 		}
-		else if(isset($memory['templates'][$memory['page']])){
+		else if(isset($memory['ui'][$memory['page']])){
 			$memory['execute'] = true;
-			$page = $memory['templates'][$memory['page']];
-			$idkey = $page['id'];
-			$tile = $page['tile'];
-			$ins = $page['ins'];
-			$tpl = $page['tpl'];
-			$page = $page['page'];
+			$config = $memory['ui'][$memory['page']];
+			$idkey = $config['id'];
+			$tile = $config['tile'];
+			$ins = $config['ins'];
+			$tpl = $config['tpl'];
+			$page = $config['page'];
 		}
 		else {
 			$page = $memory['pages']['error'];
@@ -87,12 +89,11 @@ class InterfaceTileService implements Service {
 			
 			$id = $memory['response'][$idkey];
 			$pg = str_replace('.', '-', $memory['page']);
+			
 			$memory['html'] .= '
 				<script type="text/javascript">
-					Snowblozm.Registry.save("ui-'.$pg.'-'.$id.'", {
-						data : '.$memory['result'].'
-					});
-					window.location.hash = "#inittile:key=ui-'.$pg.':id='.$id.':ins='.$ins.':tpl='.$tpl.':tile='.$tile.$id.'";
+					Snowblozm.Registry.save("ui-'.$pg.'-'.$id.'", '.$memory['result'].');
+					window.location.hash = OrbitNote.jquery.helper.defaultHash("#inittile:key=ui-'.$pg.':id='.$id.':ins='.$ins.':tpl='.$tpl.':tile='.$tile.$id.'");
 				</script>';
 		}
 		
@@ -107,7 +108,7 @@ class InterfaceTileService implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('html', 'tiles', 'ui', 'execute', 'email');
+		return array('html', 'tiles', 'execute', 'email');
 	}
 	
 }

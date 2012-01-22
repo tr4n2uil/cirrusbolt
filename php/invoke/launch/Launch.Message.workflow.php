@@ -13,6 +13,7 @@ require_once(SBSERVICE);
  *	@param email string Identification email to be used if not set in message [memory] optional default false
  *	@param context string Application context for email [memory] optional default false
  * 	@param raw boolean Raw output required [memory] optional default false
+ *	@param uiconf array UI data [memory]
  *
  *	@result result string Result [memory]
  *	@result response object Response [memory]
@@ -28,7 +29,7 @@ class LaunchMessageWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('reqtype', 'restype', 'crypt' , 'hash'),
-			'optional' => array('access' => array(), 'email' => false, 'context' => false, 'raw' => false)
+			'optional' => array('access' => array(), 'email' => false, 'context' => false, 'raw' => false, 'uiconf' => false)
 		);
 	}
 	

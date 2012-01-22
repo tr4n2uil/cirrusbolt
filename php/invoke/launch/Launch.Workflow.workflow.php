@@ -9,6 +9,7 @@ require_once(SBSERVICE);
  *	@param email string Identification email to be used if not set in message [memory] optional default false
  *	@param keyid long int Usage Key [memory] optional default false
  *	@param type string response type [memory] ('json', 'wddx', 'xml', 'plain', 'html') optional default 'json'
+ *	@param uiconf array UI data [memory]
  *
  *	@result result string Result [memory]
  *	@result message object Response [memory]
@@ -25,7 +26,7 @@ class LaunchWorkflowWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('message'),
-			'optional' => array('email' => false, 'keyid' => false, 'type' => 'json')
+			'optional' => array('email' => false, 'keyid' => false, 'type' => 'json', 'uiconf' => false)
 		);
 	}
 	
@@ -52,7 +53,7 @@ class LaunchWorkflowWorkflow implements Service {
 		),
 		array(
 			'service' => 'cbcore.data.prepare.service',
-			'args' => array('valid', 'msg', 'status', 'details', 'message'),
+			'args' => array('valid', 'msg', 'status', 'details', 'message', 'ui'),
 			'strict' => false
 		),
 		array(

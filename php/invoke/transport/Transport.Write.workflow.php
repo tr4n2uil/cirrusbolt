@@ -14,6 +14,7 @@ require_once(SBSERVICE);
  *	@param hash string Hash type [memory] ('none', 'md5', 'sha1', 'crc32')
  *	@param email string Email if user not set [memory] optional default false
  *	@param user string Email [memory] optional default false
+ *	@param ui array UI data [memory] optional default false
  *
  *	@return result string Secured message [memory]
  *	@return key long int Key used for encryption [memory]
@@ -29,7 +30,7 @@ class TransportWriteWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('type', 'crypt', 'hash'),
-			'optional' => array('data' => array(), 'key' => false, 'keyid' => false, 'email' => false, 'challenge' => false, 'user' => false)
+			'optional' => array('data' => array(), 'ui' => false, 'key' => false, 'keyid' => false, 'email' => false, 'challenge' => false, 'user' => false)
 		);
 	}
 	
@@ -38,7 +39,7 @@ class TransportWriteWorkflow implements Service {
 	**/
 	public function run($memory){
 		if($memory['keyid'] === false)
-			$args = array('message', 'hash');
+			$args = array('message', 'ui', 'hash');
 		else
 			$args = array('user', 'challenge', 'message', 'hash');
 		

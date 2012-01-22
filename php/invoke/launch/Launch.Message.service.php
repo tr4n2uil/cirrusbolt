@@ -6,8 +6,10 @@ require_once(SBSERVICE);
  *	@desc Launches workflows from messages
  *
  *	@param message array Message to be launched [memory]
+ *	@param uiconf array UI data [memory] optional default false
  *
  *	@return response array Output parameters for service execution [memory]
+ *	@param ui array UI data [memory] optional default false
  *	@return valid boolean Service execution validity [memory]
  *	@return msg string Service execution result [memory]
  *	@return status integer Service execution status [memory]
@@ -23,7 +25,8 @@ class LaunchMessageService implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('message')
+			'required' => array('message'),
+			'optional' => array('uiconf' => false)
 		);
 	}
 	
@@ -48,6 +51,10 @@ class LaunchMessageService implements Service {
 			foreach($instance->output() as $key){
 				$memory['response'][$key] = $memory[$key];
 			}
+			if($memory['uiconf']){
+				list($root, $service, $operation) = explode('.' ,$uri);
+				$memory['ui'] = $memory['uiconf'][$root.'.'.$service.'.'.$operation]['uidata'];
+			}
 		}
 		
 		return $memory;
@@ -57,7 +64,7 @@ class LaunchMessageService implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('response', 'valid', 'msg', 'status', 'details');
+		return array('response', 'ui', 'valid', 'msg', 'status', 'details');
 	}
 	
 }
