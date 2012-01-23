@@ -68,7 +68,9 @@ class WebListWorkflow implements Service {
 			'sqlcnd' => "where `type`='\${type}' and `parent`=\${parent} $ilast",
 			'escparam' => $escparam,
 			'check' => false,
-			'errormsg' => 'No Access'
+			'errormsg' => 'No Access',
+			'mapkey' => 'child',
+			'mapname' => 'web'
 		);
 		
 		return Snowblozm::run($service, $memory);

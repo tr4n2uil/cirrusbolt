@@ -54,7 +54,6 @@ class LaunchMessageWorkflow implements Service {
 		),
 		array(
 			'service' => 'invoke.transport.write.workflow',
-			'args' => array('valid', 'msg', 'status', 'details'),
 			'input' => array('data' => 'response', 'type' => 'restype'),
 			'strict' => false
 		));

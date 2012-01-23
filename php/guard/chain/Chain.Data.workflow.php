@@ -29,18 +29,23 @@ class ChainDataWorkflow implements Service {
 	public function run($memory){
 		$memory['msg'] = 'Chain data information returned successfully';
 		
-		$service = array(
+		$workflow = array(
+		array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('chainid'),
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
-			'sqlprj' => '`masterkey`, `level`, `authorize`, `state`',
+			'sqlprj' => '`authorize`, `state`',
 			'sqlcnd' => "where `chainid`=\${chainid}",
-			'errormsg' => 'Invalid Chain ID',
-			'output' => array('result' => 'chain')
-		);
+			'errormsg' => 'Invalid Chain ID'
+		),
+		array(
+			'service' => 'cbcore.data.select.service',
+			'args' => array('result'),
+			'params' => array('result.0' => 'chain')
+		));
 		
-		return Snowblozm::run($service, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**

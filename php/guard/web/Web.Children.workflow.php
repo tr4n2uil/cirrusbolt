@@ -58,7 +58,9 @@ class WebChildrenWorkflow implements Service {
 			'sqlcnd' => "where `parent`=\${parent} and `type`='\${type} $last'",
 			'escparam' => $escparam,
 			'check' => false,
-			'output' => array('result' => 'children')
+			'output' => array('result' => 'children'),
+			'mapkey' => 'child',
+			'mapname' => 'web'
 		);
 		
 		return Snowblozm::run($service, $memory);

@@ -53,7 +53,7 @@ class LaunchWorkflowWorkflow implements Service {
 		),
 		array(
 			'service' => 'cbcore.data.prepare.service',
-			'args' => array('valid', 'msg', 'status', 'details', 'message', 'ui'),
+			'args' => array('message'),
 			'strict' => false
 		),
 		array(

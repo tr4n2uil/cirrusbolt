@@ -35,16 +35,15 @@ class DataMergeService implements Service {
 			$key = $keys[0];
 			$val = $keys[1];
 			
-			foreach($data as $row){
-				$index = $row[$key];
-				if(isset($result[$index]))
-					$result[$index][$val] = $row;
+			foreach($data as $id => $row){
+				if(isset($result[$id]))
+					$result[$id] = array_merge($result[$id], $row);
 				else
-					$result[$index] = array($val => $row);
+					$result[$id] = $row;
 			}
 		}
 
-		$memory['result'] = array_values($result);
+		$memory['result'] = $result;
 		$memory['valid'] = true;
 		$memory['msg'] = 'Valid Data Merging';
 		$memory['status'] = 200;

@@ -39,7 +39,9 @@ class ChainListWorkflow implements Service {
 			'escparam' => array('chainid'),
 			'errormsg' => 'Invalid Chain ID',
 			'check' => false,
-			'output' => array('result' => 'chains')
+			'output' => array('result' => 'chains'),
+			'mapkey' => 'chainid',
+			'mapname' => 'chain'
 		);
 		
 		return Snowblozm::run($service, $memory);

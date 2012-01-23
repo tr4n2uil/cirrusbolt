@@ -42,7 +42,7 @@ class RelationUniqueWorkflow implements Service {
 			'service' => 'rdbms.query.execute.workflow',
 			'args' => $memory['args'],
 			'output' => array('sqlresult' => 'result'),
-			'query' => 'select '.$memory['sqlprj'].' from '.$memory['relation'].' '.$memory['sqlcnd'].';'
+			'query' => 'select '.$memory['sqlprj'].' from '.$memory['relation'].' '.$memory['sqlcnd'].';',
 		);
 		
 		return Snowblozm::run($service, $memory);

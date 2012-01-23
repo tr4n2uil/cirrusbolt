@@ -56,7 +56,9 @@ class WebParentsWorkflow implements Service {
 			'relation' => '`webs`',
 			'sqlcnd' => "where `type`='\${type}' and `child`=\${child} $last",
 			'escparam' => $escparam,
-			'output' => array('result' => 'parents')
+			'output' => array('result' => 'parents'),
+			'mapkey' => 'parent',
+			'mapname' => 'web'
 		);
 		
 		return Snowblozm::run($service, $memory);

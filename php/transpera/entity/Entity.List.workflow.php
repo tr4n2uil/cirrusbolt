@@ -8,7 +8,6 @@ require_once(SBSERVICE);
  *	@param chadm boolean Is chack admin [memory] optional default true
  *	@param mgchn boolean Is merge chain [memory] optional default true
  *	@param selection string Selection operation [memory] optional default 'list' ('list', 'children', 'parents')
- *	@param entkey string Entity Key [memory] optional default 'entity'
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param id long int Reference ID [memory]
@@ -31,6 +30,8 @@ require_once(SBSERVICE);
  *	@param user string User email [memory]
  *	@param escparam array Escape params [memory] optional default array()
  *	@param successmsg string Success message [memory] optional default 'Entity information successfully'
+ *	@param mapkey string Map Key [memory] optional default 0
+ *	@param mapname string Map Name [memory] optional default 'entity'
  *
  *	@param saction string Action to authorize [memory] optional default 'edit'
  *	@param sastate string State to authorize member [memory] optional default true (false= All)
@@ -60,7 +61,6 @@ class EntityListWorkflow implements Service {
 				'chadm' => true,
 				'mgchn' => true,
 				'selection' => 'list',
-				'entkey' => 'entity',
 				'type' => 'general', 
 				'state' => true, 
 				'istate' => true, 
@@ -78,7 +78,9 @@ class EntityListWorkflow implements Service {
 				'sinit' => true,
 				'sqlprj' => '*', 
 				'successmsg' => 'Entities information given successfully', 
-				'escparam' => array()
+				'escparam' => array(),
+				'mapkey' => 0,
+				'mapname' => 'entity'
 			)
 		);
 	}
@@ -106,6 +108,7 @@ class EntityListWorkflow implements Service {
 			'service' => 'cbcore.data.list.service',
 			'args' => array($memory['selection']),
 			'attr' => 'child',
+			'mapname' => 'web',
 			'default' => array(-1)
 		),
 		array(
@@ -134,7 +137,7 @@ class EntityListWorkflow implements Service {
 			array(
 				'service' => 'cbcore.data.merge.service',
 				'args' => array('entities', 'chains'),
-				'params' => array('entities' => array(0, $memory['entkey']), 'chains' => array(0, 'chain')),
+				'params' => array('entities' => array(0, $memory['mapname']), 'chains' => array(0, 'chain')),
 				'output' => array('result' => 'entities')
 			));
 		}

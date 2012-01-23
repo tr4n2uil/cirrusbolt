@@ -9,11 +9,6 @@ require_once(SBSERVICE);
  *	@param uiconf array UI data [memory] optional default false
  *
  *	@return response array Output parameters for service execution [memory]
- *	@param ui array UI data [memory] optional default false
- *	@return valid boolean Service execution validity [memory]
- *	@return msg string Service execution result [memory]
- *	@return status integer Service execution status [memory]
- *	@return details string Service execution details [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *	
@@ -34,31 +29,29 @@ class LaunchMessageService implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['response'] = array();
-		$memory['ui'] = array();
 		$message = $memory['message'];
 		$uri = $message['service'];
 		
 		/**
 		 *	Run the service
 		**/
-		$memory = Snowblozm::run($message, $memory);
+		$message = Snowblozm::run(array(
+			'service' => $uri
+		), $message);
 		
 		/**
-		 *	Read service output
+		 *	Set UI data
 		**/
-		if($memory['valid']){
-			$instance = Snowblozm::load($uri);
-			foreach($instance->output() as $key){
-				$memory['response'][$key] = $memory[$key];
-			}
-			
-			list($root, $service, $operation) = explode('.' ,$uri);
-			if($memory['uiconf'] && isset($memory['uiconf'][$root.'.'.$service.'.'.$operation])){
-				$memory['ui'] = $memory['uiconf'][$root.'.'.$service.'.'.$operation]['uidata'];
-			}
+		list($root, $service, $operation) = explode('.' ,$uri);
+		if($memory['uiconf'] && isset($memory['uiconf'][$root.'.'.$service.'.'.$operation])){
+			$message['ui'] = $memory['uiconf'][$root.'.'.$service.'.'.$operation]['uidata'];
 		}
 		
+		$memory['response'] = $message;
+		$memory['valid'] = true;
+		$memory['msg'] = 'Launched Successfully';
+		$memory['status'] = 200;
+		$memory['details'] = "Successfully executed";
 		return $memory;
 	}
 	
@@ -66,7 +59,7 @@ class LaunchMessageService implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('response', 'ui', 'valid', 'msg', 'status', 'details');
+		return array('response');
 	}
 	
 }

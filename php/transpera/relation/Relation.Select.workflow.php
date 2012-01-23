@@ -15,6 +15,9 @@ require_once(SBSERVICE);
  *	@param pgsz long int Paging Size [memory] optional default false
  *	@param pgno long int Paging Index [memory] optional default 1
  *	@param total long int Paging Total [memory] optional default false
+ *	@param mapkey string Map Key [memory] optional default 0
+ *	@param mapname string Map Name [memory] optional default 'data'
+ *	@param ismap boolean Is map [memory] optional default true
  *
  *	@param conn array DataService instance configuration key [memory]
  *
@@ -32,7 +35,18 @@ class RelationSelectWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('conn', 'relation', 'sqlcnd'),
-			'optional' => array('sqlprj' => '*', 'escparam' => array(), 'errormsg' => 'Error in Database', 'check' => true, 'pgsz' => false, 'pgno' => 0, 'total' => false)
+			'optional' => array(
+				'sqlprj' => '*', 
+				'escparam' => array(), 
+				'errormsg' => 'Error in Database', 
+				'check' => true, 
+				'pgsz' => false, 
+				'pgno' => 0, 
+				'total' => false, 
+				'mapkey' => 0,
+				'mapname' => 'data',
+				'ismap' => true
+			)
 		);
 	}
 	
@@ -65,16 +79,25 @@ class RelationSelectWorkflow implements Service {
 			$limit = ' limit '.($pgsz*$memory['pgno']).','.$pgsz;
 		}
 		
-		$service = array(
+		$workflow = array(
+		array(
 			'service' => 'rdbms.query.execute.workflow',
 			'args' => $memory['args'],
 			'output' => array('sqlresult' => 'result'),
 			'query' => 'select '.$memory['sqlprj'].' from '.$relation.' '.$memory['sqlcnd'].$limit.';',
 			'count' => 0,
 			'not' => false
-		);
+		));
 		
-		return Snowblozm::run($service, $memory);
+		if($memory['ismap']){
+		array_push($workflow,
+			array(
+				'service' => 'cbcore.data.map.service',
+				'input' => array('data' => 'result')
+			));
+		}
+		
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**
