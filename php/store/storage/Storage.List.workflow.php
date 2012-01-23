@@ -38,7 +38,7 @@ class StorageListWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.entity.list.workflow',
 			'input' => array('id' => 'spaceid'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`storages`',
 			'sqlprj' => '`stgid`, `stgname`, `mime`, `size`',
 			'sqlcnd' => "where `stgid` in \${list} order by `stgname`",

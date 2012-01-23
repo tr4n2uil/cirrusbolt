@@ -8,6 +8,7 @@ require_once(SBSERVICE);
  *	@param chadm boolean Is chack admin [memory] optional default true
  *	@param mgchn boolean Is merge chain [memory] optional default true
  *	@param selection string Selection operation [memory] optional default 'list' ('list', 'children', 'parents')
+ *	@param entkey string Entity Key [memory] optional default 'entity'
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param id long int Reference ID [memory]
@@ -59,6 +60,7 @@ class EntityListWorkflow implements Service {
 				'chadm' => true,
 				'mgchn' => true,
 				'selection' => 'list',
+				'entkey' => 'entity',
 				'type' => 'general', 
 				'state' => true, 
 				'istate' => true, 
@@ -132,7 +134,7 @@ class EntityListWorkflow implements Service {
 			array(
 				'service' => 'cbcore.data.merge.service',
 				'args' => array('entities', 'chains'),
-				'params' => array('entities' => array(0, 'entity'), 'chains' => array(0, 'chain')),
+				'params' => array('entities' => array(0, $memory['entkey']), 'chains' => array(0, 'chain')),
 				'output' => array('result' => 'entities')
 			));
 		}

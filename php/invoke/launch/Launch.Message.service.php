@@ -35,6 +35,7 @@ class LaunchMessageService implements Service {
 	**/
 	public function run($memory){
 		$memory['response'] = array();
+		$memory['ui'] = array();
 		$message = $memory['message'];
 		$uri = $message['service'];
 		
@@ -51,8 +52,9 @@ class LaunchMessageService implements Service {
 			foreach($instance->output() as $key){
 				$memory['response'][$key] = $memory[$key];
 			}
-			if($memory['uiconf']){
-				list($root, $service, $operation) = explode('.' ,$uri);
+			
+			list($root, $service, $operation) = explode('.' ,$uri);
+			if($memory['uiconf'] && isset($memory['uiconf'][$root.'.'.$service.'.'.$operation])){
 				$memory['ui'] = $memory['uiconf'][$root.'.'.$service.'.'.$operation]['uidata'];
 			}
 		}

@@ -26,6 +26,7 @@ require_once(SBSERVICE);
  *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
  *
  *	@param construct array Construction Workflow [memory] optional default false
+ *	@param cparam array Construction Parameters [memory] optional default array()
  *
  *	@param user string User email [memory] optional default unknown@entity.add
  *	@param relation string Relation name [memory]
@@ -67,10 +68,11 @@ class EntityAddWorkflow implements Service {
 				'action' => 'add', 
 				'astate' => true, 
 				'iaction' => 'add', 
-				'aistate' => true
+				'aistate' => true,
 				'escparam' => array(), 
 				'successmsg' => 'Entity added successfully', 
-				'construct' => false
+				'construct' => false,
+				'cparam' => array()
 			)
 		);
 	}
@@ -88,13 +90,14 @@ class EntityAddWorkflow implements Service {
 		));
 		
 		if($memory['construct']){
-			array_push($workflow, $memory['construct']);
+			foreach($memory['construct'] as $construct)
+				array_push($workflow, $construct);
 		}
 		
 		array_push($workflow,
 		array(
 			'service' => 'transpera.relation.insert.workflow',
-			'args' => array_merge($memory['args'], array('id', 'owner', 'user')),
+			'args' => array_merge($memory['args'], array('id', 'owner', 'user'), $memory['cparam']),
 			'escparam' => array_merge($memory['escparam'], array('user'))
 		));
 		

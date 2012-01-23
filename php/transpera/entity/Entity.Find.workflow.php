@@ -38,8 +38,7 @@ require_once(SBSERVICE);
  *	@return entity long int Entity information [memory]
  *	@return parent long int Parent ID [memory]
  *	@return admin integer Is admin [memory]
- *	@return authorize string Authorize [memory]
- *	@return state string State [memory]
+ *	@return chain array Chain data [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -81,8 +80,7 @@ class EntityFindWorkflow implements Service {
 	public function run($memory){
 		$memory['msg'] = $memory['successmsg'];
 		$memory['admin'] = 0;
-		$memory['authorize'] = '';
-		$memory['state'] = '';
+		$memory['chain'] = array();
 		
 		$workflow = array(
 		array(
@@ -118,7 +116,7 @@ class EntityFindWorkflow implements Service {
 		if($memory['mgchn']){
 			array_push($workflow,
 			array(
-				'service' => 'guard.chain.info.workflow',
+				'service' => 'guard.chain.data.workflow',
 				'input' => array('chainid' => 'id')
 			));
 		}
@@ -130,7 +128,7 @@ class EntityFindWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('entity', 'parent', 'admin', 'id', 'authorize', 'state');
+		return array('entity', 'parent', 'admin', 'id', 'chain');
 	}
 	
 }

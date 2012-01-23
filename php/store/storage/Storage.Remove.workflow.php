@@ -45,7 +45,7 @@ class StorageRemoveWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.delete.workflow',
 			'args' => array('stgid'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`storages`',
 			'sqlcnd' => "where `stgid`=\${stgid}",
 			'errormsg' => 'Invalid Storage ID'

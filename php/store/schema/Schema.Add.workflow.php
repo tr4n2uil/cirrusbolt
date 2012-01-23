@@ -52,7 +52,7 @@ class SchemaAddWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('schid', 'owner', 'schname', 'schpass', 'schhost', 'schtype'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`schemas`',
 			'sqlcnd' => "(`schid`, `owner`, `schname`, `schpass`, `schhost`, `schtype`) values (\${schid}, \${owner}, '\${schname}', '\${schpass}', '\${schhost}', '\${schtype}')",
 			'escparam' => array('schname', 'schpass', 'schhost', 'schtype')

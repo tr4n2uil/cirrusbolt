@@ -40,7 +40,7 @@ class SchemaListWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.entity.list.workflow',
 			'input' => array('id' => 'cntrid'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`schemas`',
 			'sqlprj' => '`schid`, `schname`, `schhost`, `schtype`',
 			'sqlcnd' => "where `schid` in \${list}",

@@ -73,10 +73,11 @@ class EntityRemoveWorkflow implements Service {
 		));
 		
 		if($memory['destruct']){
-			$workflow = array_push($workflow, $memory['destruct']);
+			foreach($memory['destruct'] as $destruct)
+				array_push($workflow, $destruct);
 		}
 		
-		$workflow = array_push($workflow,
+		array_push($workflow,
 		array(
 			'service' => 'transpera.reference.remove.workflow',
 			'input' => array('action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),

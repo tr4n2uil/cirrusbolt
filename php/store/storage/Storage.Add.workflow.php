@@ -5,7 +5,9 @@ require_once(SBSERVICE);
  *	@class StorageAddWorkflow
  *	@desc Adds new storage to space
  *
- *	@param filename string File name [memory] optional default 'storage.file'
+ *	@param filename string File name [memory] optional default false
+ *	@param name string File name [memory] optional default 'storage'
+ *	@param ext string File extension [memory] optional default 'file'
  *	@param mime string MIME type [memory] optional default 'application/force-download'
  *	@param size long int Size in bytes [memory] optional default 0
  *	@param keyid long int Usage Key ID [memory]
@@ -27,7 +29,7 @@ class StorageAddWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('spaceid' => 0, 'level' => 1, 'owner' => false, 'filename' => 'storage.file', 'mime' => 'application/force-download', 'size' => 0, 'filekey' => false)
+			'optional' => array('spaceid' => 0, 'level' => 1, 'owner' => false, 'filename' => false, 'name' => 'storage', 'ext' => 'file', 'mime' => 'application/force-download', 'size' => 0, 'filekey' => false)
 		);
 	}
 	
@@ -36,6 +38,9 @@ class StorageAddWorkflow implements Service {
 	**/
 	public function run($memory){
 		$construct = false;
+		if($memory['filename'] == false){
+			$memory['filename'] = $memory['name'].'.'.$memory['ext'];
+		}
 		
 		if($memory['filekey']){
 			$construct = array(
@@ -52,7 +57,7 @@ class StorageAddWorkflow implements Service {
 			'service' => 'transpera.entity.add.workflow',
 			'args' => array('filename', 'mime', 'size'),
 			'input' => array('parent' => 'spaceid'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`storages`',
 			'sqlcnd' => "(`stgid`, `owner`, `stgname`, `filename`, `mime`, `size`) values (\${id}, \${owner}, '\${filename}',  '\${filename}', '\${mime}', \${size})",
 			'escparam' => array('stgname', 'filename', 'mime'),

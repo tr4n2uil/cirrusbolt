@@ -61,7 +61,7 @@ class InterfaceTileService implements Service {
 			$tile = $config['tile'];
 			$ins = $config['ins'];
 			$tpl = $config['tpl'];
-			$page = $config['page'];
+			$page = array();
 		}
 		else {
 			$page = $memory['pages']['error'];

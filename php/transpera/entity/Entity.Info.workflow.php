@@ -5,6 +5,7 @@ require_once(SBSERVICE);
  *	@class EntityInfoWorkflow
  *	@desc Returns entity information by ID
  *
+ *	@param auth boolean Is auth [memory] optional default true
  *	@param track boolean Is track [memory] optional default true
  *	@param chadm boolean Is chack admin [memory] optional default true
  *	@param mgchn boolean Is merge chain [memory] optional default true
@@ -35,10 +36,10 @@ require_once(SBSERVICE);
  *	@param conn array DataService instance configuration key [memory]
  *
  *	@return entity long int Entity information [memory]
+ *	@return id long int Entity ID [memory]
  *	@return parent long int Parent ID [memory]
  *	@return admin integer Is admin [memory]
- *	@return authorize string Authorize [memory]
- *	@return state string State [memory]
+ *	@return chain array Chain data [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -52,6 +53,7 @@ class EntityInfoWorkflow implements Service {
 		return array(
 			'required' => array('conn', 'keyid', 'id', 'relation', 'sqlcnd'),
 			'optional' => array(
+				'auth' => true,
 				'track' => true,
 				'chadm' => true,
 				'mgchn' => true,
@@ -80,13 +82,18 @@ class EntityInfoWorkflow implements Service {
 	public function run($memory){
 		$memory['msg'] = $memory['successmsg'];
 		$memory['admin'] = 0;
-		$memory['authorize'] = '';
-		$memory['state'] = '';
+		$memory['chain'] = array();
 		
-		$workflow = array(
-		array(
-			'service' => 'transpera.reference.authorize.workflow'
-		),
+		$workflow = array();
+		
+		if($memory['auth']){
+			array_push($workflow,
+			array(
+				'service' => 'transpera.reference.authorize.workflow'
+			));
+		}
+		
+		array_push($workflow,
 		array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => array_merge(array('id'), $memory['args'])
@@ -117,7 +124,7 @@ class EntityInfoWorkflow implements Service {
 		if($memory['mgchn']){
 			array_push($workflow,
 			array(
-				'service' => 'guard.chain.info.workflow',
+				'service' => 'guard.chain.data.workflow',
 				'input' => array('chainid' => 'id')
 			));
 		}
@@ -129,7 +136,7 @@ class EntityInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('entity', 'parent', 'admin', 'authorize', 'state');
+		return array('entity', 'id', 'parent', 'admin', 'chain');
 	}
 	
 }

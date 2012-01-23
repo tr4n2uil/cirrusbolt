@@ -51,7 +51,7 @@ class SchemaRemoveWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.delete.workflow',
 			'args' => array('schid'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`schemas`',
 			'sqlcnd' => "where `schid`=\${schid}",
 			'errormsg' => 'Invalid Schema ID'

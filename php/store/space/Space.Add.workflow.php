@@ -50,7 +50,7 @@ class SpaceAddWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('spaceid', 'owner', 'spname', 'sppath'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`spaces`',
 			'sqlcnd' => "(`spaceid`, `owner`, `spname`, `sppath`) values (\${spaceid}, \${owner}, '\${spname}', '\${sppath}')",
 			'escparam' => array('spname', 'sppath')

@@ -32,7 +32,7 @@ class SpaceEditWorkflow implements Service {
 			'service' => 'transpera.entity.edit.workflow',
 			'input' => array('id' => 'spaceid'),
 			'args' => array('spname', 'sppath'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`spaces`',
 			'sqlcnd' => "set `spname`='\${spname}', `sppath`='\${sppath}' where `spaceid`=\${id}",
 			'escparam' => array('spname', 'sppath'),

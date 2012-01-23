@@ -36,7 +36,7 @@ class SpaceListWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.enitity.list.workflow',
 			'input' => array('id' => 'cntrid'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`spaces`',
 			'sqlprj' => '`spaceid`, `owner`, `spname`',
 			'sqlcnd' => "where `spaceid` in \${list} order by `spname`",

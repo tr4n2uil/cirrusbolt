@@ -33,7 +33,7 @@ class SpaceFindWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('spname'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`spaces`',
 			'sqlcnd' => "where `spname`='\${spname}'",
 			'escparam' => array('spname'),

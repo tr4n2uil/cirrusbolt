@@ -42,7 +42,7 @@ class SchemaInfoWorkflow implements Service {
 		array(
 			'service' => 'transpera.entity.info.workflow',
 			'input' => array('id' => 'schid', 'parent' => 'cntrid'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`schemas`',
 			'sqlprj' => '`schid`, `schname`, `schpass`, `schhost`, `schtype`',
 			'sqlcnd' => "where `schid`=\${id}",

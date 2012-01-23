@@ -41,7 +41,7 @@ class SpaceInfoWorkflow implements Service {
 		array(
 			'service' => 'transpera.entity.info.workflow',
 			'input' => array('id' => 'spaceid', 'parent' => 'cntrid'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`spaces`',
 			'sqlcnd' => "where `spaceid`=\${id}",
 			'errormsg' => 'Invalid Space ID',

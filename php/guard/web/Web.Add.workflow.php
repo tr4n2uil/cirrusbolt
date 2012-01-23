@@ -46,7 +46,7 @@ class WebAddWorkflow implements Service {
 			'conn' => 'cbconn',
 			'relation' => '`webs`',
 			'sqlcnd' => "(`child`, `parent`, `type`, `inherit`, `control`, `state`, `path`, `leaf`, `ctime`) values (\${child}, \${parent}, '\${type}', \${inherit}, '\${icontrol}', '\${istate}', '\${path}', '\${leaf}', now())",
-			'escparam' => array('type', 'control', 'state', 'path', 'leaf')
+			'escparam' => array('type', 'icontrol', 'istate', 'path', 'leaf')
 		);
 		
 		return Snowblozm::run($service, $memory);

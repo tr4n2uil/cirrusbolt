@@ -41,7 +41,7 @@ class SpaceRemoveWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.delete.workflow',
 			'args' => array('spaceid'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`spaces`',
 			'sqlcnd' => "where `spaceid`=\${spaceid}",
 			'errormsg' => 'Invalid Space ID'

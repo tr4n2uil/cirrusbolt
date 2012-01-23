@@ -67,6 +67,7 @@ class WebListWorkflow implements Service {
 			'sqlprj' => "(case `inherit` when 1 then `child` when 0 then (select `chainid` from `members` where `chainid`=`child` and `keyid`=\${keyid} $last) end) as `child`",
 			'sqlcnd' => "where `type`='\${type}' and `parent`=\${parent} $ilast",
 			'escparam' => $escparam,
+			'check' => false,
 			'errormsg' => 'No Access'
 		);
 		

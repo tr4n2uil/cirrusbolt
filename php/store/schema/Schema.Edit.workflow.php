@@ -48,7 +48,7 @@ class SchemaEditWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.update.workflow',
 			'args' => array('schid', 'schpass', 'schhost', 'schtype'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`schemas`',
 			'sqlcnd' => "set `schpass`='\${schpass}', `schhost`='\${schhost}', `schtype`='\${schtype}' where `schid`=\${schid}",
 			'escparam' => array('schpass', 'schhost', 'schtype')

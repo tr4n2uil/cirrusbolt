@@ -44,7 +44,7 @@ class StorageInfoWorkflow implements Service {
 		array(
 			'service' => 'transpera.entity.info.workflow',
 			'input' => array('id' => 'stgid', 'parent' => 'spaceid'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`storages`',
 			'sqlcnd' => "where `stgid`=\${id}",
 			'errormsg' => 'Invalid Storage ID',

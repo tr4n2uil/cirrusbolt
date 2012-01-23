@@ -56,7 +56,7 @@ class StorageWriteWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.update.workflow',
 			'args' => array('stgid', 'filename', 'mime', 'size'),
-			'conn' => 'tsconn',
+			'conn' => 'cbconn',
 			'relation' => '`storages`',
 			'sqlcnd' => "set `stgname`='\${filename}', `mime`='\${mime}', `size`=\${size} where `stgid`=\${stgid}",
 			'escparam' => array('mime', 'filename')
