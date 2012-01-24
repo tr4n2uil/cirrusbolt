@@ -7,7 +7,7 @@ require_once(CACHELITEOUTPUT);
  *	@desc Saves Output Data to Cache using CacheLiteOutput
  *
  *	@param key string Key [memory] optional default false
- *	@param cachelite array CacheLite configuration [Snowblozm] (caching, cacheDir, lifeTime, automaticCleaningFactor, hashedDirectoryLevel)
+ *	@param cachelite array CacheLite configuration [Snowblozm] (caching, cacheDir, lifeTime, automaticCleaningFactor, hashedDirectoryLevel, automaticSerialization)
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *	
@@ -27,8 +27,16 @@ class LiteOutputService implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$opitons = Snowblozm::get('cachelite');
+		$options = Snowblozm::get('cachelite');
 		$cache = new Cache_Lite_Output($options);
+		
+		if(!$cache){
+			$memory['valid'] = false;
+			$memory['msg'] = 'Error Initializing Cache';
+			$memory['status'] = 200;
+			$memory['details'] = 'Error initializing cache @pool.lite.output service';
+			return $memory;
+		}
 		
 		if($memory['key']){
 			if($cache->start($memory['key']) === false){

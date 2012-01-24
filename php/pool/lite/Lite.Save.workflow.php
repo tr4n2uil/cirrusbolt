@@ -9,7 +9,7 @@ require_once(SBSERVICE);
  *	@param data string Data [memory] 
  *	@param expiry long int Expiry time [memory] optional default false
  *	@param type string Request type [memory] optional default 'json' ('json', 'xml', 'wddx')
- *	@param cachelite array CacheLite configuration [Snowblozm] (caching, cacheDir, lifeTime, automaticCleaningFactor, hashedDirectoryLevel)
+ *	@param cachelite array CacheLite configuration [Snowblozm] (caching, cacheDir, lifeTime, automaticCleaningFactor, hashedDirectoryLevel, automaticSerialization)
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *	
