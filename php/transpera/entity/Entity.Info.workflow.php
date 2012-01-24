@@ -35,6 +35,9 @@ require_once(SBSERVICE);
  *	@param saistate string State to authorize inherit [memory] optional default true (false= All)
  *	@param sinit boolean init flag [memory] optional default true
  *
+ *	@param cache boolean Is cacheable [memory] optional default true
+ *	@param expiry int Cache expiry [memory] optional default 150
+ *
  *	@param conn array DataService instance configuration key [memory]
  *
  *	@return entity long int Entity information [memory]
@@ -75,7 +78,9 @@ class EntityInfoWorkflow implements Service {
 				'sastate' => true, 
 				'siaction' => 'edit', 
 				'saistate' => true, 
-				'sinit' => true
+				'sinit' => true,
+				'cache' => true,
+				'expiry' => 150
 			)
 		);
 	}
@@ -84,56 +89,81 @@ class EntityInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = $memory['successmsg'];
-		$memory['admin'] = 0;
-		$memory['chain'] = array();
-		
-		$workflow = array();
-		
-		if($memory['auth']){
-			array_push($workflow,
-			array(
-				'service' => 'transpera.reference.authorize.workflow'
-			));
+		$cache = $memory['cache'];
+
+		if($cache){
+			$poolkey = 'ENTITY_INFO_'.json_encode($memory);
+			$pool = Snowblozm::run(array(
+				'service' => 'pool.lite.get.service',
+				'key' => $poolkey
+			), array());
 		}
 		
-		array_push($workflow,
-		array(
-			'service' => 'transpera.relation.unique.workflow',
-			'args' => array_merge(array('id'), $memory['args'])
-		),
-		array(
-			'service' => 'cbcore.data.select.service',
-			'args' => array('result'),
-			'params' => array('result.0' => 'entity')
-		));
+		if($cache && $pool['valid']){
+			$memory = $pool['data'];
+		} 
+		else {
 		
-		if($memory['track']){
+			$memory['msg'] = $memory['successmsg'];
+			$memory['admin'] = 0;
+			$memory['chain'] = array();
+			
+			$workflow = array();
+			
+			if($memory['auth']){
+				array_push($workflow,
+				array(
+					'service' => 'transpera.reference.authorize.workflow'
+				));
+			}
+			
 			array_push($workflow,
 			array(
-				'service' => 'gauge.track.read.workflow',
-			));
-		}
-		
-		if($memory['chadm']){
-			array_push($workflow,
+				'service' => 'transpera.relation.unique.workflow',
+				'args' => array_merge(array('id'), $memory['args'])
+			),
 			array(
-				'service' => 'transpera.reference.authorize.workflow',
-				//'input' => array('id' => 'parent'),
-				'input' => array('acstate' => 'sacstate', 'action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
-				'admin' => true
+				'service' => 'cbcore.data.select.service',
+				'args' => array('result'),
+				'params' => array('result.0' => 'entity')
 			));
+			
+			if($memory['track']){
+				array_push($workflow,
+				array(
+					'service' => 'gauge.track.read.workflow',
+				));
+			}
+			
+			if($memory['chadm']){
+				array_push($workflow,
+				array(
+					'service' => 'transpera.reference.authorize.workflow',
+					//'input' => array('id' => 'parent'),
+					'input' => array('acstate' => 'sacstate', 'action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
+					'admin' => true
+				));
+			}
+			
+			if($memory['mgchn']){
+				array_push($workflow,
+				array(
+					'service' => 'guard.chain.info.workflow',
+					'input' => array('chainid' => 'id')
+				));
+			}
+			
+			$memory = Snowblozm::execute($workflow, $memory);
+			if($cache){
+				Snowblozm::run(array(
+					'service' => 'pool.lite.save.service',
+					'key' => $poolkey,
+					'data' => $memory
+				), array());
+			}
 		}
 		
-		if($memory['mgchn']){
-			array_push($workflow,
-			array(
-				'service' => 'guard.chain.info.workflow',
-				'input' => array('chainid' => 'id')
-			));
-		}
-		
-		return Snowblozm::execute($workflow, $memory);
+		return $memory;
 	}
 	
 	/**

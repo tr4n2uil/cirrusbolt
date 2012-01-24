@@ -14,8 +14,8 @@ require_once(SBSERVICE);
  *	@param not boolean Value check nonequal [memory] optional default true
  *	@param errormsg string Error message [memory] optional default 'Error in Database'
  *	@param errstatus integer Error status code [memory] optional default 505
- *	@param rucache boolean Is cacheable [memory] optional default false
- *	@param ruexpiry int Cache expiry [memory] optional default 85
+ *	@param cache boolean Is cacheable [memory] optional default false
+ *	@param expiry int Cache expiry [memory] optional default 85
  *
  *	@param conn array DataService instance configuration key [memory]
  *
@@ -39,8 +39,8 @@ class RelationUniqueWorkflow implements Service {
 				'not' => true, 
 				'errstatus' => 505, 
 				'check' => true,
-				'rucache' => false,
-				'ruexpiry' => 85
+				'cache' => true,
+				'expiry' => 85
 			)
 		);
 	}
@@ -49,15 +49,39 @@ class RelationUniqueWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$service = array(
-			'service' => 'rdbms.query.execute.workflow',
-			'args' => $memory['args'],
-			'input' => array('cache' => 'rucache', 'expiry' => 'ruexpiry'),
-			'output' => array('sqlresult' => 'result'),
-			'query' => 'select '.$memory['sqlprj'].' from '.$memory['relation'].' '.$memory['sqlcnd'].';',
-		);
+		$cache = $memory['cache'];
+
+		if($cache){
+			$poolkey = 'RELATION_UNIQUE_'.json_encode($memory);
+			$pool = Snowblozm::run(array(
+				'service' => 'pool.lite.get.service',
+				'key' => $poolkey
+			), array());
+		}
 		
-		return Snowblozm::run($service, $memory);
+		if($cache && $pool['valid']){
+			$memory = $pool['data'];
+		} 
+		else {
+
+			$service = array(
+				'service' => 'rdbms.query.execute.workflow',
+				'args' => $memory['args'],
+				'output' => array('sqlresult' => 'result'),
+				'query' => 'select '.$memory['sqlprj'].' from '.$memory['relation'].' '.$memory['sqlcnd'].';',
+			);
+			
+			$memory = Snowblozm::run($service, $memory);
+			if($cache){
+				Snowblozm::run(array(
+					'service' => 'pool.lite.save.service',
+					'key' => $poolkey,
+					'data' => $memory
+				), array());
+			}
+		}
+		
+		return $memory;
 	}
 	
 	/**

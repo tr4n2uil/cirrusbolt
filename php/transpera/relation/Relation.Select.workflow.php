@@ -18,10 +18,8 @@ require_once(SBSERVICE);
  *	@param mapkey string Map Key [memory] optional default 0
  *	@param mapname string Map Name [memory] optional default 'data'
  *	@param ismap boolean Is map [memory] optional default true
- *	@param rstcache boolean Is cacheable [memory] optional default false
- *	@param rstexpiry int Cache expiry [memory] optional default 150
- *	@param rscache boolean Is cacheable [memory] optional default false
- *	@param rsexpiry int Cache expiry [memory] optional default 85
+ *	@param cache boolean Is cacheable [memory] optional default true
+ *	@param expiry int Cache expiry [memory] optional default 85
  *
  *	@param conn array DataService instance configuration key [memory]
  *
@@ -50,10 +48,8 @@ class RelationSelectWorkflow implements Service {
 				'mapkey' => 0,
 				'mapname' => 'data',
 				'ismap' => true,
-				'rstcache' => false,
-				'rstexpiry' => 150,
-				'rscache' => false,
-				'rsexpiry' => 85
+				'cache' => false,
+				'expiry' => 85
 			)
 		);
 	}
@@ -62,52 +58,76 @@ class RelationSelectWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$relation = $memory['relation'];
-		$pgsz = $memory['pgsz'];
-		$limit = '';
+		$cache = $memory['cache'];
+
+		if($cache){
+			$poolkey = 'RELATION_SELECT_'.json_encode($memory);
+			$pool = Snowblozm::run(array(
+				'service' => 'pool.lite.get.service',
+				'key' => $poolkey
+			), array());
+		}
 		
-		if($pgsz){
-			if(!$memory['total']){
-				$service = array(
-					'service' => 'rdbms.query.execute.workflow',
-					'args' => $memory['args'],
-					'input' => array('cache' => 'rstcache', 'expiry' => 'rstexpiry'),
-					'output' => array('sqlresult' => 'result'),
-					'query' => 'select count(*) as total from '.$relation.' '.$memory['sqlcnd'].';',
-					'count' => 0,
-					'not' => false
-				);
+		if($cache && $pool['valid']){
+			$memory = $pool['data'];
+		} 
+		else {
+		
+			$relation = $memory['relation'];
+			$pgsz = $memory['pgsz'];
+			$limit = '';
+			
+			if($pgsz){
+				if(!$memory['total']){
+					$service = array(
+						'service' => 'rdbms.query.execute.workflow',
+						'args' => $memory['args'],
+						'output' => array('sqlresult' => 'result'),
+						'query' => 'select count(*) as total from '.$relation.' '.$memory['sqlcnd'].';',
+						'count' => 0,
+						'not' => false
+					);
+					
+					$memory = Snowblozm::run($service, $memory);
+					if(!$memory['valid'])
+						return $memory;
+					
+					$memory['total'] = $memory['result'][0]['total'];
+				}
 				
-				$memory = Snowblozm::run($service, $memory);
-				if(!$memory['valid'])
-					return $memory;
-				
-				$memory['total'] = $memory['result'][0]['total'];
+				$limit = ' limit '.($pgsz*$memory['pgno']).','.$pgsz;
 			}
 			
-			$limit = ' limit '.($pgsz*$memory['pgno']).','.$pgsz;
-		}
-		
-		$workflow = array(
-		array(
-			'service' => 'rdbms.query.execute.workflow',
-			'args' => $memory['args'],
-			'input' => array('cache' => 'rscache', 'expiry' => 'rsexpiry'),
-			'output' => array('sqlresult' => 'result'),
-			'query' => 'select '.$memory['sqlprj'].' from '.$relation.' '.$memory['sqlcnd'].$limit.';',
-			'count' => 0,
-			'not' => false
-		));
-		
-		if($memory['ismap']){
-		array_push($workflow,
+			$workflow = array(
 			array(
-				'service' => 'cbcore.data.map.service',
-				'input' => array('data' => 'result')
+				'service' => 'rdbms.query.execute.workflow',
+				'args' => $memory['args'],
+				'output' => array('sqlresult' => 'result'),
+				'query' => 'select '.$memory['sqlprj'].' from '.$relation.' '.$memory['sqlcnd'].$limit.';',
+				'count' => 0,
+				'not' => false
 			));
+			
+			if($memory['ismap']){
+			array_push($workflow,
+				array(
+					'service' => 'cbcore.data.map.service',
+					'input' => array('data' => 'result')
+				));
+			}
+			
+			$memory = Snowblozm::execute($workflow, $memory);
+		
+			if($cache){
+				Snowblozm::run(array(
+					'service' => 'pool.lite.save.service',
+					'key' => $poolkey,
+					'data' => $memory
+				), array());
+			}
 		}
 		
-		return Snowblozm::execute($workflow, $memory);
+		return $memory;
 	}
 	
 	/**

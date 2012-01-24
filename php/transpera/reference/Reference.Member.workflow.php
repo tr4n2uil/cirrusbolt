@@ -19,15 +19,8 @@ require_once(SBSERVICE);
  *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
  *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *
- *	@param arucache boolean Is cacheable [memory] optional default true
- *	@param aruexpiry int Cache expiry [memory] optional default 150
- *	@param asrucache boolean Is cacheable [memory] optional default true
- *	@param asruexpiry int Cache expiry [memory] optional default 150
- *
- *	@param wrstcache boolean Is cacheable [memory] optional default false
- *	@param wrstexpiry int Cache expiry [memory] optional default 150
- *	@param wrscache boolean Is cacheable [memory] optional default false
- *	@param wrsexpiry int Cache expiry [memory] optional default 85
+ *	@param cache boolean Is cacheable [memory] optional default true
+ *	@param expiry int Cache expiry [memory] optional default 150
  *
  *	@return members array Members information [memory]
  *	@return total long int Paging total [memory]
@@ -53,14 +46,8 @@ class ReferenceMemberWorkflow implements Service {
 				'astate' => true, 
 				'iaction' => 'edit', 
 				'aistate' => true,
-				'arucache' => true,
-				'aruexpiry' => 150,
-				'asrucache' => true,
-				'asruexpiry' => 150,
-				'wrscache' => false, 
-				'wrsexpiry' => 85,
-				'wrstcache' => false, 
-				'wrstexpiry' => 150
+				'cache' => true,
+				'expiry' => 150
 			)
 		);
 	}
@@ -77,13 +64,7 @@ class ReferenceMemberWorkflow implements Service {
 		),
 		array(
 			'service' => 'guard.chain.member.workflow',
-			'input' => array(
-				'chainid' => 'id',
-				'rucache' => 'wrucache',
-				'ruexpiry' => 'wruexpiry',
-				'srucache' => 'wrucache',
-				'sruexpiry' => 'wsruexpiry'
-			),
+			'input' => array('chainid' => 'id'),
 			'output' => array('result' => 'members')
 		));
 		

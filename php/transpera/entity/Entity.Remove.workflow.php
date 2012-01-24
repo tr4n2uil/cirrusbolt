@@ -60,7 +60,9 @@ class EntityRemoveWorkflow implements Service {
 				'sinit' => true,
 				'successmsg' => 'Entity removed successfully', 
 				'errormsg' => 'Invalid Entity ID', 
-				'destruct' => false
+				'destruct' => false,
+				'cache' => true,
+				'expiry' => 150
 			)
 		);
 	}

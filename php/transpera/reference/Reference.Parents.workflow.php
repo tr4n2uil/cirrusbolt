@@ -20,15 +20,8 @@ require_once(SBSERVICE);
  *	@param iaction string Action to authorize inherit [memory] optional default 'list'
  *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *
- *	@param arucache boolean Is cacheable [memory] optional default true
- *	@param aruexpiry int Cache expiry [memory] optional default 150
- *	@param asrucache boolean Is cacheable [memory] optional default true
- *	@param asruexpiry int Cache expiry [memory] optional default 150
- *
- *	@param wrstcache boolean Is cacheable [memory] optional default false
- *	@param wrstexpiry int Cache expiry [memory] optional default 150
- *	@param wrscache boolean Is cacheable [memory] optional default false
- *	@param wrsexpiry int Cache expiry [memory] optional default 85
+ *	@param cache boolean Is cacheable [memory] optional default true
+ *	@param expiry int Cache expiry [memory] optional default 150
  *
  *	@return parents array Chain parents information [memory]
  *	@return total long int Paging total [memory]
@@ -55,14 +48,8 @@ class ReferenceParentsWorkflow implements Service {
 				'astate' => true, 
 				'iaction' => 'list', 
 				'aistate' => true,
-				'arucache' => true,
-				'aruexpiry' => 150,
-				'asrucache' => true,
-				'asruexpiry' => 150,
-				'wrscache' => false, 
-				'wrsexpiry' => 85,
-				'wrstcache' => false, 
-				'wrstexpiry' => 150
+				'cache' => true,
+				'expiry' => 150
 			)
 		);
 	}
@@ -79,13 +66,7 @@ class ReferenceParentsWorkflow implements Service {
 		),
 		array(
 			'service' => 'guard.web.parents.workflow',
-			'input' => array(
-				'child' => 'id',
-				'rucache' => 'wrucache',
-				'ruexpiry' => 'wruexpiry',
-				'srucache' => 'wrucache',
-				'sruexpiry' => 'wsruexpiry'
-			)
+			'input' => array('child' => 'id')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

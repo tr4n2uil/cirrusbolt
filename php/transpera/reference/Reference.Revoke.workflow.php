@@ -15,10 +15,8 @@ require_once(SBSERVICE);
  *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
  *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *
- *	@param arucache boolean Is cacheable [memory] optional default true
- *	@param aruexpiry int Cache expiry [memory] optional default 150
- *	@param asrucache boolean Is cacheable [memory] optional default true
- *	@param asruexpiry int Cache expiry [memory] optional default 150
+ *	@param cache boolean Is cacheable [memory] optional default true
+ *	@param expiry int Cache expiry [memory] optional default 150
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -37,10 +35,8 @@ class ReferenceRevokeWorkflow implements Service {
 				'astate' => true, 
 				'iaction' => 'edit', 
 				'aistate' => true,
-				'arucache' => true,
-				'aruexpiry' => 150,
-				'asrucache' => true,
-				'asruexpiry' => 150
+				'cache' => true,
+				'expiry' => 150
 			)
 		);
 	}

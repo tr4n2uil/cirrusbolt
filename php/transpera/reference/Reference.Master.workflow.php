@@ -9,10 +9,8 @@ require_once(SBSERVICE);
  *	@param id long int Reference ID [memory]
  *	@param keyvalue string Key value [memory]
  *
- *	@param arucache boolean Is cacheable [memory] optional default true
- *	@param aruexpiry int Cache expiry [memory] optional default 150
- *	@param asrucache boolean Is cacheable [memory] optional default true
- *	@param asruexpiry int Cache expiry [memory] optional default 150
+ *	@param cache boolean Is cacheable [memory] optional default true
+ *	@param expiry int Cache expiry [memory] optional default 150
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -24,13 +22,8 @@ class ReferenceMasterWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'id', 'keyvalue')			
-			'optional' => array(
-				'arucache' => true,
-				'aruexpiry' => 150,
-				'asrucache' => true,
-				'asruexpiry' => 150
-			)
+			'required' => array('keyid', 'id', 'keyvalue'),
+			'optional' => array('cache' => true, 'expiry' => 150)
 		);
 	}
 	

@@ -42,7 +42,7 @@ class LiteGetService implements Service {
 			return $memory;
 		}
 		
-		if(!$cache || $data === false){
+		if($data === false){
 			$memory['valid'] = false;
 			$memory['msg'] = 'Error Getting Data';
 			$memory['status'] = 200;

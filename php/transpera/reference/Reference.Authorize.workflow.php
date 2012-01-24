@@ -15,10 +15,8 @@ require_once(SBSERVICE);
  *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *	@param init boolean init flag [memory] optional default true
  *
- *	@param arucache boolean Is cacheable [memory] optional default true
- *	@param aruexpiry int Cache expiry [memory] optional default 150
- *	@param asrucache boolean Is cacheable [memory] optional default true
- *	@param asruexpiry int Cache expiry [memory] optional default 150
+ *	@param cache boolean Is cacheable [memory] optional default true
+ *	@param expiry int Cache expiry [memory] optional default 150
  *
  *	@param admin boolean Is return admin flag [memory] optional default false
  *
@@ -47,10 +45,8 @@ class ReferenceAuthorizeWorkflow implements Service {
 				'aistate' => true, 
 				'admin' => false, 
 				'init' => true,
-				'arucache' => true,
-				'aruexpiry' => 150,
-				'asrucache' => true,
-				'asruexpiry' => 150
+				'cache' => true,
+				'expiry' => 150
 			)
 		);
 	}
@@ -59,32 +55,57 @@ class ReferenceAuthorizeWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = 'Reference authorized successfully';
-		
-		if($memory['keyid'] === false){
-			$memory['masterkey'] = $memory['admin'] = $memory['level'] = 0;
-			$memory['authorize'] = 'edit:add:remove:list';
-			$memory['valid'] = true;
-			$memory['status'] = 200;
-			$memory['details'] = 'Successfully executed';
-			return $memory;
+		$cache = $memory['cache'];
+
+		if($cache){
+			$poolkey = 'REFERENCE_AUTHORIZE_'.json_encode($memory);
+			$pool = Snowblozm::run(array(
+				'service' => 'pool.lite.get.service',
+				'key' => $poolkey
+			), array());
 		}
 		
-		$service = array(
-			'service' => 'guard.chain.authorize.workflow',
-			'input' => array(
-				'chainid' => 'id', 
-				'cstate' => 'acstate', 
-				'state' => 'astate', 
-				'istate' => 'aistate',
-				'rucache' => 'arucache',
-				'ruexpiry' => 'aruexpiry',
-				'srucache' => 'srucache',
-				'sruexpiry' => 'asruexpiry'
-			)
-		);
+		if($cache && $pool['valid']){
+			$memory = $pool['data'];
+		} 
+		else {
+			
+			$memory['msg'] = 'Reference authorized successfully';
+			
+			if($memory['keyid'] === false){
+				$memory['masterkey'] = $memory['admin'] = $memory['level'] = 0;
+				$memory['authorize'] = 'edit:add:remove:list';
+				$memory['valid'] = true;
+				$memory['status'] = 200;
+				$memory['details'] = 'Successfully executed';
+				return $memory;
+			}
+			
+			$service = array(
+				'service' => 'guard.chain.authorize.workflow',
+				'input' => array(
+					'chainid' => 'id', 
+					'cstate' => 'acstate', 
+					'state' => 'astate', 
+					'istate' => 'aistate',
+					'rucache' => 'arucache',
+					'ruexpiry' => 'aruexpiry',
+					'srucache' => 'srucache',
+					'sruexpiry' => 'asruexpiry'
+				)
+			);
 		
-		return Snowblozm::run($service, $memory);
+			$memory = Snowblozm::run($service, $memory);
+			if($cache){
+				Snowblozm::run(array(
+					'service' => 'pool.lite.save.service',
+					'key' => $poolkey,
+					'data' => $memory
+				), array());
+			}
+		}
+		
+		return $memory;
 	}
 	
 	/**

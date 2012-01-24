@@ -37,6 +37,9 @@ require_once(SBSERVICE);
  *	@param escparam array Escape parameters [memory] optional default array()
  *	@param successmsg string Success message [memory] optional default 'Entity added successfully'
  *
+ *	@param cache boolean Is cacheable [memory] optional default true
+ *	@param expiry int Cache expiry [memory] optional default 150
+ *
  *	@param conn array DataService instance configuration key [memory]
  *
  *	@return id long int Entity ID [memory]
@@ -74,7 +77,9 @@ class EntityAddWorkflow implements Service {
 				'escparam' => array(), 
 				'successmsg' => 'Entity added successfully', 
 				'construct' => false,
-				'cparam' => array()
+				'cparam' => array(),
+				'cache' => true,
+				'expiry' => 150
 			)
 		);
 	}

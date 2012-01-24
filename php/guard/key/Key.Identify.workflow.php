@@ -12,8 +12,6 @@ require_once(SBSERVICE);
  *	@param challenge string Challenge to be used while hashing [memory] optional default 'snowblozm'
  *	@param key string Key value hash already generated previously [memory] optional default false
  *	@param keyid string Key ID returned previously [memory] optional default false
- *	@param rucache boolean Is cacheable [memory] optional default false
- *	@param ruexpiry int Cache expiry [memory] optional default 85
  *
  *	@return key string Key value hash [memory]
  *	@return keyid long int Key ID [memory]
@@ -28,16 +26,7 @@ class KeyIdentifyWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'optional' => array(
-				'challenge' => false, 
-				'user' => false, 
-				'email' => false, 
-				'key' => false, 
-				'keyid' => false, 
-				'context' => false,
-				'rucache' => false,
-				'ruexpiry' => 85
-			)
+			'optional' => array('challenge' => false, 'user' => false, 'email' => false, 'key' => false, 'keyid' => false, 'context' => false)
 		);
 	}
 	

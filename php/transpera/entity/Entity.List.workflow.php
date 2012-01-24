@@ -41,6 +41,9 @@ require_once(SBSERVICE);
  *	@param saistate string State to authorize inherit [memory] optional default true (false= All)
  *	@param sinit boolean init flag [memory] optional default true
  *
+ *	@param cache boolean Is cacheable [memory] optional default true
+ *	@param expiry int Cache expiry [memory] optional default 85
+ *
  *	@param conn array DataService instance configuration key [memory]
  *
  *	@return entities long int Entities information [memory]
@@ -84,7 +87,9 @@ class EntityListWorkflow implements Service {
 				'successmsg' => 'Entities information given successfully', 
 				'escparam' => array(),
 				'mapkey' => 0,
-				'mapname' => 'entity'
+				'mapname' => 'entity',
+				'cache' => true,
+				'expiry' => 150
 			)
 		);
 	}
@@ -93,60 +98,85 @@ class EntityListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = $memory['successmsg'];
-		$memory['admin'] = 0;
-		
-		if(!in_array($memory['selection'], array('list', 'children', 'parents'))){
-			$memory['valid'] = false;
-			$memory['msg'] = 'Invalid Selection Type';
-			$memory['valid'] = 500;
-			$memory['valid'] = 'Invalid selection : '.$memory['selection'].' @entity.list';
-			return $memory;
+		$cache = $memory['cache'];
+
+		if($cache){
+			$poolkey = 'ENTITY_LIST'.json_encode($memory);
+			$pool = Snowblozm::run(array(
+				'service' => 'pool.lite.get.service',
+				'key' => $poolkey
+			), array());
 		}
 		
-		$workflow = array(
-		array(
-			'service' => 'transpera.reference.'.$memory['selection'].'.workflow',
-		),
-		array(
-			'service' => 'cbcore.data.list.service',
-			'args' => array($memory['selection']),
-			'attr' => 'child',
-			'mapname' => 'web',
-			'default' => array(-1)
-		),
-		array(
-			'service' => 'transpera.relation.select.workflow',
-			'args' => array_merge($memory['args'], array('list')),
-			'escparam' => array_merge($memory['escparam'], array('list')),
-			'check' => false,
-			'output' => array('result' => 'entities')
-		));
+		if($cache && $pool['valid']){
+			$memory = $pool['data'];
+		} 
+		else {
 		
-		if($memory['chadm']){
-			array_push($workflow,
+			$memory['msg'] = $memory['successmsg'];
+			$memory['admin'] = 0;
+			
+			if(!in_array($memory['selection'], array('list', 'children', 'parents'))){
+				$memory['valid'] = false;
+				$memory['msg'] = 'Invalid Selection Type';
+				$memory['valid'] = 500;
+				$memory['valid'] = 'Invalid selection : '.$memory['selection'].' @entity.list';
+				return $memory;
+			}
+			
+			$workflow = array(
 			array(
-				'service' => 'transpera.reference.authorize.workflow',
-				'input' => array('acstate' => 'sacstate', 'action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
-				'admin' => true,
-			));
-		}
-		
-		if($memory['mgchn']){
-			array_push($workflow,
-			array(
-				'service' => 'guard.chain.list.workflow',
-				'input' => array('chainid' => 'list')
+				'service' => 'transpera.reference.'.$memory['selection'].'.workflow',
 			),
 			array(
-				'service' => 'cbcore.data.merge.service',
-				'args' => array('entities', 'chains'),
-				'params' => array('entities' => array(0, $memory['mapname']), 'chains' => array(0, 'chain')),
+				'service' => 'cbcore.data.list.service',
+				'args' => array($memory['selection']),
+				'attr' => 'child',
+				'mapname' => 'web',
+				'default' => array(-1)
+			),
+			array(
+				'service' => 'transpera.relation.select.workflow',
+				'args' => array_merge($memory['args'], array('list')),
+				'escparam' => array_merge($memory['escparam'], array('list')),
+				'check' => false,
 				'output' => array('result' => 'entities')
 			));
+			
+			if($memory['chadm']){
+				array_push($workflow,
+				array(
+					'service' => 'transpera.reference.authorize.workflow',
+					'input' => array('acstate' => 'sacstate', 'action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
+					'admin' => true,
+				));
+			}
+			
+			if($memory['mgchn']){
+				array_push($workflow,
+				array(
+					'service' => 'guard.chain.list.workflow',
+					'input' => array('chainid' => 'list')
+				),
+				array(
+					'service' => 'cbcore.data.merge.service',
+					'args' => array('entities', 'chains'),
+					'params' => array('entities' => array(0, $memory['mapname']), 'chains' => array(0, 'chain')),
+					'output' => array('result' => 'entities')
+				));
+			}
+			
+			$memory = Snowblozm::execute($workflow, $memory);
+			if($cache){
+				Snowblozm::run(array(
+					'service' => 'pool.lite.save.service',
+					'key' => $poolkey,
+					'data' => $memory
+				), array());
+			}
 		}
 		
-		return Snowblozm::execute($workflow, $memory);
+		return $memory;
 	}
 	
 	/**

@@ -10,15 +10,9 @@ require_once(SBSERVICE);
  *	@param state string State [memory] optional default false (true= Not '0')
  *	@param istate string State Inherit [memory] optional default false (true= Not '0')
  *	@param type string Type name [memory] optional default 'general'
- *
  *	@param pgsz long int Paging Size [memory] optional default false
  *	@param pgno long int Paging Index [memory] optional default 1
  *	@param total long int Paging Total [memory] optional default false
- *
- *	@param rstcache boolean Is cacheable [memory] optional default false
- *	@param rstexpiry int Cache expiry [memory] optional default 150
- *	@param rscache boolean Is cacheable [memory] optional default false
- *	@param rsexpiry int Cache expiry [memory] optional default 85
  *
  *	@return result array Chain IDs [memory]
  *	@return total long int Paging total [memory]
@@ -34,18 +28,7 @@ class WebListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'parent'),
-			'optional' => array(
-				'type' => 'general', 
-				'state' => false, 
-				'istate' => false, 
-				'pgsz' => false, 
-				'pgno' => 0, 
-				'total' => false,
-				'rscache' => false, 
-				'rsexpiry' => 85,
-				'rstcache' => false, 
-				'rstexpiry' => 150
-			)
+			'optional' => array('type' => 'general', 'state' => false, 'istate' => false, 'pgsz' => false, 'pgno' => 0, 'total' => false)
 		);
 	}
 	

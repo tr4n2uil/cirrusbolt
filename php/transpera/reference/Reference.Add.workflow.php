@@ -20,16 +20,14 @@ require_once(SBSERVICE);
  *	@param path string Collation path [memory] optional default '/'
  *	@param leaf string Collation leaf [memory] optional default 'Child ID'
  *
+ *	@param cache boolean Is cacheable [memory] optional default true
+ *	@param expiry int Cache expiry [memory] optional default 150
+ *
  *	@param acstate string State to authorize chain [memory] optional default true (false= None)
  *	@param action string Action to authorize member [memory] optional default 'add'
  *	@param astate string State to authorize member [memory] optional default true (false= None)
  *	@param iaction string Action to authorize inherit [memory] optional default 'add'
  *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
- *
- *	@param arucache boolean Is cacheable [memory] optional default true
- *	@param aruexpiry int Cache expiry [memory] optional default 150
- *	@param asrucache boolean Is cacheable [memory] optional default true
- *	@param asruexpiry int Cache expiry [memory] optional default 150
  *
  *	@return return id long int Reference ID [memory]
  *
@@ -62,10 +60,8 @@ class ReferenceAddWorkflow implements Service {
 				'astate' => true, 
 				'iaction' => 'add', 
 				'aistate' => true,
-				'arucache' => true,
-				'aruexpiry' => 150,
-				'asrucache' => true,
-				'asruexpiry' => 150
+				'cache' => true,
+				'expiry' => 150
 			)
 		);
 	}

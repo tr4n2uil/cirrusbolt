@@ -45,7 +45,8 @@ class SessionInfoWorkflow implements Service {
 			'relation' => '`sessions`',
 			'sqlcnd' => "where `sessionid`='\${sessionid}'",
 			'escparam' => array('sessionid'),
-			'errormsg' => 'Invalid Session ID'
+			'errormsg' => 'Invalid Session ID',
+			'cache' => false
 		),
 		array(
 			'service' => 'cbcore.data.select.service',
