@@ -27,6 +27,11 @@ require_once(SBSERVICE);
  *	@param iaction string Action to authorize inherit [memory] optional default 'add'
  *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *
+ *	@param arucache boolean Is cacheable [memory] optional default true
+ *	@param aruexpiry int Cache expiry [memory] optional default 150
+ *	@param asrucache boolean Is cacheable [memory] optional default true
+ *	@param asruexpiry int Cache expiry [memory] optional default 150
+ *
  *	@return return id long int Reference ID [memory]
  *	@return owner long int Owner Key ID [memory]
  *
@@ -57,7 +62,11 @@ class ReferenceCreateWorkflow implements Service {
 				'action' => 'add', 
 				'astate' => true, 
 				'iaction' => 'add', 
-				'aistate' => true
+				'aistate' => true,
+				'arucache' => true,
+				'aruexpiry' => 150,
+				'asrucache' => true,
+				'asruexpiry' => 150
 			)
 		);
 	}

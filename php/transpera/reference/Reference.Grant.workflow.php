@@ -21,6 +21,11 @@ require_once(SBSERVICE);
  *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
  *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *
+ *	@param arucache boolean Is cacheable [memory] optional default true
+ *	@param aruexpiry int Cache expiry [memory] optional default 150
+ *	@param asrucache boolean Is cacheable [memory] optional default true
+ *	@param asruexpiry int Cache expiry [memory] optional default 150
+ *
  *	@return return id long int Chain member ID [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -45,7 +50,11 @@ class ReferenceGrantWorkflow implements Service {
 				'action' => 'edit', 
 				'astate' => true, 
 				'iaction' => 'edit', 
-				'aistate' => true
+				'aistate' => true,
+				'arucache' => true,
+				'aruexpiry' => 150,
+				'asrucache' => true,
+				'asruexpiry' => 150
 			)
 		);
 	}

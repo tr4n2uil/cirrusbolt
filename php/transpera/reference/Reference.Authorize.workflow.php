@@ -7,12 +7,19 @@ require_once(SBSERVICE);
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param id long int Reference ID [memory]
+ *
  *	@param action string Action to authorize [memory] optional default 'edit'
  *	@param acstate string State to authorize chain [memory] optional default true (false= All)
  *	@param astate string State to authorize member [memory] optional default true (false= All)
  *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
  *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *	@param init boolean init flag [memory] optional default true
+ *
+ *	@param arucache boolean Is cacheable [memory] optional default true
+ *	@param aruexpiry int Cache expiry [memory] optional default 150
+ *	@param asrucache boolean Is cacheable [memory] optional default true
+ *	@param asruexpiry int Cache expiry [memory] optional default 150
+ *
  *	@param admin boolean Is return admin flag [memory] optional default false
  *
  *	@return masterkey long int Master key ID [memory]
@@ -39,7 +46,11 @@ class ReferenceAuthorizeWorkflow implements Service {
 				'iaction' => 'edit', 
 				'aistate' => true, 
 				'admin' => false, 
-				'init' => true
+				'init' => true,
+				'arucache' => true,
+				'aruexpiry' => 150,
+				'asrucache' => true,
+				'asruexpiry' => 150
 			)
 		);
 	}
@@ -61,7 +72,16 @@ class ReferenceAuthorizeWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'guard.chain.authorize.workflow',
-			'input' => array('chainid' => 'id', 'cstate' => 'acstate', 'state' => 'astate', 'istate' => 'aistate')
+			'input' => array(
+				'chainid' => 'id', 
+				'cstate' => 'acstate', 
+				'state' => 'astate', 
+				'istate' => 'aistate',
+				'rucache' => 'arucache',
+				'ruexpiry' => 'aruexpiry',
+				'srucache' => 'srucache',
+				'sruexpiry' => 'asruexpiry'
+			)
 		);
 		
 		return Snowblozm::run($service, $memory);

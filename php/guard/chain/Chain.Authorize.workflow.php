@@ -16,6 +16,11 @@ require_once(SBSERVICE);
  *	@param init boolean init flag [memory] optional default true
  *	@param admin boolean Is return admin flag [memory] optional default false
  *
+ *	@param rucache boolean Is cacheable [memory] optional default false
+ *	@param ruexpiry int Cache expiry [memory] optional default 150
+ *	@param srucache boolean Is cacheable [memory] optional default false
+ *	@param sruexpiry int Cache expiry [memory] optional default 150
+ *
  *	@return admin boolean Is admin [memory]
  *	@return level integer Web level [memory]
  *	@return masterkey long int Master key ID [memory]
@@ -33,7 +38,20 @@ class ChainAuthorizeWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'chainid'),
-			'optional' => array('level' => 0, 'action' => 'edit', 'iaction' => 'edit', 'cstate' => false, 'state' => false, 'istate' => false, 'admin' => false, 'init' => true)
+			'optional' => array(
+				'level' => 0, 
+				'action' => 'edit', 
+				'iaction' => 'edit', 
+				'cstate' => false, 
+				'state' => false, 
+				'istate' => false, 
+				'admin' => false, 
+				'init' => true,
+				'rucache' => false,
+				'ruexpiry' => 150,
+				'srucache' => false,
+				'sruexpiry' => 150
+			)
 		);
 	}
 	
@@ -156,6 +174,7 @@ class ChainAuthorizeWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => $args,
+			'input' => array('rucache' => 'srucache', 'ruexpiry' => 'sruexpiry'),
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
 			'sqlprj' => '`chainid`',

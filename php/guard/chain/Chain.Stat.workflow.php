@@ -6,6 +6,8 @@ require_once(SBSERVICE);
  *	@desc Returns chain statistics
  *
  *	@param chainid long int Chain ID [memory]
+ *	@param rucache boolean Is cacheable [memory] optional default false
+ *	@param ruexpiry int Cache expiry [memory] optional default 85
  *
  *	@return stat array Statistics information [memory]
  *
@@ -19,7 +21,8 @@ class ChainStatWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('chainid')
+			'required' => array('chainid'),
+			'optional' => array('rucache' => false, 'ruexpiry' => 85)
 		);
 	}
 	

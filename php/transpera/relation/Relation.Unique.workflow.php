@@ -14,6 +14,8 @@ require_once(SBSERVICE);
  *	@param not boolean Value check nonequal [memory] optional default true
  *	@param errormsg string Error message [memory] optional default 'Error in Database'
  *	@param errstatus integer Error status code [memory] optional default 505
+ *	@param rucache boolean Is cacheable [memory] optional default false
+ *	@param ruexpiry int Cache expiry [memory] optional default 85
  *
  *	@param conn array DataService instance configuration key [memory]
  *
@@ -30,7 +32,16 @@ class RelationUniqueWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('conn', 'relation', 'sqlcnd'),
-			'optional' => array('sqlprj' => '*', 'escparam' => array(), 'errormsg' => 'Error in Database', 'not' => true, 'errstatus' => 505, 'check' => true)
+			'optional' => array(
+				'sqlprj' => '*',
+				'escparam' => array(), 
+				'errormsg' => 'Error in Database', 
+				'not' => true, 
+				'errstatus' => 505, 
+				'check' => true,
+				'rucache' => false,
+				'ruexpiry' => 85
+			)
 		);
 	}
 	
@@ -41,6 +52,7 @@ class RelationUniqueWorkflow implements Service {
 		$service = array(
 			'service' => 'rdbms.query.execute.workflow',
 			'args' => $memory['args'],
+			'input' => array('cache' => 'rucache', 'expiry' => 'ruexpiry'),
 			'output' => array('sqlresult' => 'result'),
 			'query' => 'select '.$memory['sqlprj'].' from '.$memory['relation'].' '.$memory['sqlcnd'].';',
 		);

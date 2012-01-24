@@ -18,6 +18,10 @@ require_once(SBSERVICE);
  *	@param mapkey string Map Key [memory] optional default 0
  *	@param mapname string Map Name [memory] optional default 'data'
  *	@param ismap boolean Is map [memory] optional default true
+ *	@param rstcache boolean Is cacheable [memory] optional default false
+ *	@param rstexpiry int Cache expiry [memory] optional default 150
+ *	@param rscache boolean Is cacheable [memory] optional default false
+ *	@param rsexpiry int Cache expiry [memory] optional default 85
  *
  *	@param conn array DataService instance configuration key [memory]
  *
@@ -45,7 +49,11 @@ class RelationSelectWorkflow implements Service {
 				'total' => false, 
 				'mapkey' => 0,
 				'mapname' => 'data',
-				'ismap' => true
+				'ismap' => true,
+				'rstcache' => false,
+				'rstexpiry' => 150,
+				'rscache' => false,
+				'rsexpiry' => 85
 			)
 		);
 	}
@@ -63,6 +71,7 @@ class RelationSelectWorkflow implements Service {
 				$service = array(
 					'service' => 'rdbms.query.execute.workflow',
 					'args' => $memory['args'],
+					'input' => array('cache' => 'rstcache', 'expiry' => 'rstexpiry'),
 					'output' => array('sqlresult' => 'result'),
 					'query' => 'select count(*) as total from '.$relation.' '.$memory['sqlcnd'].';',
 					'count' => 0,
@@ -83,6 +92,7 @@ class RelationSelectWorkflow implements Service {
 		array(
 			'service' => 'rdbms.query.execute.workflow',
 			'args' => $memory['args'],
+			'input' => array('cache' => 'rscache', 'expiry' => 'rsexpiry'),
 			'output' => array('sqlresult' => 'result'),
 			'query' => 'select '.$memory['sqlprj'].' from '.$relation.' '.$memory['sqlcnd'].$limit.';',
 			'count' => 0,

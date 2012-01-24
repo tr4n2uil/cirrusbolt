@@ -8,6 +8,8 @@ require_once(SBSERVICE);
  *	@param child long int Chain ID [memory]
  *	@param type string Type name [memory] optional default 'general'
  *	@param state string State [memory] optional default false (true= Not '0')
+ *	@param rucache boolean Is cacheable [memory] optional default false
+ *	@param ruexpiry int Cache expiry [memory] optional default 85
  *
  *	@return web array Web member information [memory]
  *	@return parent long int Chain ID [memory]
@@ -23,7 +25,7 @@ class WebParentWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('child'),
-			'optional' => array('type' => 'general', 'state' => false)
+			'optional' => array('type' => 'general', 'state' => false, 'rucache' => false, 'ruexpiry' => 85)
 		);
 	}
 	

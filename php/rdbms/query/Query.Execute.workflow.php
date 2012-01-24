@@ -16,6 +16,8 @@ require_once(SBSERVICE);
  *	@param not boolean Error on nonequality [memory] optional default true
  *	@param errormsg string Error message on validation failure [memory] optional default 'Invalid Query Results'
  *	@param errstatus integer Error status code [memory] optional default 505
+ *	@param cache boolean Is cacheable [memory] optional default false
+ *	@param expiry int Cache expiry [memory] optional default POOL_QUERY_EXECUTE
  *
  *	@return sqlresult array/integer Result set / affected row count [memory]
  *	@return sqlrc integer Row count [memory]
@@ -31,8 +33,18 @@ class QueryExecuteWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('conn', 'query'),
-			'optional' => array('rstype' => 0, 'escparam' => array(), 'numparam' => false, 
-								'count' => 1, 'not' => true, 'errormsg' => 'Invalid Query Results', 'errstatus' => 505, 'check' => true)
+			'optional' => array(
+				'rstype' => 0, 
+				'escparam' => array(), 
+				'numparam' => false, 
+				'count' => 1, 
+				'not' => true, 
+				'errormsg' => 'Invalid Query Results', 
+				'errstatus' => 505, 
+				'check' => true,
+				'cache' => false,
+				'expiry' => 85
+			)
 		);
 	}
 	
@@ -43,8 +55,9 @@ class QueryExecuteWorkflow implements Service {
 		$args = $memory['args'];
 		$escparam = $memory['escparam'];
 		$numparam = $memory['numparam'] ? $memory['numparam'] : array_diff($args, $escparam);
-		$key = $memory['conn'];
+		$cache = $memory['cache'];
 		
+		$key = $memory['conn'];
 		$conn = Snowblozm::get($key);
 		switch($conn['type']){
 			case 'mysql' :
@@ -54,8 +67,9 @@ class QueryExecuteWorkflow implements Service {
 				break;
 		}
 		$memory['conn'] = $dataservice;
-		
+			
 		$workflow = array();
+		
 		
 		if(count($numparam) != 0){
 			array_push($workflow, array(
@@ -80,24 +94,50 @@ class QueryExecuteWorkflow implements Service {
 			));
 		}
 		
-		array_push($workflow, array(
-			'service' => 'rdbms.query.execute.service',
-			'output' => array('sqlresult' => 'sqlresult', 'sqlrowcount' => 'sqlrc')
-		));
+		$memory = Snowblozm::execute($workflow, $memory);
+		if(!$memory['valid'])
+			return $memory;
 		
-		if($memory['check']){
-			array_push($workflow, array(
-				'service' => 'cbcore.data.equal.service',
-				'input' => array('data' => 'sqlrc'),
-				'value' => $memory['count']
-			));
+		if($cache){
+			$memory = Snowblozm::run(array(
+				'service' => 'pool.lite.get.service',
+				'key' => 'QUERY_EXECUTE'.$memory['query'].'_CONN_'.$memory['conn']
+			), $memory);
 		}
 		
-		$memory = Snowblozm::execute($workflow, $memory);
+		if($cache && $memory['valid']){
+			$memory = $memory['data'];
+		} 
+		else {
+						
+			$workflow = array(
+			array(
+				'service' => 'rdbms.query.execute.service',
+				'output' => array('sqlresult' => 'sqlresult', 'sqlrowcount' => 'sqlrc')
+			));
+			
+			if($memory['check']){
+				array_push($workflow, array(
+					'service' => 'cbcore.data.equal.service',
+					'input' => array('data' => 'sqlrc'),
+					'value' => $memory['count']
+				));
+			}
+			
+			$memory = Snowblozm::execute($workflow, $memory);
+
+			if($cache){
+				$memory = Snowblozm::run(array(
+					'service' => 'pool.lite.save.service',
+					'key' => 'QUERY_EXECUTE'.$memory['query'].'_CONN_'.$memory['conn'],
+					'data' => $memory
+				), $memory);
+			}
+		}
 		
 		$dataservice->close();
 		$memory['conn'] = $key;
-		
+			
 		return $memory;
 	}
 	

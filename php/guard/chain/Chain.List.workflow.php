@@ -6,6 +6,10 @@ require_once(SBSERVICE);
  *	@desc Returns chain information
  *
  *	@param chainid set of long int Chain ID [memory]
+ *	@param rstcache boolean Is cacheable [memory] optional default false
+ *	@param rstexpiry int Cache expiry [memory] optional default 150
+ *	@param rscache boolean Is cacheable [memory] optional default false
+ *	@param rsexpiry int Cache expiry [memory] optional default 85
  *
  *	@return chains array Chains information [memory]
  *
@@ -19,7 +23,13 @@ class ChainListWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('chainid')
+			'required' => array('chainid'),
+			'optional' => array(
+				'rscache' => false, 
+				'rsexpiry' => 85,
+				'rstcache' => false, 
+				'rstexpiry' => 150
+			)
 		);
 	}
 	

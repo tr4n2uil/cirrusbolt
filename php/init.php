@@ -65,7 +65,7 @@
 	 *	@dependencies
 	**/
 	//define('PHPMAILER', CBROOT.'../../../libraries/phpmailer/PHPMailer.class.php');
-	//define('CACHELITE', 'Cache/Lite/php');
-	//define('CACHELITEOUTPUT', 'Cache/Lite/Output.php');
+	define('CACHELITE', 'Cache/Lite/php');
+	define('CACHELITEOUTPUT', 'Cache/Lite/Output.php');
 	
 ?>
