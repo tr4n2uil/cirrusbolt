@@ -14,10 +14,11 @@ require_once(SBSERVICE);
  *	@param pgno long int Paging Index [memory] optional default 1
  *	@param total long int Paging Total [memory] optional default false
  *
+ *	@param acstate string State to authorize chain [memory] optional default true (false= All)
  *	@param action string Action to authorize member [memory] optional default 'list'
- *	@param astate string State to authorize member [memory] optional default true (false= None)
+ *	@param astate string State to authorize member [memory] optional default true (false= All)
  *	@param iaction string Action to authorize inherit [memory] optional default 'list'
- *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
+ *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *
  *	@return parents array Chain parents information [memory]
  *	@return total long int Paging total [memory]
@@ -39,6 +40,7 @@ class ReferenceParentsWorkflow implements Service {
 				'pgsz' => false, 
 				'pgno' => 0, 
 				'total' => false,
+				'acstate' => true,
 				'action' => 'list', 
 				'astate' => true, 
 				'iaction' => 'list', 

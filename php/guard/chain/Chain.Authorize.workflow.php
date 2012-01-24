@@ -7,7 +7,8 @@ require_once(SBSERVICE);
  *
  *	@param chainid long int Chain ID [memory]
  *	@param keyid long int Key ID [memory]
- *	@param level integer Web level [memory] optional default 0
+ *
+ *	@param cstate string State [memory] optional default false (true= Not '0')
  *	@param action string Action to authorize member [memory] optional default 'edit'
  *	@param state string State to authorize member [memory] optional default false (true= Not '0')
  *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
@@ -17,6 +18,9 @@ require_once(SBSERVICE);
  *
  *	@return admin boolean Is admin [memory]
  *	@return level integer Web level [memory]
+ *	@return masterkey long int Master key ID [memory]
+ *	@return authorize string Authorization Control [memory]
+ *	@return state string State [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -29,7 +33,7 @@ class ChainAuthorizeWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'chainid'),
-			'optional' => array('level' => 0, 'action' => 'edit', 'iaction' => 'edit', 'state' => false, 'istate' => false, 'admin' => false, 'init' => true)
+			'optional' => array('level' => 0, 'action' => 'edit', 'iaction' => 'edit', 'cstate' => false, 'state' => false, 'istate' => false, 'admin' => false, 'init' => true)
 		);
 	}
 	
@@ -37,8 +41,65 @@ class ChainAuthorizeWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$next = $level = $memory['level'];
 		
+		/**
+		 *	@initialize chain query
+		**/
+		$last = '';
+		$args = array('chainid');
+		$escparam = array();
+
+		if($memory['cstate'] === true){
+			$last = " and `state`<>'0' ";
+		}
+		else if($memory['cstate']){
+			$last = " and `state`='\${cstate}' ";
+			array_push($escparam, 'cstate');
+			array_push($args, 'cstate');
+		}	
+		
+		/**
+		 *	@check chain info
+		**/
+		$workflow = array(
+		array(
+			'service' => 'transpera.relation.unique.workflow',
+			'args' => $args,
+			'conn' => 'cbconn',
+			'relation' => '`chains`',
+			'sqlprj' => '`masterkey`, `level`, `authorize`, `state`',
+			'sqlcnd' => "where `chainid`=\${chainid} $last",
+			'escparam' => $escparam,
+			'errormsg' => 'Invalid Chain ID'
+		),
+		array(
+			'service' => 'cbcore.data.select.service',
+			'args' => array('result'),
+			'params' => array('result.0.masterkey' => 'masterkey', 'result.0.level' => 'level', 'result.0.authorize' => 'authorize', 'result.0.state' => 'state')
+		));
+		
+		$memory = Snowblozm::execute($workflow, $memory);
+		if(!$memory['valid'])
+			return $memory;
+		
+		$memory['msg'] = 'Key authorized successfully';
+		
+		/**
+		 *	@check masterkey, authorize
+		**/
+		if($memory['keyid'] == $memory['masterkey'] || strpos($memory['authorize'], $memory['action']) === false)
+			return $memory;
+		
+		/**
+		 *	@read level
+		**/
+		$level = $memory['level'];
+		$memory['level'] = $level + 1;
+		
+		
+		/**
+		 *	@initialize chain query
+		**/
 		$last = $ilast = '';
 		$args = array('keyid', 'chainid', 'action', 'iaction');
 		$escparam = array('action', 'iaction');
@@ -61,6 +122,9 @@ class ChainAuthorizeWorkflow implements Service {
 			array_push($args, 'istate');
 		}
 		
+		/**
+		 *	@construct quthorize query
+		**/
 		$query = $memory['init'] ? "(select `chainid` from `members` where `chainid`=\${chainid} and `keyid`=\${keyid} and `control` like '%\${action}%' $last)" : 'false';
 		
 		$init = "(\${chainid})";
@@ -86,9 +150,9 @@ class ChainAuthorizeWorkflow implements Service {
 			$query = $query.' or '.$join.$master.' or '.$join.$chain;
 		}*/
 		
-		$memory['msg'] = 'Key authorized successfully';
-		$memory['level'] = $next + 1;
-		
+		/**
+		 *	@execute authorize query
+		**/
 		$service = array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => $args,
@@ -117,7 +181,7 @@ class ChainAuthorizeWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('admin', 'level');
+		return array('admin', 'level', 'masterkey', 'authorize', 'state');
 	}
 	
 }

@@ -10,10 +10,11 @@ require_once(SBSERVICE);
  *	@param state string State value [memory]
  *	@param multiple boolean Is multiple [memory] optional default false
  *
+ *	@param acstate string State to authorize chain [memory] optional default true (false= All)
  *	@param action string Action to authorize member [memory] optional default 'edit'
- *	@param astate string State to authorize member [memory] optional default true (false= None)
+ *	@param astate string State to authorize member [memory] optional default true (false= All)
  *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
- *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
+ *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -28,6 +29,7 @@ class ReferenceStateWorkflow implements Service {
 			'required' => array('keyid', 'id', 'state'),
 			'optional' => array(
 				'multiple' => false,
+				'acstate' => true,
 				'action' => 'edit', 
 				'astate' => true, 
 				'iaction' => 'edit', 

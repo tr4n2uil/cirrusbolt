@@ -26,11 +26,6 @@
 		'location' => 'local'
 	));
 	
-	Snowblozm::add('echo', array(
-		'root' => CBROOT.'echo/',
-		'location' => 'local'
-	));
-	
 	Snowblozm::add('gauge', array(
 		'root' => CBROOT.'gauge/',
 		'location' => 'local'
@@ -41,18 +36,13 @@
 		'location' => 'local'
 	));
 	
-	Snowblozm::add('handle', array(
-		'root' => CBROOT.'handle/',
-		'location' => 'local'
-	));
-	
 	Snowblozm::add('invoke', array(
 		'root' => CBROOT.'invoke/',
 		'location' => 'local'
 	));
 	
-	Snowblozm::add('journal', array(
-		'root' => CBROOT.'journal/',
+	Snowblozm::add('pool', array(
+		'root' => CBROOT.'pool/',
 		'location' => 'local'
 	));
 	
@@ -72,8 +62,10 @@
 	));
 	
 	/**
-	 *	@dependency PHPMailer
+	 *	@dependencies
 	**/
 	//define('PHPMAILER', CBROOT.'../../../libraries/phpmailer/PHPMailer.class.php');
+	//define('CACHELITE', 'Cache.Lite.php');
+	//define('CACHELITEOUTPUT', 'Cache.Lite.Output.php');
 	
 ?>

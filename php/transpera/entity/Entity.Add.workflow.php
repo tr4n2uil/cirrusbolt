@@ -20,10 +20,11 @@ require_once(SBSERVICE);
  *	@param path string Collation path [memory] optional default '/'
  *	@param leaf string Collation leaf [memory] optional default 'Child ID'
  *
+ *	@param acstate string State to authorize chain [memory] optional default true (false= All)
  *	@param action string Action to authorize member [memory] optional default 'add'
- *	@param astate string State to authorize member [memory] optional default true (false= None)
+ *	@param astate string State to authorize member [memory] optional default true (false= All)
  *	@param iaction string Action to authorize inherit [memory] optional default 'add'
- *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
+ *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *
  *	@param construct array Construction Workflow [memory] optional default false
  *	@param cparam array Construction Parameters [memory] optional default array()
@@ -65,6 +66,7 @@ class EntityAddWorkflow implements Service {
 				'state' => 'A', 
 				'icontrol' => false, 
 				'istate' => 'A',
+				'acstate' => true,
 				'action' => 'add', 
 				'astate' => true, 
 				'iaction' => 'add', 

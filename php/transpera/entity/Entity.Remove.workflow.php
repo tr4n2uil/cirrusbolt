@@ -16,6 +16,7 @@ require_once(SBSERVICE);
  *	@param parent long int Reference ID [memory]
  *	@param type string Type name [memory] optional default 'general'
  *
+ *	@param acstate string State to authorize chain [memory] optional default true (false= All)
  *	@param action string Action to authorize member [memory] optional default 'remove'
  *	@param astate string State to authorize member [memory] optional default true (false= None)
  *	@param iaction string Action to authorize inherit [memory] optional default 'remove'
@@ -23,6 +24,7 @@ require_once(SBSERVICE);
  *
  *	@param destruct array Destruction Workflow [memory] optional default false
  *
+ *	@param sacstate string State to authorize chain [memory] optional default true (false= All)
  *	@param saction string Action to authorize [memory] optional default 'edit'
  *	@param sastate string State to authorize member [memory] optional default true (false= All)
  *	@param siaction string Action to authorize inherit [memory] optional default 'edit'
@@ -45,15 +47,17 @@ class EntityRemoveWorkflow implements Service {
 			'optional' => array(
 				'parent' => 0, 
 				'type' => 'general',
+				'acstate' => true,
 				'action' => 'remove', 
 				'astate' => true, 
 				'iaction' => 'remove', 
-				'aistate' => true
+				'aistate' => true,
+				'sacstate' => true,
 				'saction' => 'remove', 
 				'sastate' => true, 
 				'siaction' => 'remove', 
 				'saistate' => true, 
-				'sinit' => true
+				'sinit' => true,
 				'successmsg' => 'Entity removed successfully', 
 				'errormsg' => 'Invalid Entity ID', 
 				'destruct' => false
@@ -80,7 +84,7 @@ class EntityRemoveWorkflow implements Service {
 		array_push($workflow,
 		array(
 			'service' => 'transpera.reference.remove.workflow',
-			'input' => array('action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
+			'input' => array('acstate' => 'sacstate', 'action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
 		),
 		array(
 			'service' => 'transpera.relation.delete.workflow',

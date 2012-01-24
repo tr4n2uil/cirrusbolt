@@ -15,10 +15,11 @@ require_once(SBSERVICE);
  *	@param path string Collation path [memory] optional default '/'
  *	@param leaf string Collation leaf [memory] optional default 'Child ID'
  *
+ *	@param acstate string State to authorize chain [memory] optional default true (false= All)
  *	@param action string Action to authorize member [memory] optional default 'edit'
- *	@param astate string State to authorize member [memory] optional default true (false= None)
+ *	@param astate string State to authorize member [memory] optional default true (false= All)
  *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
- *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
+ *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *
  *	@return return id long int Chain member ID [memory]
  *
@@ -40,6 +41,7 @@ class ReferenceGrantWorkflow implements Service {
 				'state' => 'A', 
 				'path' => '/', 
 				'leaf' => false,
+				'acstate' => true,
 				'action' => 'edit', 
 				'astate' => true, 
 				'iaction' => 'edit', 

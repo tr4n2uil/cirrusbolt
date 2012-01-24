@@ -20,6 +20,7 @@ require_once(SBSERVICE);
  *	@param path string Collation path [memory] optional default '/'
  *	@param leaf string Collation leaf [memory] optional default 'Child ID'
  *
+ *	@param acstate string State to authorize chain [memory] optional default true (false= None)
  *	@param action string Action to authorize member [memory] optional default 'add'
  *	@param astate string State to authorize member [memory] optional default true (false= None)
  *	@param iaction string Action to authorize inherit [memory] optional default 'add'
@@ -51,6 +52,7 @@ class ReferenceAddWorkflow implements Service {
 				'state' => 'A', 
 				'icontrol' => false, 
 				'istate' => 'A',
+				'cstate' => true,
 				'action' => 'add', 
 				'astate' => true, 
 				'iaction' => 'add', 

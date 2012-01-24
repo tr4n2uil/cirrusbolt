@@ -19,6 +19,7 @@ require_once(SBSERVICE);
  *	@param pgno long int Paging Index [memory] optional default 1
  *	@param total long int Paging Total [memory] optional default false
  *
+ *	@param acstate string State to authorize chain [memory] optional default true (false= All)
  *	@param action string Action to authorize member [memory] optional default 'list'
  *	@param astate string State to authorize member [memory] optional default true (false= None)
  *	@param iaction string Action to authorize inherit [memory] optional default 'list'
@@ -33,6 +34,7 @@ require_once(SBSERVICE);
  *	@param mapkey string Map Key [memory] optional default 0
  *	@param mapname string Map Name [memory] optional default 'entity'
  *
+ *	@param sacstate string State to authorize chain [memory] optional default true (false= All)
  *	@param saction string Action to authorize [memory] optional default 'edit'
  *	@param sastate string State to authorize member [memory] optional default true (false= All)
  *	@param siaction string Action to authorize inherit [memory] optional default 'edit'
@@ -67,10 +69,12 @@ class EntityListWorkflow implements Service {
 				'pgsz' => false, 
 				'pgno' => 0, 
 				'total' => false,
+				'acstate' => true,
 				'action' => 'list', 
 				'astate' => true, 
 				'iaction' => 'list', 
 				'aistate' => true,
+				'sacstate' => true,
 				'saction' => 'edit', 
 				'sastate' => true, 
 				'siaction' => 'edit', 
@@ -123,7 +127,7 @@ class EntityListWorkflow implements Service {
 			array_push($workflow,
 			array(
 				'service' => 'transpera.reference.authorize.workflow',
-				'input' => array('action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
+				'input' => array('acstate' => 'sacstate', 'action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
 				'admin' => true,
 			));
 		}

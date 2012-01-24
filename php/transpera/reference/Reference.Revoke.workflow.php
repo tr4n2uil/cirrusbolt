@@ -9,10 +9,11 @@ require_once(SBSERVICE);
  *	@param id long int Reference ID [memory]
  *	@param childkeyid long int Key ID to be revoked [memory]
  *
+ *	@param acstate string State to authorize chain [memory] optional default true (false= All)
  *	@param action string Action to authorize member [memory] optional default 'edit'
- *	@param astate string State to authorize member [memory] optional default true (false= None)
+ *	@param astate string State to authorize member [memory] optional default true (false= All)
  *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
- *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
+ *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -26,6 +27,7 @@ class ReferenceRevokeWorkflow implements Service {
 		return array(
 			'required' => array('keyid', 'id', 'childkeyid'),
 			'optional' => array(
+				'acstate' => true,
 				'action' => 'edit', 
 				'astate' => true, 
 				'iaction' => 'edit', 

@@ -7,6 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param id long int Reference ID [memory]
+ *	@param acstate string State to authorize chain [memory] optional default true (false= All)
  *	@param action string Action to authorize [memory] optional default 'edit'
  *	@param astate string State to authorize member [memory] optional default true (false= All)
  *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
@@ -34,6 +35,7 @@ class EntityEditWorkflow implements Service {
 		return array(
 			'required' => array('conn', 'keyid', 'user', 'id', 'relation', 'sqlcnd'),
 			'optional' => array(
+				'acstate' => true,
 				'action' => 'edit', 
 				'astate' => true, 
 				'iaction' => 'edit', 

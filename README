@@ -9,6 +9,7 @@ Components
 	Gauge : Tracking [Universal Tracking Parameters]
 	Guard : Access Control [Key-Chain-Web (KCW+) Mechanism]
 	Invoke : Transport & Execution [Block Scale Transport Protocol]
+	Pool : Cache Management
 	RDBMS : Database Management
 	System : Interfaces & Implementations
 	Store : Data Storage & Organization

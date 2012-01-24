@@ -20,12 +20,14 @@ require_once(SBSERVICE);
  *	@param parent long int Parent ID [memory] optional default 0
  *	@param idkey string ID Key [memory]
  *
+ *	@param acstate string State to authorize chain [memory] optional default true (false= All)
  *	@param action string Action to authorize [memory] optional default 'edit'
  *	@param astate string State to authorize member [memory] optional default true (false= All)
  *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
  *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *	@param init boolean init flag [memory] optional default true
  *
+ *	@param sacstate string State to authorize chain [memory] optional default true (false= All)
  *	@param saction string Action to authorize [memory] optional default 'edit'
  *	@param sastate string State to authorize member [memory] optional default true (false= All)
  *	@param siaction string Action to authorize inherit [memory] optional default 'edit'
@@ -60,11 +62,13 @@ class EntityFindWorkflow implements Service {
 				'sqlprj' => '*', 
 				'successmsg' => 'Entity information given successfully', 
 				'errormsg' => 'Invalid Entity ID',
+				'acstate' => true,
 				'action' => 'info', 
 				'astate' => true, 
 				'iaction' => 'info', 
 				'aistate' => true, 
 				'init' => true,
+				'sacstate' => true,
 				'saction' => 'edit', 
 				'sastate' => true, 
 				'siaction' => 'edit', 
@@ -108,7 +112,7 @@ class EntityFindWorkflow implements Service {
 			array(
 				'service' => 'transpera.reference.authorize.workflow',
 				//'input' => array('id' => 'parent'),
-				'input' => array('action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
+				'input' => array('acstate' => 'sacstate', 'action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
 				'admin' => true
 			));
 		}
@@ -116,7 +120,7 @@ class EntityFindWorkflow implements Service {
 		if($memory['mgchn']){
 			array_push($workflow,
 			array(
-				'service' => 'guard.chain.data.workflow',
+				'service' => 'guard.chain.info.workflow',
 				'input' => array('chainid' => 'id')
 			));
 		}

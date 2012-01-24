@@ -17,10 +17,11 @@ require_once(SBSERVICE);
  *	@param path string Collation path [memory] optional default '/'
  *	@param leaf string Collation leaf [memory] optional default 'Child ID'
  *
+ *	@param acstate string State to authorize chain [memory] optional default true (false= All)
  *	@param action string Action to authorize member [memory] optional default 'list'
- *	@param astate string State to authorize member [memory] optional default true (false= None)
+ *	@param astate string State to authorize member [memory] optional default true (false= All)
  *	@param iaction string Action to authorize inherit [memory] optional default 'list'
- *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
+ *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -44,6 +45,7 @@ class ReferenceLinkWorkflow implements Service {
 				'state' => 'A', 
 				'icontrol' => false, 
 				'istate' => 'A',
+				'acstate' => true,
 				'action' => 'list', 
 				'astate' => true, 
 				'iaction' => 'list', 
