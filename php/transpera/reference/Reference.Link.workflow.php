@@ -25,6 +25,8 @@ require_once(SBSERVICE);
  *
  *	@param cache boolean Is cacheable [memory] optional default true
  *	@param expiry int Cache expiry [memory] optional default 150
+ *	@param authinh integer Check inherit [memory] optional default 1
+ *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -53,6 +55,8 @@ class ReferenceLinkWorkflow implements Service {
 				'astate' => true, 
 				'iaction' => 'list', 
 				'aistate' => true,
+				'authinh' => 1,
+				'autherror' => 'Unable to Authorize',
 				'cache' => true,
 				'expiry' => 150
 			)

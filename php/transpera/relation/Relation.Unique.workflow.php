@@ -72,6 +72,7 @@ class RelationUniqueWorkflow implements Service {
 			);
 			
 			$memory = Snowblozm::run($service, $memory);
+			
 			if($cache){
 				Snowblozm::run(array(
 					'service' => 'pool.lite.save.service',

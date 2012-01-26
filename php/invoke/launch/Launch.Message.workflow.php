@@ -50,11 +50,12 @@ class LaunchMessageWorkflow implements Service {
 			'input' => array('message' => 'result')
 		),
 		array(
-			'service' => 'invoke.launch.message.service'
+			'service' => 'invoke.launch.message.service',
+			'strict' => false
 		),
 		array(
 			'service' => 'invoke.transport.write.workflow',
-			'input' => array('data' => 'response', 'type' => 'restype'),
+			'input' => array('data' => 'message', 'type' => 'restype'),
 			'strict' => false
 		));
 		
@@ -72,7 +73,7 @@ class LaunchMessageWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('result', 'response');
+		return array('result');
 	}
 	
 }

@@ -15,6 +15,8 @@ require_once(SBSERVICE);
  *	@param istate string State to authorize inherit [memory] optional default false (true= Not '0')
  *	@param init boolean init flag [memory] optional default true
  *	@param admin boolean Is return admin flag [memory] optional default false
+ *	@param inherit integer Check inherit [memory] optional default 1
+ *	@param errormsg string Error msg [memory] optional default 'Unable to Authorize'
  *
  *	@return admin boolean Is admin [memory]
  *	@return level integer Web level [memory]
@@ -41,7 +43,9 @@ class ChainAuthorizeWorkflow implements Service {
 				'state' => false, 
 				'istate' => false, 
 				'admin' => false, 
-				'init' => true
+				'init' => true,
+				'inherit' => 1,
+				'errormsg' => 'Unable to Authorize'
 			)
 		);
 	}
@@ -110,7 +114,7 @@ class ChainAuthorizeWorkflow implements Service {
 		 *	@initialize chain query
 		**/
 		$last = $ilast = '';
-		$args = array('keyid', 'chainid', 'action', 'iaction');
+		$args = array('keyid', 'chainid', 'action', 'iaction', 'inherit');
 		$escparam = array('action', 'iaction');
 
 		if($memory['state'] === true){
@@ -139,7 +143,7 @@ class ChainAuthorizeWorkflow implements Service {
 		$init = "(\${chainid})";
 		$chain = "(select `chainid` from `members` where `chainid` in ";
 		$chainend = " and `keyid`=\${keyid} and `control` like '%\${iaction}%' $ilast)";
-		$child = "select `parent` from `webs` where `inherit` and `control` like '%\${iaction}%' $ilast and `child` in ";
+		$child = "select `parent` from `webs` where `inherit`=\${inherit} and `control` like '%\${iaction}%' $ilast and `child` in ";
 		
 		while($level--){
 			$init = '('.$child.$init.')';
@@ -171,7 +175,6 @@ class ChainAuthorizeWorkflow implements Service {
 			'sqlprj' => '`chainid`',
 			'sqlcnd' => "where `chainid`=\${chainid} and (`masterkey`=\${keyid} or `authorize` not like '%\${action}%' or $query)",
 			'escparam' => $escparam,
-			'errormsg' => 'Unable to Authorize',
 			'errstatus' => 403
 		);
 		

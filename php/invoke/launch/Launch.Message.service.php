@@ -8,7 +8,7 @@ require_once(SBSERVICE);
  *	@param message array Message to be launched [memory]
  *	@param uiconf array UI data [memory] optional default false
  *
- *	@return response array Output parameters for service execution [memory]
+ *	@return message array Output parameters for service execution [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *	
@@ -30,6 +30,17 @@ class LaunchMessageService implements Service {
 	**/
 	public function run($memory){
 		$message = $memory['message'];
+		
+		/**
+		 *	Check for invalid service check
+		**/
+		if(isset($message['valid'])){
+			return $memory;
+		}
+		
+		/**
+		 *	Get service URI
+		**/
 		$uri = $message['service'];
 		
 		/**
@@ -43,11 +54,11 @@ class LaunchMessageService implements Service {
 		 *	Set UI data
 		**/
 		list($root, $service, $operation) = explode('.' ,$uri);
-		if($memory['uiconf'] && isset($memory['uiconf'][$root.'.'.$service.'.'.$operation])){
-			$message['ui'] = $memory['uiconf'][$root.'.'.$service.'.'.$operation]['uidata'];
+		if($memory['uiconf'] && $uidata = include($memory['uiconf'].$root.'/'.$service.'/uidata.php')){
+			$message['ui'] = $uidata[$operation];
 		}
 		
-		$memory['response'] = $message;
+		$memory['message'] = $message;
 		$memory['valid'] = true;
 		$memory['msg'] = 'Launched Successfully';
 		$memory['status'] = 200;
@@ -59,7 +70,7 @@ class LaunchMessageService implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('response');
+		return array('message');
 	}
 	
 }

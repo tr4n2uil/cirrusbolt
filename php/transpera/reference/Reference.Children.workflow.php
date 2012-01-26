@@ -20,6 +20,9 @@ require_once(SBSERVICE);
  *	@param iaction string Action to authorize inherit [memory] optional default 'list'
  *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *
+ *	@param authinh integer Check inherit [memory] optional default 1
+ *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
+ *
  *	@return children array Chain children information [memory]
  *	@return level integer Parent Authorization Level [memory]
  *	@return total long int Paging total [memory]
@@ -46,6 +49,8 @@ class ReferenceChildrenWorkflow implements Service {
 				'astate' => true, 
 				'iaction' => 'list', 
 				'aistate' => true,
+				'authinh' => 1,
+				'autherror' => 'Unable to Authorize',
 				'cache' => true,
 				'expiry' => 150
 			)

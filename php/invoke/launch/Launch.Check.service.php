@@ -9,6 +9,7 @@ require_once(SBSERVICE);
  *	@param access array Array of allowed values for controlling workflows executed [memory] optional default array()
  *
  *	@return message array Message to be launched [memory]
+ *	@return response array Output parameters for service execution [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *	
@@ -36,59 +37,60 @@ class LaunchCheckService implements Service {
 		 *	Check for valid service request
 		**/
 		if(!isset($message['service'])){
-			$memory['valid'] = false;
-			$memory['msg'] = 'Invalid Message';
-			$memory['status'] = 500;
-			$memory['details'] = 'Please specify service to be executed with param service=root.service.operation or service=map (Only workflows may be launched)';
-			return $memory;
+			$message['valid'] =  false;
+			$message['msg'] = 'Invalid Message';
+			$message['status'] =  500;
+			$message['details'] = 'Please specify service to be executed with param service=root.service.operation or service=map (Only workflows may be launched)';
 		}
+		else {
 			
-		/**
-		 *	Get service URI and restrict access to services
-		**/
-		$uri = $message['service'];
-		list($root, $service, $operation) = explode('.' ,$uri);
-		
-		/**
-		 *	Remove args if set (for being on safe side)
-		**/
-		if(isset($message['args'])) unset($message['args']);
-		
-		/**
-		 *	Check for valid access for service requested
-		**/
-		$flag = false;
-		
-		if(isset($access['operation']) && in_array($root.'.'.$service.'.'.$operation, $access['operation'])){
-			$flag = true;
-		}
-		
-		if(!$flag && isset($access['service']) && in_array($root.'.'.$service, $access['service'])){
-			$flag = true;
-		}
-		
-		if(!$flag && isset($access['root']) && in_array($root, $access['root'])){
-			$flag = true;
-		}
-		
-		if(!$flag){
-			if(isset($access['maps']) && isset($access['maps'][$message['service']])){
-				$uri = $access['maps'][$message['service']];
+			/**
+			 *	Get service URI and restrict access to services
+			**/
+			$uri = $message['service'];
+			list($root, $service, $operation) = explode('.' ,$uri);
+			
+			/**
+			 *	Remove args if set (for being on safe side)
+			**/
+			if(isset($message['args'])) unset($message['args']);
+			
+			/**
+			 *	Check for valid access for service requested
+			**/
+			$flag = false;
+			
+			if(isset($access['operation']) && in_array($root.'.'.$service.'.'.$operation, $access['operation'])){
+				$flag = true;
 			}
-			else {
-				$memory['valid'] = false;
-				$memory['msg'] = 'Access Denied';
-				$memory['status'] = 500;
-				$memory['details'] = "Access denied for the service : ".$message['service'];
-				return $memory;
+			
+			if(!$flag && isset($access['service']) && in_array($root.'.'.$service, $access['service'])){
+				$flag = true;
 			}
+			
+			if(!$flag && isset($access['root']) && in_array($root, $access['root'])){
+				$flag = true;
+			}
+			
+			if(!$flag){
+				if(isset($access['maps']) && isset($access['maps'][$message['service']])){
+					$uri = $access['maps'][$message['service']];
+				}
+				else {
+					$message['valid'] = false;
+					$message['msg'] =  'Access Denied';
+					$message['status'] = 500;
+					$message['details'] = "Access denied for the service : ".$message['service'];
+				}
+			}
+			
+			/**
+			 *	Run the service using WorkflowKernel
+			**/
+			unset($memory['msg']);
+			$message['service'] = $uri = $uri.'.workflow';
+			
 		}
-		
-		/**
-		 *	Run the service using WorkflowKernel
-		**/
-		unset($memory['msg']);
-		$message['service'] = $uri = $uri.'.workflow';
 		
 		$memory['message'] = $message;
 		$memory['valid'] = true;

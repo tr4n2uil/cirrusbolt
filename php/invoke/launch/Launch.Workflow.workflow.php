@@ -48,8 +48,7 @@ class LaunchWorkflowWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'invoke.launch.message.service',
-			'output' => array('response' => 'message')
+			'service' => 'invoke.launch.message.service'
 		),
 		array(
 			'service' => 'cbcore.data.prepare.service',

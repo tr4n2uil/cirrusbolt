@@ -29,6 +29,9 @@ require_once(SBSERVICE);
  *	@param iaction string Action to authorize inherit [memory] optional default 'add'
  *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
  *
+ *	@param authinh integer Check inherit [memory] optional default 1
+ *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
+ *
  *	@return return id long int Reference ID [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -60,6 +63,8 @@ class ReferenceAddWorkflow implements Service {
 				'astate' => true, 
 				'iaction' => 'add', 
 				'aistate' => true,
+				'authinh' => 1,
+				'autherror' => 'Unable to Authorize',
 				'cache' => true,
 				'expiry' => 150
 			)

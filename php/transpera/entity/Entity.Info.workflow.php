@@ -27,6 +27,8 @@ require_once(SBSERVICE);
  *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
  *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *	@param init boolean init flag [memory] optional default true
+ *	@param authinh integer Check inherit [memory] optional default 1
+ *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
  *
  *	@param sacstate string State to authorize chain [memory] optional default true (false= All)
  *	@param saction string Action to authorize [memory] optional default 'edit'
@@ -34,6 +36,8 @@ require_once(SBSERVICE);
  *	@param siaction string Action to authorize inherit [memory] optional default 'edit'
  *	@param saistate string State to authorize inherit [memory] optional default true (false= All)
  *	@param sinit boolean init flag [memory] optional default true
+ *	@param sauthinh integer Check inherit [memory] optional default 1
+ *	@param sautherror string Error msg [memory] optional default 'Unable to Authorize'
  *
  *	@param cache boolean Is cacheable [memory] optional default true
  *	@param expiry int Cache expiry [memory] optional default 150
@@ -73,12 +77,16 @@ class EntityInfoWorkflow implements Service {
 				'iaction' => 'info', 
 				'aistate' => true, 
 				'init' => true,
+				'authinh' => 1,
+				'autherror' => 'Unable to Authorize',
 				'sacstate' => true,
 				'saction' => 'edit', 
 				'sastate' => true, 
 				'siaction' => 'edit', 
 				'saistate' => true, 
 				'sinit' => true,
+				'sauthinh' => 1,
+				'sautherror' => 'Unable to Authorize',
 				'cache' => true,
 				'expiry' => 150
 			)
@@ -140,7 +148,16 @@ class EntityInfoWorkflow implements Service {
 				array(
 					'service' => 'transpera.reference.authorize.workflow',
 					//'input' => array('id' => 'parent'),
-					'input' => array('acstate' => 'sacstate', 'action' => 'saction', 'astate' => 'sastate', 'iaction' => 'siaction', 'iastate' => 'siastate', 'init' => 'sinit'),
+					'input' => array(
+						'acstate' => 'sacstate', 
+						'action' => 'saction', 
+						'astate' => 'sastate', 
+						'iaction' => 'siaction', 
+						'iastate' => 'siastate', 
+						'init' => 'sinit',
+						'authinh' => 'sauthinh',
+						'autherror' => 'sautherror'
+					),
 					'admin' => true
 				));
 			}
