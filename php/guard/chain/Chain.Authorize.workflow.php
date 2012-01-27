@@ -10,7 +10,7 @@ require_once(SBSERVICE);
  *
  *	@param cstate string State [memory] optional default false (true= Not '0')
  *	@param action string Action to authorize member [memory] optional default 'edit'
- *	@param state string State to authorize member [memory] optional default false (true= Not '0')
+ *	@param mstate string State to authorize member [memory] optional default false (true= Not '0')
  *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
  *	@param istate string State to authorize inherit [memory] optional default false (true= Not '0')
  *	@param init boolean init flag [memory] optional default true
@@ -40,7 +40,7 @@ class ChainAuthorizeWorkflow implements Service {
 				'action' => 'edit', 
 				'iaction' => 'edit', 
 				'cstate' => false, 
-				'state' => false, 
+				'mstate' => false, 
 				'istate' => false, 
 				'admin' => false, 
 				'init' => true,
@@ -117,13 +117,13 @@ class ChainAuthorizeWorkflow implements Service {
 		$args = array('keyid', 'chainid', 'action', 'iaction', 'inherit');
 		$escparam = array('action', 'iaction');
 
-		if($memory['state'] === true){
+		if($memory['mstate'] === true){
 			$last = " and `state`<>'0' ";
 		}
-		else if($memory['state']){
-			$last = " and `state`='\${state}' ";
-			array_push($escparam, 'state');
-			array_push($args, 'state');
+		else if($memory['mstate']){
+			$last = " and `state`='\${mstate}' ";
+			array_push($escparam, 'mstate');
+			array_push($args, 'mstate');
 		}		
 		
 		if($memory['istate'] === true){
@@ -169,7 +169,6 @@ class ChainAuthorizeWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => $args,
-			'input' => array('rucache' => 'srucache', 'ruexpiry' => 'sruexpiry'),
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
 			'sqlprj' => '`chainid`',

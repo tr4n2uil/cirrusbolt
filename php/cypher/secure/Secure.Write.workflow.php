@@ -40,12 +40,15 @@ class SecureWriteWorkflow implements Service {
 	public function run($memory){
 		$type = ($memory['crypt'] == 'none') ? 'none' : $memory['type'];
 		
+		$strict = isset($memory['data']['valid']) && $memory['data']['valid'];
+		
 		$workflow = array(
 		array(
 			'service' => 'guard.key.identify.workflow'
 		),
 		array(
 			'service' => 'cbcore.data.encode.service',
+			'strict' => $strict,
 			'type' => $type
 		));
 		

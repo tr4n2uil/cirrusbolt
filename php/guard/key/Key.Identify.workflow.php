@@ -38,6 +38,14 @@ class KeyIdentifyWorkflow implements Service {
 		$memory['email'] = $memory['user'] ? $memory['user'] : ($memory['email'] ? $memory['email'] : false);
 		
 		if($memory['email'] !==false && $memory['key'] === false && $memory['keyid'] === false){
+			if(!$memory['context']){
+				$memory['valid'] = false;
+				$memory['msg'] = 'Invalid Context';
+				$memory['status'] = 515;
+				$memory['details'] = 'Invalid context : '.$memory['context'].' @guard.key.identify service';
+				return $memory;
+			}
+		
 			$memory['msg'] = 'Key identified successfully';
 			
 			$workflow = array(
@@ -49,7 +57,8 @@ class KeyIdentifyWorkflow implements Service {
 				'sqlprj' => "keyid, MD5(concat(`keyvalue`,'\${challenge}')) as `key`",
 				'sqlcnd' => "where `email`='\${email}' and `context` like '%\${context}%'",
 				'escparam' => array('email', 'challenge', 'context'),
-				'errormsg' => 'Unable to identify key from email'
+				'errormsg' => 'Unable to identify key from email',
+				'errstatus' => 515
 			),
 			array(
 				'service' => 'cbcore.data.select.service',

@@ -47,7 +47,9 @@ class LaunchMessageWorkflow implements Service {
 		),
 		array(
 			'service' => 'invoke.launch.check.service',
-			'input' => array('message' => 'result')
+			'args' => array('valid', 'msg', 'status', 'details'),
+			'input' => array('message' => 'result'),
+			'strict' => false
 		),
 		array(
 			'service' => 'invoke.launch.message.service',

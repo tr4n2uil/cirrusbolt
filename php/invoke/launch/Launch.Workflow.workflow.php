@@ -8,6 +8,7 @@ require_once(SBSERVICE);
  *	@param message array Message to be launched [memory]
  *	@param email string Identification email to be used if not set in message [memory] optional default false
  *	@param keyid long int Usage Key [memory] optional default false
+ *	@param context string Usage Context [memory] optional default false
  *	@param type string response type [memory] ('json', 'wddx', 'xml', 'plain', 'html') optional default 'json'
  *	@param uiconf array UI data [memory]
  *
@@ -26,7 +27,7 @@ class LaunchWorkflowWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('message'),
-			'optional' => array('email' => false, 'keyid' => false, 'type' => 'json', 'uiconf' => false)
+			'optional' => array('email' => false, 'keyid' => false, 'context' => false, 'type' => 'json', 'uiconf' => false)
 		);
 	}
 	
@@ -45,6 +46,7 @@ class LaunchWorkflowWorkflow implements Service {
 		
 		$memory['message']['email'] = $memory['email'];
 		$memory['message']['keyid'] = $memory['keyid'];
+		$memory['message']['context'] = $memory['context'];
 		
 		$workflow = array(
 		array(

@@ -79,6 +79,7 @@ class ReferenceAuthorizeWorkflow implements Service {
 			if($memory['keyid'] === false){
 				$memory['masterkey'] = $memory['admin'] = $memory['level'] = 0;
 				$memory['authorize'] = 'edit:add:remove:list';
+				$memory['state'] = 'A';
 				$memory['valid'] = true;
 				$memory['status'] = 200;
 				$memory['details'] = 'Successfully executed';
@@ -90,7 +91,7 @@ class ReferenceAuthorizeWorkflow implements Service {
 				'input' => array(
 					'chainid' => 'id', 
 					'cstate' => 'acstate', 
-					'state' => 'astate', 
+					'mstate' => 'astate', 
 					'istate' => 'aistate',
 					'rucache' => 'arucache',
 					'ruexpiry' => 'aruexpiry',
