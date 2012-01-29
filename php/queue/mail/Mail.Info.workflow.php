@@ -2,29 +2,29 @@
 require_once(SBSERVICE);
 
 /**
- *	@class RoleInfoWorkflow
- *	@desc Returns role information by ID
+ *	@class MailInfoWorkflow
+ *	@desc Returns mail information by ID
  *
- *	@param rlid string Role ID [memory]
+ *	@param mailid/id string Mail ID [memory]
  *	@param keyid long int Usage Key ID [memory]
- *	@param pnid long int Person ID [memory] optional default 0
+ *	@param queid long int Queue ID [memory] optional default 0
  *
- *	@return role array Role information [memory]
- *	@return pnid long int Person ID [memory]
+ *	@return mail array Mail information [memory]
+ *	@return queid long int Queue ID [memory]
  *	@return admin integer Is admin [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class RoleInfoWorkflow implements Service {
+class MailInfoWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'rlid'),
-			'optional' => array('pnid' => 0)
+			'required' => array('keyid'),
+			'optional' => array('queid' => 0, 'mailid' => false, 'id' => 0)
 		);
 	}
 	
@@ -32,31 +32,32 @@ class RoleInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
+		$memory['mailid'] = $memory['mailid'] ? $memory['mailid'] : $memory['id'];
+		
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.info.workflow',
-			'input' => array('id' => 'rlid', 'parent' => 'pnid'),
-			'conn' => 'rlconn',
-			'relation' => '`roles`',
-			'sqlcnd' => "where `rlid`='\${id}'",
-			'errormsg' => 'Invalid Role ID',
-			'successmsg' => 'Role information given successfully',
-			'output' => array('entity' => 'role')
-		),
-		array(
-			'service' => 'cbcore.data.select.service',
-			'args' => array('role'),
-			'params' => array('role.thumbnail' => 'thumbnail')
+			'input' => array('id' => 'mailid', 'parent' => 'queid'),
+			'conn' => 'cbqconn',
+			'relation' => '`mails`',
+			'sqlcnd' => "where `mailid`='\${id}'",
+			'errormsg' => 'Invalid Mail ID',
+			'successmsg' => 'Mail information given successfully',
+			'output' => array('entity' => 'mail')
 		));
 		
-		return Snowblozm::execute($workflow, $memory);
+		$memory = Snowblozm::execute($workflow, $memory);
+		if($memory['valid'])
+			$memory['mail']['attach'] = json_decode($memory['mail']['attach']);
+		
+		return $memory;
 	}
 	
 	/**
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('role', 'pnid', 'admin', 'thumbnail');
+		return array('mail', 'queid', 'admin');
 	}
 	
 }

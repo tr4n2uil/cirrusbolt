@@ -2,26 +2,28 @@
 require_once(SBSERVICE);
 
 /**
- *	@class RoleEditWorkflow
- *	@desc Edits role using ID
+ *	@class MailEditWorkflow
+ *	@desc Edits mail using ID
  *
- *	@param rlid long int Role ID [memory]
- *	@param name string Person name [memory]
- *	@param desc string Role description [memory] optional default ''
- *	@param priority string Role priority [memory]
+ *	@param mailid long int Mail ID [memory]
+ *	@param to string To address [memory]
+ *	@param subject string Subject [memory] 
+ *	@param message string Message [memory] 
+ *	@param attach array Attachments [memory] optional default array()
  *	@param keyid long int Usage Key ID [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class RoleEditWorkflow implements Service {
+class MailEditWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'rlid', 'name', 'desc', 'priority')
+			'required' => array('keyid', 'mailid', 'to', 'subject', 'message'),
+			'optional' => array('attach' => array())
 		);
 	}
 	
@@ -29,15 +31,18 @@ class RoleEditWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
+		$memory['attach'] = json_encode($memory['attach']);
+		
 		$service = array(
 			'service' => 'transpera.entity.edit.workflow',
-			'args' => array('name', 'desc', 'priority'),
-			'input' => array('id' => 'rlid'),
-			'conn' => 'rlconn',
-			'relation' => '`roles`',
-			'sqlcnd' => "set `name`='\${name}', `desc`='\${desc}', `priority`=\${priority} where `rlid`=\${id}",
-			'escparam' => array('name', 'desc'),
-			'successmsg' => 'Role edited successfully'
+			'args' => array('to', 'subject', 'message', 'attach'),
+			'input' => array('id' => 'mailid'),
+			'conn' => 'cbqconn',
+			'relation' => '`mails`',
+			'sqlcnd' => "set `to`='\${to}', `subject`='\${subject}', `message`='\${message}', `attach`='\${attach}' where `mailid`=\${id} and `state`=0",
+			'escparam' => array('to', 'subject', 'message', 'attach'),
+			'errormsg' => 'Mail Already Sent / Invalid Mail ID',
+			'successmsg' => 'Mail edited successfully'
 		);
 		
 		return Snowblozm::run($service, $memory);

@@ -2,28 +2,26 @@
 require_once(SBSERVICE);
 
 /**
- *	@class RoleListWorkflow
- *	@desc Returns all roles information in person container
+ *	@class MailListWorkflow
+ *	@desc Returns all mails information in queue
  *
  *	@param keyid long int Usage Key ID [memory]
- *	@param pnid/id long int Person ID [memory] optional default 0
- *	@param username string Person name [memory] optional default ''
+ *	@param queid/id long int Queue ID [memory] optional default 0
  *
  *	@param pgsz long int Paging Size [memory] optional default false
  *	@param pgno long int Paging Index [memory] optional default 1
  *	@param total long int Paging Total [memory] optional default false
  *
- *	@param user string User email [memory] optional default 'unknown@role.list'
+ *	@param user string User email [memory] optional default 'unknown@mail.list'
  *
- *	@return roles array Roles information [memory]
- *	@return pnid long int Person ID [memory]
- *	@return username string Person name [memory]
+ *	@return mails array Mails information [memory]
+ *	@return queid long int Queue ID [memory]
  *	@return admin integer Is admin [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class RoleListWorkflow implements Service {
+class MailListWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
@@ -31,7 +29,7 @@ class RoleListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('pnid' => 0, 'username' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false, 'user' => 'unknown@role.list', 'id' => 0)
+			'optional' => array('queid' => 0, 'pgsz' => false, 'pgno' => 0, 'total' => false, 'user' => 'unknown@mail.list', 'id' => 0)
 		);
 	}
 	
@@ -39,19 +37,20 @@ class RoleListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['pnid'] = $memory['pnid'] ? $memory['pnid'] : $memory['id'];
+		$memory['queid'] = $memory['queid'] ? $memory['queid'] : $memory['id'];
 		
 		$service = array(
 			'service' => 'transpera.entity.list.workflow',
-			'input' => array('id' => 'pnid'),
-			'conn' => 'rlconn',
-			'relation' => '`roles`',
-			'sqlcnd' => "where `rlid` in \${list} order by `priority` desc",
-			'type' => 'role',
-			'successmsg' => 'Roles information given successfully',
-			'output' => array('entities' => 'roles'),
-			'mapkey' => 'rlid',
-			'mapname' => 'role'
+			'input' => array('id' => 'queid'),
+			'conn' => 'cbqconn',
+			'relation' => '`mails`',
+			'sqlprj' => '`mailid`, `to`, `subject`, `status`, `stime`, substring(`message`, 0, 50) as `message`',
+			'sqlcnd' => "where `mailid` in \${list} order by `status` asc, `mailid` desc",
+			'type' => 'mail',
+			'successmsg' => 'Mails information given successfully',
+			'output' => array('entities' => 'mails'),
+			'mapkey' => 'mailid',
+			'mapname' => 'mail'
 		);
 		
 		return Snowblozm::run($service, $memory);
@@ -61,7 +60,7 @@ class RoleListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('roles', 'pnid', 'username', 'admin');
+		return array('mails', 'queid', 'admin');
 	}
 	
 }

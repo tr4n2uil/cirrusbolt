@@ -66,7 +66,7 @@ class MailSmtpService implements Service {
 			$mail->AddAddress(trim($parts[0]), substr($parts[1], 0, -1));
 		}
 		
-		foreach($memory['attach'] as $attach){
+		foreach($memory['attach'] as $key => $attach){
 			if(!$mail->AddAttachment($attach)){
 				$memory['valid'] = false;
 				$memory['msg'] = 'Error Attaching File';
