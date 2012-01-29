@@ -9,6 +9,8 @@ require_once(PHPMAILER);
  *	@param to string To address [memory]
  *	@param subject string Subject [memory] 
  *	@param message string Message [memory] 
+ *	@param attach array Attachments [memory] optional default array()
+ *	@param custom array Headers [memory] optional default array()
  *	@param mail array Mail configuration [Snowblozm] (type, host, port, secure, user, email, pass)
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -21,7 +23,8 @@ class MailSmtpService implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('to', 'subject', 'message')
+			'required' => array('to', 'subject', 'message'),
+			'optional' => array('attach' => array(), 'custom' => array())
 		);
 	}
 
@@ -47,17 +50,32 @@ class MailSmtpService implements Service {
 		$mail->AddReplyTo($mail['email'], $mail['user']);
 		$mail->From = $mail['email'];
 		$mail->FromName = $mail['user'];
+		
+		foreach($memory['custom'] => $custom){
+			$mail->addCustomHeader($custom);
+		}
 
 		$mail->Subject = $subject;
 		$mail->WordWrap = 50;
 		$mail->MsgHTML($message);
 		
-		$rcpts = explode(',', $to);
+		$rcpts = explode(',', $to)
 		foreach($rcpts as $rcpt){
-			$mail->AddAddress($rcpt, "");
+			$rcpt = trim($rcpt);
+			$parts = explode('<', $rcpt);
+			$mail->AddAddress(trim($parts[0]), substr($parts[1], 0, -1));
+		}
+		
+		foreach($memory['attach'] as $attach){
+			if(!$mail->AddAttachment($attach)){
+				$memory['valid'] = false;
+				$memory['msg'] = 'Error Attaching File';
+				$memory['status'] = 504;
+				$memory['details'] = 'Error attaching file : '.$attach.' @mail.smtp.service';
+				return $memory;
+			}
 		}
 
-		//$mail->AddAttachment("images/phpmailer.gif");             // attachment
 		$mail->IsHTML(true);
 
 		if(!$mail->Send()) {
