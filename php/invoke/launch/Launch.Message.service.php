@@ -54,7 +54,7 @@ class LaunchMessageService implements Service {
 		 *	Set UI data
 		**/
 		list($root, $service, $operation) = explode('.' ,$uri);
-		if($memory['uiconf'] && $uidata = include($memory['uiconf'].$root.'/'.$service.'/uidata.php')){
+		if($memory['uiconf'] && file_exists($memory['uiconf'].$root.'/'.$service.'/uidata.php') && $uidata = include($memory['uiconf'].$root.'/'.$service.'/uidata.php')){
 			$message['ui'] = $uidata[$operation];
 		}
 		

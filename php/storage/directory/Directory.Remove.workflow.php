@@ -2,25 +2,25 @@
 require_once(SBSERVICE);
 
 /**
- *	@class SpaceRemoveWorkflow
- *	@desc Removes space by ID
+ *	@class DirectoryRemoveWorkflow
+ *	@desc Removes directory by ID
  *
- *	@param spaceid long int Space ID [memory]
+ *	@param dirid long int Directory ID [memory]
  *	@param keyid long int Usage Key ID [memory]
- *	@param cntrid long int Container ID [memory] optional default 0
+ *	@param stgid long int Storage ID [memory] optional default 0
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class SpaceRemoveWorkflow implements Service {
+class DirectoryRemoveWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'spaceid'),
-			'optional' => array('cntrid' => 0)
+			'required' => array('keyid', 'dirid'),
+			'optional' => array('stgid' => 0)
 		);
 	}
 	
@@ -28,23 +28,23 @@ class SpaceRemoveWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = 'Space removed successfully';
+		$memory['msg'] = 'Directory removed successfully';
 		
 		$workflow = array(
 		array(
-			'service' => 'store.space.info.workflow'
+			'service' => 'storage.directory.info.workflow'
 		),
 		array(
 			'service' => 'transpera.reference.remove.workflow',
-			'input' => array('parent' => 'cntrid', 'id' => 'spaceid')
+			'input' => array('parent' => 'stgid', 'id' => 'dirid')
 		),
 		array(
 			'service' => 'transpera.relation.delete.workflow',
-			'args' => array('spaceid'),
-			'conn' => 'cbconn',
-			'relation' => '`spaces`',
-			'sqlcnd' => "where `spaceid`=\${spaceid}",
-			'errormsg' => 'Invalid Space ID'
+			'args' => array('dirid'),
+			'conn' => 'cbsconn',
+			'relation' => '`directories`',
+			'sqlcnd' => "where `dirid`=\${dirid}",
+			'errormsg' => 'Invalid Directory ID'
 		),
 		array(
 			'service' => 'cbcore.file.unlink.service',

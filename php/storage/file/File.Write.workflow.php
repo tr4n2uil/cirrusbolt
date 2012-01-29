@@ -2,30 +2,30 @@
 require_once(SBSERVICE);
 
 /**
- *	@class StorageWriteWorkflow
- *	@desc Uploads file and its storage information
+ *	@class FileWriteWorkflow
+ *	@desc Uploads file and its file information
  *
- *	@param stgid long int Storage ID [memory]
+ *	@param fileid long int File ID [memory]
  *	@param keyid long int Usage Key ID [memory]
  *	@param filekey string File key [memory] optional default 'storage'
  *	@param mime string MIME type [memory] optional default 'application/force-download'
  *	@param maxsize long int Maximum size [memory] optional default false
- *	@param spaceid long int Space ID [memory] optional default 0
+ *	@param dirid long int Directory ID [memory] optional default 0
  *
  *	@return filename string Filename received [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class StorageWriteWorkflow implements Service {
+class FileWriteWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'stgid'),
-			'optional' => array('spaceid' => 0, 'maxsize' => false, 'mime' => 'application/force-download', 'filekey' => 'storage')
+			'required' => array('keyid', 'fileid'),
+			'optional' => array('dirid' => 0, 'maxsize' => false, 'mime' => 'application/force-download', 'filekey' => 'storage')
 		);
 	}
 	
@@ -33,37 +33,36 @@ class StorageWriteWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = 'Storage written successfully';
+		$memory['msg'] = 'File written successfully';
 		
 		$workflow = array(
 		array(
 			'service' => 'transpera.reference.authorize.workflow',
-			'input' => array('id' => 'stgid'),
+			'input' => array('id' => 'fileid'),
 			'action' => 'edit'
 		),
 		array(
-			'service' => 'store.space.info.workflow',
-			'output' => array('sppath' => 'path')
+			'service' => 'storage.directory.info.workflow'
 		),
 		array(
-			'service' => 'store.storage.info.workflow',
+			'service' => 'storage.file.info.workflow',
 			'output' => array('filename' => 'name')
 		),
 		array(
-			'service' => 'cbcore.file.upload.service',
+			'service' => 'storage.file.upload.service',
 			'input' => array('key' => 'filekey')
 		),
 		array(
 			'service' => 'transpera.relation.update.workflow',
-			'args' => array('stgid', 'filename', 'mime', 'size'),
-			'conn' => 'cbconn',
-			'relation' => '`storages`',
-			'sqlcnd' => "set `stgname`='\${filename}', `mime`='\${mime}', `size`=\${size} where `stgid`=\${stgid}",
+			'args' => array('fileid', 'filename', 'mime', 'size'),
+			'conn' => 'cbsconn',
+			'relation' => '`files`',
+			'sqlcnd' => "set `name`='\${filename}', `mime`='\${mime}', `size`=\${size} where `fileid`=\${fileid}",
 			'escparam' => array('mime', 'filename')
 		),
 		array(
 			'service' => 'gauge.track.write.workflow',
-			'input' => array('id' => 'stgid')
+			'input' => array('id' => 'fileid')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

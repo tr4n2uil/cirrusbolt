@@ -2,25 +2,25 @@
 require_once(SBSERVICE);
 
 /**
- *	@class StorageReadWorkflow
- *	@desc Reads storage information and downloads file by ID
+ *	@class FileReadWorkflow
+ *	@desc Reads file information and downloads file by ID
  *
- *	@param stgid long int Storage ID [memory]
- *	@param spaceid long int Space ID [memory] optional default 0
+ *	@param fileid long int File ID [memory]
+ *	@param dirid long int Directory ID [memory] optional default 0
  *	@param asname string As name [memory] optional default false
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class StorageReadWorkflow implements Service {
+class FileReadWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('stgid'),
-			'optional' => array('spaceid' => 0, 'asname' => false)
+			'required' => array('fileid'),
+			'optional' => array('dirid' => 0, 'asname' => false)
 		);
 	}
 	
@@ -31,19 +31,19 @@ class StorageReadWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.reference.authorize.workflow',
-			'input' => array('id' => 'stgid'),
+			'input' => array('id' => 'fileid'),
 			'action' => 'read'
 		),
 		array(
-			'service' => 'store.space.info.workflow',
-			'output' => array('sppath' => 'filepath')
+			'service' => 'storage.directory.info.workflow',
+			'output' => array('path' => 'filepath')
 		),
 		array(
-			'service' => 'store.storage.info.workflow',
-			'output' => array('stgname' => 'asname')
+			'service' => 'storage.file.info.workflow',
+			'output' => array('name' => 'asname')
 		),
 		array(
-			'service' => 'cbcore.file.download.service'
+			'service' => 'storage.file.download.service'
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

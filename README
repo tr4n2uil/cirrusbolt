@@ -6,13 +6,14 @@ Vibhaj Rajan <vibhaj8@gmail.com>
 Components
 	Core : Core Services
 	Cypher : Security [Application Layer Security]
-	Gauge : Tracking [Universal Tracking Parameters]
+	Gauge : Credit Voucher Tracking [Universal Tracking Parameters]
 	Guard : Access Control [Key-Chain-Web (KCW+) Mechanism]
 	Invoke : Transport & Execution [Block Scale Transport Protocol]
 	Pool : Cache Management
+	Queue : Messaging & Communication
 	RDBMS : Database Management
 	System : Interfaces & Implementations
-	Store : Data Storage & Organization
+	Storage : Data Storage & Organization
 	Transpera : Reference, Relation & Entity [Extensible Contained Object Reference Element (XCORE) Architecture]
 	
 Planned
@@ -20,7 +21,6 @@ Planned
 	Handle : Collation [Virtual Directory Nomenclature]
 	Harmony : Load Balancing [Distributed Resource Identification]
 	Journal : Concurrency & Fault Tolerance [Out of Phase Synchronization]
-	Pool : Caching [Dynamic Temporal Caching]
 
 Acknowledgments
 	SnowBlozm <https://github.com/tr4n2uil/snowblozm>

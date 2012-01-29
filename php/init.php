@@ -46,13 +46,18 @@
 		'location' => 'local'
 	));
 	
+	Snowblozm::add('queue', array(
+		'root' => CBROOT.'queue/',
+		'location' => 'local'
+	));
+	
 	Snowblozm::add('rdbms', array(
 		'root' => CBROOT.'rdbms/',
 		'location' => 'local'
 	));
 	
-	Snowblozm::add('store', array(
-		'root' => CBROOT.'store/',
+	Snowblozm::add('storage', array(
+		'root' => CBROOT.'storage/',
 		'location' => 'local'
 	));
 	

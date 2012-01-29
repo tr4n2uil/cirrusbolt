@@ -37,6 +37,7 @@ class SecureReadWorkflow implements Service {
 	**/
 	public function run($memory){
 		$flag = $memory['email'] ? true : ($memory['crypt']!='none');
+		$memory['result'] = '';
 		
 		$workflow = array(
 		array(

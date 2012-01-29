@@ -2,24 +2,24 @@
 require_once(SBSERVICE);
 
 /**
- *	@class SpaceArchiveWorkflow
- *	@desc Archives space storages and downloads it
+ *	@class DirectoryArchiveWorkflow
+ *	@desc Archives directory storages and downloads it
  *
- *	@param spaceid long int Space ID [memory]
+ *	@param dirid long int Directory ID [memory]
  *	@param keyid long int Usage Key ID [memory]
  *	@param asname string As name [memory] optional default 'archive.zip'
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class SpaceArchiveWorkflow implements Service {
+class DirectoryArchiveWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'spaceid'),
+			'required' => array('keyid', 'dirid'),
 			'optional' => array('asname' => 'archive.zip')
 		);
 	}
@@ -28,24 +28,24 @@ class SpaceArchiveWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = 'Space archived successfully';
+		$memory['msg'] = 'Directory archived successfully';
 		
 		$workflow = array(
 		array(
 			'service' => 'transpera.reference.authorize.workflow',
-			'input' => array('id' => 'spaceid'),
+			'input' => array('id' => 'dirid'),
 			'action' => 'edit'
 		),
 		array(
-			'service' => 'store.space.info.workflow'
+			'service' => 'storage.directory.info.workflow'
 		),
 		array(
 			'service' => 'cbcore.file.archive.service',
-			'input' => array('directory' => 'sppath')
+			'input' => array('directory' => 'path')
 		),
 		array(
 			'service' => 'cbcore.file.download.service',
-			'input' => array('filepath' => 'sppath'),
+			'input' => array('filepath' => 'path'),
 			'filename' => 'archive.zip',
 			'mime' => 'application/zip'
 		));
