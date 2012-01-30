@@ -36,7 +36,7 @@ class MemberAddWorkflow implements Service {
 	**/
 	public function run($memory){
 		$memory['msg'] = 'Member added successfully';
-		$memory['leaf'] = $memory['leaf'] ? $memory['leaf'] : $memory['child'];
+		$memory['leaf'] = $memory['leaf'] ? $memory['leaf'] : $memory['chainid'];
 		$memory['control'] = $memory['control'] ? ($memory['control'] === true ? $memory['authorize'] : $memory['control']) : 'info:'.$memory['authorize'];
 		
 		$service = array(
