@@ -8,7 +8,7 @@ require_once(SBSERVICE);
  *	@param mailid long int Mail ID [memory]
  *	@param to string To address [memory]
  *	@param subject string Subject [memory] 
- *	@param message string Message [memory] 
+ *	@param body string Message Body [memory] 
  *	@param attach array Attachments [memory] optional default array()
  *	@param keyid long int Usage Key ID [memory]
  *
@@ -22,7 +22,7 @@ class MailEditWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'mailid', 'to', 'subject', 'message'),
+			'required' => array('keyid', 'mailid', 'to', 'subject', 'body'),
 			'optional' => array('attach' => array())
 		);
 	}
@@ -35,12 +35,12 @@ class MailEditWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.entity.edit.workflow',
-			'args' => array('to', 'subject', 'message', 'attach'),
+			'args' => array('to', 'subject', 'body', 'attach'),
 			'input' => array('id' => 'mailid'),
 			'conn' => 'cbqconn',
 			'relation' => '`mails`',
-			'sqlcnd' => "set `to`='\${to}', `subject`='\${subject}', `message`='\${message}', `attach`='\${attach}' where `mailid`=\${id} and `state`=0",
-			'escparam' => array('to', 'subject', 'message', 'attach'),
+			'sqlcnd' => "set `to`='\${to}', `subject`='\${subject}', `body`='\${body}', `attach`='\${attach}' where `mailid`=\${id} and `state`=0",
+			'escparam' => array('to', 'subject', 'body', 'attach'),
 			'errormsg' => 'Mail Already Sent / Invalid Mail ID',
 			'successmsg' => 'Mail edited successfully'
 		);

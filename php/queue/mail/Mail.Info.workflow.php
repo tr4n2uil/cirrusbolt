@@ -34,8 +34,7 @@ class MailInfoWorkflow implements Service {
 	public function run($memory){
 		$memory['mailid'] = $memory['mailid'] ? $memory['mailid'] : $memory['id'];
 		
-		$workflow = array(
-		array(
+		$service = array(
 			'service' => 'transpera.entity.info.workflow',
 			'input' => array('id' => 'mailid', 'parent' => 'queid'),
 			'conn' => 'cbqconn',
@@ -44,9 +43,9 @@ class MailInfoWorkflow implements Service {
 			'errormsg' => 'Invalid Mail ID',
 			'successmsg' => 'Mail information given successfully',
 			'output' => array('entity' => 'mail')
-		));
+		);
 		
-		$memory = Snowblozm::execute($workflow, $memory);
+		$memory = Snowblozm::run($service, $memory);
 		if($memory['valid'])
 			$memory['mail']['attach'] = json_decode($memory['mail']['attach']);
 		

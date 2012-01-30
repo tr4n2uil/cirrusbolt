@@ -7,7 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param to string To address [memory]
  *	@param subject string Subject [memory] 
- *	@param message string Message [memory] 
+ *	@param body string Message Body [memory] 
  *	@param attach array Attachments [memory] optional default array()
  *	@param custom array Headers [memory] optional default array()
  *	@param keyid long int Usage Key ID [memory]
@@ -26,7 +26,7 @@ class MailAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'to', 'subject', 'message'),
+			'required' => array('keyid', 'to', 'subject', 'body'),
 			'optional' => array('attach' => array(), 'custom' => array(), 'queid' => 0, 'owner' => false)
 		);
 	}
@@ -40,13 +40,13 @@ class MailAddWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.entity.add.workflow',
-			'args' => array('to', 'subject', 'message', 'attach', 'custom'),
+			'args' => array('to', 'subject', 'body', 'attach', 'custom'),
 			'input' => array('parent' => 'queid'),
 			'authorize' => 'info:edit:send:add:remove:list',
 			'conn' => 'cbqconn',
 			'relation' => '`mails`',
-			'sqlcnd' => "(`mailid`, `owner`, `to`, `subject`, `message`, `attach`, `custom`) values (\${id}, \${owner}, '\${to}', '\${subject}', '\${message}', '\${attach}', '\${custom}')",
-			'escparam' => array('to', 'subject', 'message', 'attach', 'custom'),
+			'sqlcnd' => "(`mailid`, `owner`, `to`, `subject`, `body`, `attach`, `custom`) values (\${id}, \${owner}, '\${to}', '\${subject}', '\${body}', '\${attach}', '\${custom}')",
+			'escparam' => array('to', 'subject', 'body', 'attach', 'custom'),
 			'type' => 'mail',
 			'successmsg' => 'Mail added successfully',
 			'output' => array('id' => 'mailid')

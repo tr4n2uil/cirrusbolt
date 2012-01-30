@@ -54,8 +54,8 @@ class DataDecodeService implements Service {
 				$memory['details'] = 'Data decoding not supported for type : '.$type.' @data.decode.service';
 				return $memory;
 		}
-
-		if($result === false || $result == null){
+		
+		if(($result === false || $result == null) && !is_array($result)){
 			$memory['result'] = array();
 			$memory['valid'] = false;
 			$memory['msg'] = 'Unable to decode data';

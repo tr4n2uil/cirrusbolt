@@ -8,7 +8,7 @@ require_once(PHPMAILER);
  *
  *	@param to string To address [memory]
  *	@param subject string Subject [memory] 
- *	@param message string Message [memory] 
+ *	@param body string Message [memory] 
  *	@param attach array Attachments [memory] optional default array()
  *	@param custom array Headers [memory] optional default array()
  *	@param mail array Mail configuration [Snowblozm] (type, host, port, secure, user, email, pass)
@@ -23,7 +23,7 @@ class MailSmtpService implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('to', 'subject', 'message'),
+			'required' => array('to', 'subject', 'body'),
 			'optional' => array('attach' => array(), 'custom' => array())
 		);
 	}
@@ -32,39 +32,44 @@ class MailSmtpService implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$mail = Snowblozm::get('mail');
+		$config = Snowblozm::get('mail');
 		$to = $memory['to'];
 		$subject = $memory['subject'];
-		$message = $memory['message'];
+		$body = $memory['body'];
 		
 		$mail = new PHPMailer();
 		$mail->IsSMTP();
+		$mail->SMTPDebug  = 1;
 		$mail->SMTPAuth = true;
-		$mail->SMTPSecure = $mail['secure'];
-		$mail->Host = $mail['host'];
-		$mail->Port = $mail['port'];
+		$mail->SMTPSecure = $config['secure'];
+		$mail->Host = $config['host'];
+		$mail->Port = $config['port'];
 
-		$mail->Username = $mail['email'];
-		$mail->Password = $mail['pass'];
+		$mail->Username = $config['email'];
+		$mail->Password = $config['pass'];
 
-		$mail->AddReplyTo($mail['email'], $mail['user']);
-		$mail->From = $mail['email'];
-		$mail->FromName = $mail['user'];
+		$mail->AddReplyTo($config['email'], $config['user']);
+		$mail->From = $config['email'];
+		$mail->FromName = $config['user'];
 		
-		foreach($memory['custom'] => $custom){
+		foreach($memory['custom'] as $custom){
 			$mail->addCustomHeader($custom);
+		}
+		
+		$rcpts = explode(',', $to);
+		foreach($rcpts as $rcpt){
+			$rcpt = trim($rcpt);
+			$parts = explode('<', $rcpt);
+			
+			if(count($parts) == 1)
+				$mail->AddAddress($parts[0]);
+			else
+				$mail->AddAddress(substr($parts[1], 0, -1), trim($parts[0]));
 		}
 
 		$mail->Subject = $subject;
 		$mail->WordWrap = 50;
-		$mail->MsgHTML($message);
-		
-		$rcpts = explode(',', $to)
-		foreach($rcpts as $rcpt){
-			$rcpt = trim($rcpt);
-			$parts = explode('<', $rcpt);
-			$mail->AddAddress(trim($parts[0]), substr($parts[1], 0, -1));
-		}
+		$mail->MsgHTML($body);
 		
 		foreach($memory['attach'] as $key => $attach){
 			if(!$mail->AddAttachment($attach)){
@@ -78,7 +83,7 @@ class MailSmtpService implements Service {
 
 		$mail->IsHTML(true);
 
-		if(!$mail->Send()) {
+		if(!@$mail->Send()) {
 			$memory['valid'] = false;
 			$memory['msg'] = 'Error sending Mail';
 			$memory['status'] = 503;

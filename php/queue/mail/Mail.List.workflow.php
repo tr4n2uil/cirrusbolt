@@ -44,7 +44,7 @@ class MailListWorkflow implements Service {
 			'input' => array('id' => 'queid'),
 			'conn' => 'cbqconn',
 			'relation' => '`mails`',
-			'sqlprj' => '`mailid`, `to`, `subject`, `status`, `stime`, substring(`message`, 0, 50) as `message`',
+			'sqlprj' => '`mailid`, `to`, `subject`, `status`, `stime`, substring(`body`, 0, 50) as `body`',
 			'sqlcnd' => "where `mailid` in \${list} order by `status` asc, `mailid` desc",
 			'type' => 'mail',
 			'successmsg' => 'Mails information given successfully',
