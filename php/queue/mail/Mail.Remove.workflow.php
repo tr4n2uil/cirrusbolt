@@ -2,25 +2,25 @@
 require_once(SBSERVICE);
 
 /**
- *	@class RoleRemoveWorkflow
- *	@desc Removes role by ID
+ *	@class MailRemoveWorkflow
+ *	@desc Removes mail by ID
  *
- *	@param rlid long int Role ID [memory]
- *	@param pnid long int Person ID [memory] optional default 0
+ *	@param maillid long int Mail ID [memory]
+ *	@param queid long int Queue ID [memory] optional default 0
  *	@param keyid long int Usage Key ID [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class RoleRemoveWorkflow implements Service {
+class MailRemoveWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'rlid'),
-			'optional' => array('pnid' => 0)
+			'required' => array('keyid', 'mailid'),
+			'optional' => array('queid' => 0)
 		);
 	}
 	
@@ -28,26 +28,17 @@ class RoleRemoveWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$workflow = array(
-		array(
-			'service' => 'people.role.info.workflow'
-		),
-		array(
+		$service = array(
 			'service' => 'transpera.entity.remove.workflow',
-			'input' => array('id' => 'rlid', 'parent' => 'pnid'),
-			'conn' => 'rlconn',
-			'relation' => '`roles`',
-			'sqlcnd' => "where `rlid`=\${id}",
-			'errormsg' => 'Invalid Role ID',
-			'successmsg' => 'Role removed successfully',
-			'destruct' => array(
-				'service' => 'storage.file.remove.workflow',
-				'input' => array('fileid' => 'thumbnail')
-				'dirid' => 3
-			)
-		));
+			'input' => array('id' => 'mailid', 'parent' => 'queid'),
+			'conn' => 'cbqconn',
+			'relation' => '`mails`',
+			'sqlcnd' => "where `mailid`=\${id} and `state`=0",
+			'errormsg' => 'Mail Already Sent / Invalid Mail ID',
+			'successmsg' => 'Mail removed successfully'
+		);
 		
-		return Snowblozm::execute($workflow, $memory);
+		return Snowblozm::run($service, $memory);
 	}
 	
 	/**
