@@ -172,7 +172,7 @@ class ChainAuthorizeWorkflow implements Service {
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
 			'sqlprj' => '`chainid`',
-			'sqlcnd' => "where `chainid`=\${chainid} and (`masterkey`=\${keyid} or `authorize` not like '%\${action}%' or $query)",
+			'sqlcnd' => "where `chainid`=\${chainid} and ($query)",
 			'escparam' => $escparam,
 			'errstatus' => 403
 		);
