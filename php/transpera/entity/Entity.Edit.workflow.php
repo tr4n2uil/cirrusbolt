@@ -14,7 +14,7 @@ require_once(SBSERVICE);
  *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *	@param init boolean init flag [memory] optional default true
  *
- *	@param user string User email [memory]
+ *	@param user string Username [memory] optional default 'unknown@entity.edit'
  *	@param relation string Relation name [memory]
  *	@param sqlcnd string SQL condition [memory]
  *	@param args array Query parameters [args]
@@ -38,8 +38,9 @@ class EntityEditWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('conn', 'keyid', 'user', 'id', 'relation', 'sqlcnd'),
+			'required' => array('conn', 'keyid', 'id', 'relation', 'sqlcnd'),
 			'optional' => array(
+				'user' => 'unknown@entity.edit',
 				'acstate' => true,
 				'action' => 'edit', 
 				'astate' => true, 

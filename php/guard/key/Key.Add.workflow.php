@@ -5,7 +5,7 @@ require_once(SBSERVICE);
  *	@class KeyAddWorkflow
  *	@desc Adds new service key
  *
- *	@param email string Email [memory]
+ *	@param user string Username [memory]
  *	@param key string Key value [memory]
  *
  *	@return return id long int Key ID [memory]
@@ -20,7 +20,7 @@ class KeyAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('key', 'email')
+			'required' => array('key', 'user')
 		);
 	}
 	
@@ -32,11 +32,11 @@ class KeyAddWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.relation.insert.workflow',
-			'args' => array('key', 'email'),
+			'args' => array('key', 'user'),
 			'conn' => 'cbconn',
 			'relation' => '`keys`',
-			'sqlcnd' => "(`email`, `keyvalue`) values ('\${email}', MD5('\${email}\${key}'))",
-			'escparam' => array('key', 'email')
+			'sqlcnd' => "(`user`, `keyvalue`) values ('\${user}', MD5('\${user}\${key}'))",
+			'escparam' => array('key', 'user')
 		);
 		
 		return Snowblozm::run($service, $memory);

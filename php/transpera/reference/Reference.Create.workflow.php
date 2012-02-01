@@ -8,7 +8,7 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key ID [memory]
  *	@param parent long int Reference ID [memory]
  *	@param level integer Web level [memory] optional default 0
- *	@param email string Email [memory]
+ *	@param user string User [memory]
  *	@param keyvalue string Key value [memory]
  *	@param authorize string Authorize control value [memory] optional default (inherit)
  *	@param control string Authorize control value for member [memory] optional default false='info:'.(inherit) true=(inherit)
@@ -45,7 +45,7 @@ class ReferenceCreateWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'parent', 'email', 'keyvalue'),
+			'required' => array('keyid', 'parent', 'user', 'keyvalue'),
 			'optional' => array(
 				'level' => 0, 
 				'root' => false, 

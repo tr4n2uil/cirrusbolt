@@ -33,7 +33,7 @@ class KeyEditWorkflow implements Service {
 			'args' => array('key', 'keyid'),
 			'conn' => 'cbconn',
 			'relation' => '`keys`',
-			'sqlcnd' => "set `keyvalue`=MD5(concat(`email`, '\${key}')) where `keyid`=\${keyid}",
+			'sqlcnd' => "set `keyvalue`=MD5(concat(`user`, '\${key}')) where `keyid`=\${keyid}",
 			'escparam' => array('key'),
 			'errormsg' => 'Invalid Key ID / No Change'
 		);

@@ -11,7 +11,7 @@ require_once(SBSERVICE);
  *	@param mgchn boolean Is merge chain [memory] optional default true
  *
  *	@param id long int Entity ID [memory]
- *	@param user string User email [memory] optional default 'unknown@entity.info'
+ *	@param user string Username [memory] optional default 'unknown@entity.info'
  *	@param relation string Relation name [memory]
  *	@param sqlcnd string SQL condition [memory]
  *	@param sqlprj string SQL projection [memory] optional default *
@@ -66,7 +66,7 @@ class EntityInfoWorkflow implements Service {
 				'track' => true,
 				'chadm' => true,
 				'mgchn' => true,
-				'user' => 'unknown@entity.add',
+				'user' => 'unknown@entity.info',
 				'parent' => 0, 
 				'sqlprj' => '*', 
 				'successmsg' => 'Entity information given successfully', 

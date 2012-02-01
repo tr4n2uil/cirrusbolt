@@ -5,7 +5,7 @@ require_once(SBSERVICE);
  *	@class KeyAvailableWorkflow
  *	@desc Checks for availability of service key value
  *
- *	@param email string Email [memory]
+ *	@param user string Username [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -17,7 +17,7 @@ class KeyAvailableWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('email')
+			'required' => array('user')
 		);
 	}
 	
@@ -25,18 +25,18 @@ class KeyAvailableWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = 'Email available for registration';
+		$memory['msg'] = 'User available for registration';
 		
 		$service = array(
 			'service' => 'transpera.relation.unique.workflow',
-			'args' => array('email'),
+			'args' => array('user'),
 			'conn' => 'cbconn',
 			'relation' => '`keys`',
 			'sqlprj' => 'keyid',
-			'sqlcnd' => "where `email`='\${email}'",
-			'escparam' => array('email'),
+			'sqlcnd' => "where `user`='\${user}'",
+			'escparam' => array('user'),
 			'not' => false,
-			'errormsg' => 'Email already registered'
+			'errormsg' => 'Username already registered'
 		);
 		
 		return Snowblozm::run($service, $memory);

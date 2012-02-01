@@ -7,7 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param relation string Relation name [memory]
  *	@param sqlcnd string SQL condition [memory]
- *	@param user string User email [memory]
+ *	@param user string Username [memory] optional default 'unknown@entity.remove'
  *	@param errormsg string Error message [memory] optional default 'Invalid Entity ID'
  *	@param successmsg string Success message [memory] optional default 'Entity information successfully'
  *
@@ -47,8 +47,9 @@ class EntityRemoveWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('conn', 'keyid', 'user', 'id', 'relation', 'sqlcnd'),
+			'required' => array('conn', 'keyid', 'id', 'relation', 'sqlcnd'),
 			'optional' => array(
+				'user' => 'unknown@entity.remove',
 				'parent' => 0, 
 				'type' => 'general',
 				'acstate' => true,

@@ -12,7 +12,7 @@ require_once(SBSERVICE);
  *	@param relation string Relation name [memory]
  *	@param sqlcnd string SQL condition [memory]
  *	@param sqlprj string SQL projection [memory] optional default *
- *	@param user string User email [memory] optional default 'unknown@entity.info'
+ *	@param user string Username [memory] optional default 'unknown@entity.find'
  *	@param errormsg string Error message [memory] optional default 'Invalid Entity ID'
  *	@param successmsg string Success message [memory] optional default 'Entity information successfully'
  *
@@ -64,7 +64,7 @@ class EntityFindWorkflow implements Service {
 				'track' => true,
 				'chadm' => true,
 				'mgchn' => true,
-				'user' => 'unknown@entity.add',
+				'user' => 'unknown@entity.find',
 				'parent' => 0, 
 				'sqlprj' => '*', 
 				'successmsg' => 'Entity information given successfully', 

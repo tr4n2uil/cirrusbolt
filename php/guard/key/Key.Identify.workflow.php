@@ -4,10 +4,9 @@ require_once(SBSERVICE);
 /**
  *	@class KeyIdentifyWorkflow
  *	@desc Identifies key from email and returns hash of it with challenge sent 
- *	@condition identifies only if (user|email) is set and (key, keyid) not set else returns what is sent
+ *	@condition identifies only if (user) is set and (key, keyid) not set else returns what is sent
  *
  *	@param user string Email [memory] optional default false
- *	@param email string Email [memory] optional default false
  *	@param context string Application context for email [memory] optional default false
  *	@param challenge string Challenge to be used while hashing [memory] optional default 'snowblozm'
  *	@param key string Key value hash already generated previously [memory] optional default false
@@ -26,7 +25,7 @@ class KeyIdentifyWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'optional' => array('challenge' => false, 'user' => false, 'email' => false, 'key' => false, 'keyid' => false, 'context' => false)
+			'optional' => array('challenge' => false, 'user' => false, 'key' => false, 'keyid' => false, 'context' => false)
 		);
 	}
 	
@@ -35,9 +34,9 @@ class KeyIdentifyWorkflow implements Service {
 	**/
 	public function run($memory){
 		$memory['challenge'] = $memory['challenge'] ? $memory['challenge'] : 'snowblozm';
-		$memory['email'] = $memory['user'] ? $memory['user'] : ($memory['email'] ? $memory['email'] : false);
+		$memory['user'] = $memory['user'] ? $memory['user'] : false;
 		
-		if($memory['email'] !==false && $memory['key'] === false && $memory['keyid'] === false){
+		if($memory['user'] !==false && $memory['key'] === false && $memory['keyid'] === false){
 			if(!$memory['context']){
 				$memory['valid'] = false;
 				$memory['msg'] = 'Invalid Context';
@@ -51,13 +50,13 @@ class KeyIdentifyWorkflow implements Service {
 			$workflow = array(
 			array(
 				'service' => 'transpera.relation.unique.workflow',
-				'args' => array('email', 'challenge', 'context'),
+				'args' => array('user', 'challenge', 'context'),
 				'conn' => 'cbconn',
 				'relation' => '`keys`',
 				'sqlprj' => "keyid, MD5(concat(`keyvalue`,'\${challenge}')) as `key`",
-				'sqlcnd' => "where `email`='\${email}' and `context` like '%\${context}%'",
-				'escparam' => array('email', 'challenge', 'context'),
-				'errormsg' => 'Unable to identify key from email',
+				'sqlcnd' => "where `user`='\${user}' and `context` like '%\${context}%'",
+				'escparam' => array('user', 'challenge', 'context'),
+				'errormsg' => 'Unable to identify key for user',
 				'errstatus' => 515
 			),
 			array(

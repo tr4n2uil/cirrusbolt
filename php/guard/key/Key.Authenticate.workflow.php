@@ -3,11 +3,11 @@ require_once(SBSERVICE);
 
 /**
  *	@class KeyAuthenticateWorkflow
- *	@desc Validates email keyvalue and selects key ID
+ *	@desc Validates user keyvalue and selects key ID
  *
- *	@param email string Email [memory]
+ *	@param user string Username [memory]
  *	@param key string Usage key [memory]
- *	@param context string Application context for email [memory] optional default false
+ *	@param context string Application context for user [memory] optional default false
  *
  *	@return keyid long int Key ID [memory]
  *
@@ -21,7 +21,7 @@ class KeyAuthenticateWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('key', 'email'),
+			'required' => array('key', 'user'),
 			'optional' => array('context' => false)
 		);
 	}
@@ -35,12 +35,12 @@ class KeyAuthenticateWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.relation.unique.workflow',
-			'args' => array('key', 'email', 'context'),
+			'args' => array('key', 'user', 'context'),
 			'conn' => 'cbconn',
 			'relation' => '`keys`',
 			'sqlprj' => 'keyid',
-			'sqlcnd' => "where `email`='\${email}' and `context` like '%\${context}%' and `keyvalue`=MD5('\${email}\${key}')",
-			'escparam' => array('key', 'email', 'context'),
+			'sqlcnd' => "where `user`='\${user}' and `context` like '%\${context}%' and `keyvalue`=MD5('\${user}\${key}')",
+			'escparam' => array('key', 'user', 'context'),
 			'errormsg' => 'Invalid Credentials'
 		),
 		array(

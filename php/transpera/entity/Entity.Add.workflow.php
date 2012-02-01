@@ -29,7 +29,7 @@ require_once(SBSERVICE);
  *	@param construct array Construction Workflow [memory] optional default false
  *	@param cparam array Construction Parameters [memory] optional default array()
  *
- *	@param user string User email [memory] optional default unknown@entity.add
+ *	@param user string Username [memory] optional default 'unknown@entity.add'
  *	@param relation string Relation name [memory]
  *	@param owner long int Owner ID [memory] optional default keyid
  *	@param sqlcnd string SQL condition [memory]

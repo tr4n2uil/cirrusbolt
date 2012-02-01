@@ -30,7 +30,7 @@ require_once(SBSERVICE);
  *	@param relation string Relation name [memory]
  *	@param sqlcnd string SQL condition [memory]
  *	@param sqlprj string SQL projection [memory] optional default *
- *	@param user string User email [memory]
+ *	@param user string Username [memory] optional default 'unknown@entity.list'
  *	@param escparam array Escape params [memory] optional default array()
  *	@param successmsg string Success message [memory] optional default 'Entity information successfully'
  *	@param mapkey string Map Key [memory] optional default 0
@@ -65,8 +65,9 @@ class EntityListWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('conn', 'keyid', 'user', 'id', 'relation', 'sqlcnd'),
+			'required' => array('conn', 'keyid', 'id', 'relation', 'sqlcnd'),
 			'optional' => array(
+				'user' => 'unknown@entity.list',
 				'chadm' => true,
 				'mgchn' => true,
 				'selection' => 'list',
