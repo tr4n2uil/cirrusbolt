@@ -10,7 +10,7 @@ require_once(SBSERVICE);
  *	@param crypt string Crypt types [memory] ('none', 'rc4', 'aes', 'blowfish', 'tripledes')
  *	@param hash string Hash types [memory] ('none', 'md5', 'sha1', 'crc32')
  *	@param access array allowed service provider names [memory] optional default false
- *	@param email string Identification email to be used if not set in message [memory] optional default false
+ *	@param user string Username to be used if not set in message [memory] optional default false
  *	@param context string Application context for email [memory] optional default false
  * 	@param raw boolean Raw output required [memory] optional default false
  *	@param uiconf array UI data [memory]
@@ -29,7 +29,7 @@ class LaunchMessageWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('reqtype', 'restype', 'crypt' , 'hash'),
-			'optional' => array('access' => array(), 'email' => false, 'context' => false, 'raw' => false, 'uiconf' => false)
+			'optional' => array('access' => array(), 'user' => false, 'context' => false, 'raw' => false, 'uiconf' => false)
 		);
 	}
 	

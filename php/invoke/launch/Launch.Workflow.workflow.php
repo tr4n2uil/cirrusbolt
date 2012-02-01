@@ -6,7 +6,7 @@ require_once(SBSERVICE);
  *	@desc Launches workflows from arrays
  *
  *	@param message array Message to be launched [memory]
- *	@param email string Identification email to be used if not set in message [memory] optional default false
+ *	@param user string Username to be used if not set in message [memory] optional default false
  *	@param keyid long int Usage Key [memory] optional default false
  *	@param context string Usage Context [memory] optional default false
  *	@param type string response type [memory] ('json', 'wddx', 'xml', 'plain', 'html') optional default 'json'
@@ -27,7 +27,7 @@ class LaunchWorkflowWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('message'),
-			'optional' => array('email' => false, 'keyid' => false, 'context' => false, 'type' => 'json', 'uiconf' => false)
+			'optional' => array('user' => false, 'keyid' => false, 'context' => false, 'type' => 'json', 'uiconf' => false)
 		);
 	}
 	
@@ -35,7 +35,7 @@ class LaunchWorkflowWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		if($memory['keyid'] === false && $memory['email']){
+		if($memory['keyid'] === false && $memory['user']){
 			$memory = Snowblozm::run(array(
 				'service' => 'guard.key.identify.workflow'
 			), $memory);
@@ -44,7 +44,7 @@ class LaunchWorkflowWorkflow implements Service {
 				return $memory;
 		}
 		
-		$memory['message']['email'] = $memory['email'];
+		$memory['message']['user'] = $memory['user'];
 		$memory['message']['keyid'] = $memory['keyid'];
 		$memory['message']['context'] = $memory['context'];
 		

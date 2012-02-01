@@ -5,13 +5,13 @@ require_once(SBSERVICE);
  *	@class InterfaceSessionWorkflow
  *	@desc Processes interface session in Tile UI
  *
- *	@param email string Identification email to be authenticated [memory] optional default false
+ *	@param user string Username to be authenticated [memory] optional default false
  *	@param key string Identification password to be authenticated [memory] optional default false
  *	@param continue string URL to continue [memory] optional default false
  *
  *	@param session array Session instance configuration key [memory] ('key', 'expiry', 'root', 'context')
  *
- *	@return email string Email [memory]
+ *	@return user string Username [memory]
  *	@return key string Cookie name [memory]
  *	@return value string Session ID [memory]
  *	@return expiry string Cookie expiry [memory]
@@ -27,7 +27,7 @@ class InterfaceSessionWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'optional' => array('email' => false, 'key' => false, 'continue' => false)
+			'optional' => array('user' => false, 'key' => false, 'continue' => false)
 		);
 	}
 	
@@ -39,7 +39,7 @@ class InterfaceSessionWorkflow implements Service {
 		$memory['value'] = false;
 		$memory['expires'] = false;
 		
-		if($memory['email'] && $memory['key']){
+		if($memory['user'] && $memory['key']){
 		
 			$workflow = array(
 			array(
@@ -104,7 +104,7 @@ class InterfaceSessionWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('email', 'key', 'value', 'expires', 'continue');
+		return array('user', 'key', 'value', 'expires', 'continue');
 	}
 	
 }

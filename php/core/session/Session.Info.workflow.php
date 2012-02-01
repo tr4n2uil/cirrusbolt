@@ -7,7 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param sessionid string Resource ID [memory]
  *
- *	@return email string Session owner [memory]
+ *	@return user string Session owner [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -51,7 +51,7 @@ class SessionInfoWorkflow implements Service {
 		array(
 			'service' => 'cbcore.data.select.service',
 			'args' => array('result'),
-			'params' => array('result.0.email' => 'email')
+			'params' => array('result.0.user' => 'user')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);
@@ -61,7 +61,7 @@ class SessionInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('email');
+		return array('user');
 	}
 	
 }

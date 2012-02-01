@@ -5,7 +5,7 @@ require_once(SBSERVICE);
  *	@class SessionAddWorkflow
  *	@desc Adds new session
  *
- *	@param email string Email [memory]
+ *	@param user string Username [memory]
  *	@param expiry integer Days to expire [memory] optional default 1
  *
  *	@return sessionid string Session ID [memory]
@@ -20,7 +20,7 @@ class SessionAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('email'),
+			'required' => array('user'),
 			'optional' => array('expiry' => 1)
 		);
 	}
@@ -47,11 +47,11 @@ class SessionAddWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.relation.insert.workflow',
-			'args' => array('sessionid', 'email'),
+			'args' => array('sessionid', 'user'),
 			'conn' => 'cbconn',
 			'relation' => '`sessions`',
-			'sqlcnd' => "(`sessionid`, `email`, `expiry`) values ('\${sessionid}', '\${email}', (now() + interval ".$memory['expiry']." day))",
-			'escparam' => array('sessionid', 'email')
+			'sqlcnd' => "(`sessionid`, `user`, `expiry`) values ('\${sessionid}', '\${user}', (now() + interval ".$memory['expiry']." day))",
+			'escparam' => array('sessionid', 'user')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

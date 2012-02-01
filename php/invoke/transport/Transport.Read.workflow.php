@@ -11,7 +11,7 @@ require_once(SBSERVICE);
  *	@param key string Key used for decryption [memory] optional default false (generated from challenge)
  *	@param keyid string Key ID returned previously [memory] optional default false
  *	@param hash string Hash type [memory] ('none', 'md5', 'sha1', 'crc32')
- *	@param email string Email if user not set [memory] optional default false
+ *	@param user string Username [memory] optional default false
  *	@param context string Application context for email [memory] optional default false
  *
  *	@return result object Unsecured message [memory]
@@ -28,7 +28,7 @@ class TransportReadWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('data', 'type', 'crypt', 'hash'),
-			'optional' => array('key' => false, 'keyid' => false, 'email' => false, 'context' => false)
+			'optional' => array('key' => false, 'keyid' => false, 'user' => false, 'context' => false)
 		);
 	}
 	

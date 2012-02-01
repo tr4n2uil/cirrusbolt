@@ -11,7 +11,7 @@ require_once(SBSERVICE);
  *	@param key string Key used for decryption [memory] optional default false (generated from challenge)
  *	@param keyid string Key ID returned previously [memory] optional default false
  *	@param hash string Hash type [memory] ('none', 'md5', 'sha1', 'crc32')
- *	@param email string Email if user not set [memory] optional default false
+ *	@param user string Username if user not set [memory] optional default false
  *	@param context string Application context for email [memory] optional default false
  *
  *	@return result object Unsecured message [memory]
@@ -28,7 +28,7 @@ class SecureReadWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('data', 'crypt', 'hash'),
-			'optional' => array('key' => false, 'keyid' => false, 'email' => false, 'context' => false)
+			'optional' => array('key' => false, 'keyid' => false, 'user' => false, 'context' => false)
 		);
 	}
 	
@@ -36,7 +36,8 @@ class SecureReadWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$flag = $memory['email'] ? true : ($memory['crypt']!='none');
+		$user = $memory['user'];
+		$flag = $user ? true : ($memory['crypt']!='none');
 		$memory['result'] = '';
 		
 		$workflow = array(
@@ -95,9 +96,9 @@ class SecureReadWorkflow implements Service {
 			if(isset($memory['result']['keyid'])) 
 				unset($memory['result']['keyid']);
 			
-			if($flag) {
+			if($flag){
 				$memory['result']['keyid'] = $memory['keyid'];
-				$memory['result']['user'] = $memory['email'] ? $memory['email'] : $memory['user'];
+				$memory['result']['user'] = $user ? $user : $memory['user'];
 			}
 		}
 		
