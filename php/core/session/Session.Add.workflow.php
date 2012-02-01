@@ -34,7 +34,7 @@ class SessionAddWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'cbcore.random.string.service',
-			'length' => 22
+			'length' => 54
 		),
 		array(
 			'service' => 'cbcore.system.time.service'

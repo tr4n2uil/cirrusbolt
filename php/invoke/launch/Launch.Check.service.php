@@ -58,7 +58,7 @@ class LaunchCheckService implements Service {
 					 *	Get service URI and restrict access to services
 					**/
 					$uri = $message['service'];
-					list($root, $service, $operation) = explode('.' ,$uri);
+					@list($root, $service, $operation) = explode('.' ,$uri);
 					
 					/**
 					 *	Remove args if set (for being on safe side)

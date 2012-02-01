@@ -2,31 +2,30 @@
 require_once(SBSERVICE);
 
 /**
- *	@class MemberAccessWorkflow
- *	@desc Returns chain IDs in chain for member key ID in type
+ *	@class DeviceListWorkflow
+ *	@desc Returns device IDs in key
  *
- *	@param keyid long int Key ID [memory]
+ *	@param devid long int Device ID [memory]
  *	@param state string State [memory] optional default false (true= Not '0')
- *	@param type string Type name [memory] optional default 'general'
  *	@param pgsz long int Paging Size [memory] optional default false
  *	@param pgno long int Paging Index [memory] optional default 1
  *	@param total long int Paging Total [memory] optional default false
  *
- *	@return result array Chain IDs [memory]
+ *	@return result array Device key information [memory]
  *	@return total long int Paging total [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class MemberAccessWorkflow implements Service {
+class DeviceListWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid'),
-			'optional' => array('type' => 'general', 'state' => false, 'pgsz' => false, 'pgno' => 0, 'total' => false)
+			'required' => array('devid'),
+			'optional' => array('state' => false, 'pgsz' => false, 'pgno' => 0, 'total' => false)
 		);
 	}
 	
@@ -34,24 +33,30 @@ class MemberAccessWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = 'Access chains returned successfully';
-		$last = '';
-		$escparam = array('type');
+		$memory['msg'] = 'Device keys returned successfully';
 		
-		if($memory['state']){
+		$last = '';
+		$args = array('devid');
+		$escparam = array();
+		
+		if($memory['state'] === true){
+			$last = " and `state`<>'0' ";
+		}
+		else if($memory['state']){
 			$last = " and `state`='\${state}' ";
 			array_push($escparam, 'state');
-		}
+			array_push($args, 'state');
+		}	
 		
 		$service = array(
 			'service' => 'transpera.relation.select.workflow',
-			'args' => array('keyid', 'type', 'state'),
+			'args' => $args,
 			'conn' => 'cbconn',
-			'relation' => '`members`',
-			'sqlprj' => '`chainid`',
-			'sqlcnd' => "where `type`='\${type}' and `keyid`=\${keyid} $last",
+			'relation' => '`devices`',
+			'sqlprj' => '`keyid`',
+			'sqlcnd' => "where `devid`=\${devid} $last",
 			'escparam' => $escparam,
-			'errormsg' => 'No Access'
+			'errormsg' => 'No Devices'
 		);
 		
 		return Snowblozm::run($service, $memory);

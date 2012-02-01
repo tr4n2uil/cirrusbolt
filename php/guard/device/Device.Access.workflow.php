@@ -2,8 +2,8 @@
 require_once(SBSERVICE);
 
 /**
- *	@class MemberAccessWorkflow
- *	@desc Returns chain IDs in chain for member key ID in type
+ *	@class DeviceAccessWorkflow
+ *	@desc Returns device IDs for key ID in type
  *
  *	@param keyid long int Key ID [memory]
  *	@param state string State [memory] optional default false (true= Not '0')
@@ -12,13 +12,13 @@ require_once(SBSERVICE);
  *	@param pgno long int Paging Index [memory] optional default 1
  *	@param total long int Paging Total [memory] optional default false
  *
- *	@return result array Chain IDs [memory]
+ *	@return result array Device IDs [memory]
  *	@return total long int Paging total [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class MemberAccessWorkflow implements Service {
+class DeviceAccessWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
@@ -34,7 +34,7 @@ class MemberAccessWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = 'Access chains returned successfully';
+		$memory['msg'] = 'Access devices returned successfully';
 		$last = '';
 		$escparam = array('type');
 		
@@ -47,11 +47,11 @@ class MemberAccessWorkflow implements Service {
 			'service' => 'transpera.relation.select.workflow',
 			'args' => array('keyid', 'type', 'state'),
 			'conn' => 'cbconn',
-			'relation' => '`members`',
-			'sqlprj' => '`chainid`',
+			'relation' => '`devices`',
+			'sqlprj' => '`devid`',
 			'sqlcnd' => "where `type`='\${type}' and `keyid`=\${keyid} $last",
 			'escparam' => $escparam,
-			'errormsg' => 'No Access'
+			'errormsg' => 'No Access Devices'
 		);
 		
 		return Snowblozm::run($service, $memory);

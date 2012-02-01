@@ -35,6 +35,10 @@ class LaunchMessageService implements Service {
 		 *	Check for invalid service check
 		**/
 		if(isset($message['valid'])){
+			$memory['valid'] = false;
+			$memory['msg'] = $message['msg'];
+			$memory['status'] = $message['status'];
+			$memory['details'] = $message['details'];
 			return $memory;
 		}
 		
@@ -55,7 +59,7 @@ class LaunchMessageService implements Service {
 		**/
 		list($root, $service, $operation) = explode('.' ,$uri);
 		if($memory['uiconf'] && file_exists($memory['uiconf'].$root.'/'.$service.'/uidata.php') && $uidata = include($memory['uiconf'].$root.'/'.$service.'/uidata.php')){
-			$message['ui'] = $uidata[$operation];
+			$message['ui'] = isset($uidata[$operation]) ? $uidata[$operation] : array();
 		}
 		
 		$memory['message'] = $message;

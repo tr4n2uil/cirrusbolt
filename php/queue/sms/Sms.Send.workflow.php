@@ -59,14 +59,17 @@ class SmsSendWorkflow implements Service {
 		));
 		
 		$memory = Snowblozm::execute($workflow, $memory);
-		echo json_encode($memory);
+		$valid = $memory['valid'];
+		$msg = $memory['msg'];
+		$status = $memory['status'];
+		$details = $memory['details'];
 		
 		$memory['msg'] = 'SMS Sent Successfully';
 		$service = array(
 			'service' => 'transpera.relation.update.workflow',
 			'args' => array('smsid', 'smsstatus', 'response'),
-			'smsstatus' => $memory['status'],
-			'response' => $memory['details'],
+			'smsstatus' => $status,
+			'response' => $details,
 			'conn' => 'cbqconn',
 			'relation' => '`sms`',
 			'sqlcnd' => "set `status`=\${smsstatus}, `response`='\${response}', `stime`=now(), `count`=`count`+1 where `smsid`=\${smsid}",
@@ -77,6 +80,10 @@ class SmsSendWorkflow implements Service {
 		
 		$memory = Snowblozm::run($service, $memory);
 		
+		$memory['valid'] = $valid;
+		$memory['msg'] = $msg;
+		$memory['status'] = $status;
+		$memory['details'] = $details;
 		return $memory;
 	}
 	
