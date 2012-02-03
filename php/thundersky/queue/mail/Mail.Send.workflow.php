@@ -68,6 +68,11 @@ class MailSendWorkflow implements Service {
 		));
 		
 		$memory = Snowblozm::execute($workflow, $memory);
+		$valid = $memory['valid'];
+		$msg = $memory['msg'];
+		$status = $memory['status'];
+		$details = $memory['details'];
+		
 		if($memory['valid'])
 			$memory['mail']['attach'] = $memory['attach'];
 		
@@ -86,6 +91,10 @@ class MailSendWorkflow implements Service {
 		
 		$memory = Snowblozm::run($service, $memory);
 		
+		$memory['valid'] = $valid;
+		$memory['msg'] = $msg;
+		$memory['status'] = $status;
+		$memory['details'] = $details;
 		return $memory;
 	}
 	

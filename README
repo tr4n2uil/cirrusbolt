@@ -1,20 +1,39 @@
 CirrusBolt
-Service Computing Platform System and Data Services
+Service Computing Platform Foundation Engine
 
 Vibhaj Rajan <vibhaj8@gmail.com>
 
-Components
-	Core : Core Services
-	Cypher : Security [Application Layer Security]
-	Gauge : Credit Voucher Tracking [Universal Tracking Parameters]
-	Guard : Access Control [Key-Chain-Web (KCW+) Mechanism]
-	Invoke : Transport & Execution [Block Scale Transport Protocol]
-	Pool : Cache Management
-	Queue : Messaging & Communication
-	RDBMS : Database Management
-	System : Interfaces & Implementations
-	Storage : Data Storage & Organization
-	Transpera : Reference, Relation & Entity [Extensible Contained Object Reference Element (XCORE) Architecture]
+Components :
+
+	AquaDew : 
+		Core : Core Services
+		Pool : Cache Management
+		RDBMS : Database Management
+		System : Interfaces & Implementations
+		
+	SwiftBlaze :
+		Cypher : Security [Application Layer Security]
+		Gauge : Credit Voucher Tracking [Universal Tracking Parameters]
+		Guard : Access Control [Key-Chain-Web (KCW+) Mechanism]
+		Invoke : Transport & Execution [Block Scale Transport Protocol]
+		Transpera : Reference, Relation & Entity [Extensible Contained Object Reference Element (XCORE) Architecture]
+		
+	ThunderSky :
+		Queue : Messaging & Communication
+		Storage : Data Storage & Organization
+		
+	RhythmLink :
+		World : Global Web
+		Office : Professional Web
+		People : Social Web
+	
+	
+	
+	
+	
+	
+	
+	
 	
 Planned
 	Echo : Replication & Consistency [Neighborhood Replicated Partitioning]
