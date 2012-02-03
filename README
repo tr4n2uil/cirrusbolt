@@ -5,24 +5,24 @@ Vibhaj Rajan <vibhaj8@gmail.com>
 
 Components :
 
-	AquaDew : 
+	AquaDew : Data Services
 		Core : Core Services
 		Pool : Cache Management
 		RDBMS : Database Management
 		System : Interfaces & Implementations
 		
-	SwiftBlaze :
+	SwiftBlaze : Core Architecture 
 		Cypher : Security [Application Layer Security]
 		Gauge : Credit Voucher Tracking [Universal Tracking Parameters]
 		Guard : Access Control [Key-Chain-Web (KCW+) Mechanism]
 		Invoke : Transport & Execution [Block Scale Transport Protocol]
 		Transpera : Reference, Relation & Entity [Extensible Contained Object Reference Element (XCORE) Architecture]
 		
-	ThunderSky :
+	ThunderSky : Management Services
 		Queue : Messaging & Communication
 		Storage : Data Storage & Organization
 		
-	RhythmLink :
+	RhythmLink : Communication and Collaboration Services
 		World : Global Web
 		Office : Professional Web
 		People : Social Web
