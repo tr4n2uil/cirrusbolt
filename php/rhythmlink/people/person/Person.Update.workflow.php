@@ -59,7 +59,16 @@ class PersonUpdateWorkflow implements Service {
 			'errormsg' => 'No Change / Invalid Person ID'
 		),
 		array(
-			
+			'service' => 'transpera.relation.update.workflow',
+			'args' => array('owner', 'device'),
+			'conn' => 'rlconn',
+			'relation' => '`persons`',
+			'sqlcnd' => "set `verify`='', `device`='\${device}' where `owner`=\${owner}",
+			'escparam' => array('device'),
+			'errormsg' => 'Invalid Person'
+		),
+		array(
+			'service' => 'invoke.interface.session.workflow'
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

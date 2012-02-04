@@ -36,8 +36,6 @@ class InterfaceSessionWorkflow implements Service {
 	**/
 	public function run($memory){
 		$session = Snowblozm::get('session');
-		$memory['value'] = false;
-		$memory['expires'] = false;
 		
 		if($memory['user'] && $memory['key']){
 		
@@ -54,16 +52,10 @@ class InterfaceSessionWorkflow implements Service {
 				
 			$memory = Snowblozm::execute($workflow, $memory);
 			
-			if($memory['valid']) {
-				$memory['key'] = $session['key'];
-				$memory['expires'] = $session['expiry'];
-			}
-			else {
+			if(!$memory['valid'])
 				return $memory;
-			}
 		}
 		else if(isset($_COOKIE[$session['key']])){
-			$memory['key'] = false;
 			
 			$service = array(
 				'service' => 'cbcore.session.remove.workflow',
@@ -73,8 +65,9 @@ class InterfaceSessionWorkflow implements Service {
 			$memory = Snowblozm::run($service, $memory);
 					
 			if($memory['valid']){
-				header('Location: '. $session['root']);
-				exit;
+				$memory['value'] = 0;
+				//header('Location: '. isset($memory['continue']) ? $memory['continue'] : $session['root']);
+				//exit;
 			}
 			else {
 				$memory['valid'] = false;
@@ -92,6 +85,9 @@ class InterfaceSessionWorkflow implements Service {
 			$memory['details'] = "Session action requested was invalid due to possible expiry of previous session @interface.session";
 			return $memory;
 		}
+		
+		$memory['key'] = $session['key'];
+		$memory['expires'] = $session['expiry'];
 		
 		$memory['valid'] = true;
 		$memory['msg'] = 'Valid Interface Session';
