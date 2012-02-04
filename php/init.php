@@ -8,7 +8,7 @@
 	/** 
 	 *	@constants CirrusBolt
 	**/
-	define('CBMYSQL', CBROOT . 'system/Mysql.class.php');
+	define('CBMYSQL', CBROOT . 'aquadew/system/Mysql.class.php');
 	
 	/** 
 	 *	@initialize SnowBlozm
