@@ -18,7 +18,7 @@ class KeyResetWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('key', 'context')
+			'required' => array('keyid', 'context')
 		);
 	}
 	
@@ -30,10 +30,10 @@ class KeyResetWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.relation.update.workflow',
-			'args' => array('key', 'keyid'),
+			'args' => array('keyid', 'context'),
 			'conn' => 'cbconn',
 			'relation' => '`keys`',
-			'sqlcnd' => "set `context`=replace(`context`, '\${context}', '')) where `keyid`=\${keyid}",
+			'sqlcnd' => "set `context`=replace(`context`, ':\${context}', '') where `keyid`=\${keyid}",
 			'escparam' => array('context'),
 			'errormsg' => 'Invalid Key ID'
 		);

@@ -60,12 +60,18 @@ class PersonUpdateWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.relation.update.workflow',
-			'args' => array('owner', 'device'),
+			'args' => array('pnid', 'device'),
 			'conn' => 'rlconn',
 			'relation' => '`persons`',
-			'sqlcnd' => "set `verify`='', `device`='\${device}' where `owner`=\${owner}",
+			'sqlcnd' => "set `verify`='', `device`='\${device}' where `pnid`=\${pnid}",
 			'escparam' => array('device'),
+			'check' => false,
 			'errormsg' => 'Invalid Person'
+		),
+		array(
+			'service' => 'guard.key.reset.workflow',
+			'input' => array('id' => 'keyid'),
+			'context' => CONTEXT
 		),
 		array(
 			'service' => 'invoke.interface.session.workflow'

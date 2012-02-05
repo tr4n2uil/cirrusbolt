@@ -5,8 +5,7 @@ require_once(SBSERVICE);
  *	@class PersonVerifyWorkflow
  *	@desc Changes key for person by ID
  *
- *	@param email string Person email [memory]
- *	@param phone string Person phone [memory] optional default false
+ *	@param username string Person username [memory]
  *	@param verify string Verification code [memory]
  *	@param context string Context [constant as CONTEXT]
  *
@@ -20,8 +19,7 @@ class PersonVerifyWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('email', 'verify'),
-			'optional' => array('phone' => false)
+			'required' => array('username', 'verify')
 		);
 	}
 	
@@ -38,17 +36,17 @@ class PersonVerifyWorkflow implements Service {
 		}
 		
 		$memory['msg'] = 'Person verified successfully';
-		$attr = $memory['phone'] ? 'phone' : 'email';
-		$memory['phone'] = $memory['phone'] ? $memory['phone'] : $memory['email'];
+		//$attr = $memory['phone'] ? 'phone' : 'email';
+		//$memory['phone'] = $memory['phone'] ? $memory['phone'] : $memory['email'];
 		
 		$workflow = array(
 		array(
 			'service' => 'transpera.relation.unique.workflow',
-			'args' => array('phone', 'verify'),
+			'args' => array('username', 'verify'),
 			'conn' => 'rlconn',
 			'relation' => '`persons`',
-			'sqlcnd' => "where `$attr`='\${phone}' and `verify`='\${verify}'",
-			'escparam' => array('phone', 'verify'),
+			'sqlcnd' => "where `username`='\${username}' and `verify`='\${verify}'",
+			'escparam' => array('username', 'verify'),
 			'errormsg' => 'Invalid Verification Code'
 		),
 		array(

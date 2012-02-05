@@ -57,7 +57,8 @@ class KeyIdentifyWorkflow implements Service {
 				'sqlcnd' => "where `user`='\${user}' and `context` like '%\${context}%'",
 				'escparam' => array('user', 'challenge', 'context'),
 				'errormsg' => 'Unable to identify key for user',
-				'errstatus' => 515
+				'errstatus' => 515,
+				'cache' => false
 			),
 			array(
 				'service' => 'cbcore.data.select.service',
