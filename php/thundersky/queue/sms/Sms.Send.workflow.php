@@ -3,7 +3,7 @@ require_once(SBSERVICE);
 
 /**
  *	@class SmsSendWorkflow
- *	@desc Sends sms information by ID
+ *	@desc Sends sms by ID
  *
  *	@param smsid/id string SMS ID [memory]
  *	@param keyid long int Usage Key ID [memory]

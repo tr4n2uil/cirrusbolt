@@ -1,5 +1,6 @@
 <?php 
 require_once(SBSERVICE);
+require_once(CBQUEUECONF);
 
 /**
  *	@class PersonUpdateWorkflow
@@ -30,6 +31,8 @@ class PersonUpdateWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
+		$memory['msg'] = 'Person updated successfully';
+		
 		switch($memory['device']){
 			case 'mail' :
 				$attr = 'email';
@@ -57,25 +60,30 @@ class PersonUpdateWorkflow implements Service {
 			'escparam' => array($attr),
 			'successmsg' => 'Person updated successfully',
 			'errormsg' => 'No Change / Invalid Person ID'
-		),
-		array(
-			'service' => 'transpera.relation.update.workflow',
-			'args' => array('pnid', 'device'),
-			'conn' => 'rlconn',
-			'relation' => '`persons`',
-			'sqlcnd' => "set `verify`='', `device`='\${device}' where `pnid`=\${pnid}",
-			'escparam' => array('device'),
-			'check' => false,
-			'errormsg' => 'Invalid Person'
-		),
-		array(
-			'service' => 'guard.key.reset.workflow',
-			'input' => array('id' => 'keyid'),
-			'context' => CONTEXT
-		),
-		array(
-			'service' => 'invoke.interface.session.workflow'
 		));
+		
+		if(in_array($memory['device'], explode(':', PERSON_DEVICES))){
+		
+			array_push($workflow,
+			array(
+				'service' => 'transpera.relation.update.workflow',
+				'args' => array('pnid', 'device'),
+				'conn' => 'rlconn',
+				'relation' => '`persons`',
+				'sqlcnd' => "set `verify`='', `device`='\${device}' where `pnid`=\${pnid}",
+				'escparam' => array('device'),
+				'check' => false,
+				'errormsg' => 'Invalid Person'
+			),
+			array(
+				'service' => 'guard.key.reset.workflow',
+				'input' => array('id' => 'keyid'),
+				'context' => CONTEXT
+			),
+			array(
+				'service' => 'invoke.interface.session.workflow'
+			));
+		}
 		
 		return Snowblozm::execute($workflow, $memory);
 	}
