@@ -2,8 +2,8 @@
 require_once(SBSERVICE);
 
 /**
- *	@class SmsAddWorkflow
- *	@desc Adds new sms to queue
+ *	@class SmsQuickWorkflow
+ *	@desc Sends sms by adding new one to queue
  *
  *	@param to string To address [memory]
  *	@param from string Sender [memory] 
@@ -13,11 +13,13 @@ require_once(SBSERVICE);
  *	@param owner long int Owner Key ID [memory] optional default keyid
  *
  *	@return smsid long int SMS ID [memory]
+ *	@return sms array SMS information [memory]
+ *	@return admin integer Is admin [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class SmsAddWorkflow implements Service {
+class SmsQuickWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
@@ -33,28 +35,22 @@ class SmsAddWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$service = array(
-			'service' => 'transpera.entity.add.workflow',
-			'args' => array('to', 'from', 'body'),
-			'input' => array('parent' => 'queid'),
-			'authorize' => 'info:edit:send:add:remove:list',
-			'conn' => 'cbqconn',
-			'relation' => '`sms`',
-			'sqlcnd' => "(`smsid`, `owner`, `to`, `from`, `body`) values (\${id}, \${owner}, '\${to}', '\${from}', '\${body}')",
-			'escparam' => array('to', 'from', 'body'),
-			'type' => 'sms',
-			'successmsg' => 'SMS saved successfully',
-			'output' => array('id' => 'smsid')
-		);
+		$workflow = array(
+		array(
+			'service' => 'queue.sms.add.workflow'
+		),
+		array(
+			'service' => 'queue.sms.send.workflow'
+		));
 		
-		return Snowblozm::run($service, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('smsid');
+		return array('smsid', 'sms', 'queid');
 	}
 	
 }

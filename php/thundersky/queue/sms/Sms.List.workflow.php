@@ -14,6 +14,7 @@ require_once(SBSERVICE);
  *	@param total long int Paging Total [memory] optional default false
  *
  *	@param user string User email [memory] optional default 'unknown@sms.list'
+ *	@param drafts boolean Select Drafts [memory] optional default false
  *
  *	@return sms array SMS information [memory]
  *	@return queid long int Queue ID [memory]
@@ -31,7 +32,7 @@ class SmsListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('queid' => 0, 'quename' => false, 'pgsz' => false, 'pgno' => 0, 'total' => false, 'user' => 'unknown@sms.list', 'id' => 0, 'name' => '')
+			'optional' => array('queid' => 0, 'quename' => false, 'pgsz' => false, 'pgno' => 0, 'total' => false, 'user' => 'unknown@sms.list', 'id' => 0, 'name' => '', 'drafts' => false)
 		);
 	}
 	
@@ -41,6 +42,7 @@ class SmsListWorkflow implements Service {
 	public function run($memory){
 		$memory['queid'] = $memory['queid'] ? $memory['queid'] : $memory['id'];
 		$memory['quename'] = $memory['quename'] ? $memory['quename'] : $memory['name'];
+		$qry = $memory['drafts'] ? ' and `count`=0 ' : '';
 		
 		$service = array(
 			'service' => 'transpera.entity.list.workflow',
@@ -48,7 +50,7 @@ class SmsListWorkflow implements Service {
 			'conn' => 'cbqconn',
 			'relation' => '`sms`',
 			'sqlprj' => '`smsid`, `to`, `from`, `status`, `stime`, substring(`body`, 1, 50) as `body`',
-			'sqlcnd' => "where `smsid` in \${list} order by `status` asc, `smsid` desc",
+			'sqlcnd' => "where `smsid` in \${list} $qry order by `status` asc, `smsid` desc",
 			'type' => 'sms',
 			'successmsg' => 'SMS information given successfully',
 			'output' => array('entities' => 'sms'),
