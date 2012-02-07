@@ -5,10 +5,12 @@ require_once(SBSERVICE);
  *	@class ChainAddWorkflow
  *	@desc Creates new chain
  *
+ *	@param parent long int Parent ID [memory]
  *	@param masterkey long int Key ID [memory]
  *	@param authorize string Authorize control value [memory] optional default 'edit:add:remove:list'
  *	@param state string State value [memory] optional default 'A'
  *	@param root string Collation root [memory] optional default '/masterkey'
+ *	@param type string Type name [memory] optional default 'general'
  *	@param level integer Web level [memory] optional default 0
  *
  *	@return return id long int Chain ID [memory]
@@ -23,8 +25,8 @@ class ChainAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('masterkey'),
-			'optional' => array('level' => 0, 'root' => false, 'authorize' => 'edit:add:remove:list', 'state' => 'A')
+			'required' => array('masterkey', 'parent'),
+			'optional' => array('level' => 0, 'root' => false, 'authorize' => 'edit:add:remove:list', 'state' => 'A', 'type' => 'general')
 		);
 	}
 	
@@ -37,11 +39,11 @@ class ChainAddWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.relation.insert.workflow',
-			'args' => array('masterkey', 'level', 'root', 'authorize', 'state'),
+			'args' => array('parent', 'masterkey', 'level', 'root', 'authorize', 'state', 'type'),
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
-			'sqlcnd' => "(`masterkey`, `level`, `root`, `authorize`, `state`, `ctime`, `rtime`, `wtime`) values (\${masterkey}, \${level}, '\${root}', '\${authorize}', '\${state}', now(), now(), now())",
-			'escparam' => array('root', 'authorize', 'state')
+			'sqlcnd' => "(`parent`, `masterkey`, `authorize`, `state`, `level`, `root`, `type`, `ctime`, `rtime`, `wtime`) values (\${parent}, \${masterkey}, '\${authorize}', '\${state}', \${level}, '\${root}', '\${type}', now(), now(), now())",
+			'escparam' => array('root', 'authorize', 'state', 'type')
 		);
 		
 		return Snowblozm::run($service, $memory);

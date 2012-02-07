@@ -35,6 +35,11 @@ class SmsSaveWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
+		$service = array(
+			'service' => 'queue.sms.info'
+		);
+	
+	
 		$workflow = array(
 		array(
 			'service' => 'queue.sms.add.workflow'
