@@ -94,6 +94,7 @@ class EntityListWorkflow implements Service {
 				'sautherror' => 'Unable to Authorize',
 				'sqlprj' => '*', 
 				'successmsg' => 'Entities information given successfully', 
+				'listerror' => 'Error in Database',
 				'escparam' => array(),
 				'mapkey' => 0,
 				'mapname' => 'entity',
@@ -147,6 +148,7 @@ class EntityListWorkflow implements Service {
 			array(
 				'service' => 'transpera.relation.select.workflow',
 				'args' => array_merge($memory['args'], array('list')),
+				'input' => array('errormsg' => 'listerror'),
 				'escparam' => array_merge($memory['escparam'], array('list')),
 				'check' => false,
 				'output' => array('result' => 'entities')
