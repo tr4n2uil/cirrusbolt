@@ -8,6 +8,7 @@ require_once(SBSERVICE);
  *	@param name string Directory name [memory]
  *	@param path string Directory path [memory]
  *	@param keyid long int Usage Key ID [memory]
+ *	@param user string Key User [memory]
  *	@param stgid long int Storage ID [memory] optional default 0
  *	@param level integer Web level [memory] optional default 1 (storage admin access allowed)
  *	@param owner long int Owner Key ID [memory] optional default keyid
@@ -24,7 +25,7 @@ class DirectoryAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'name', 'path'),
+			'required' => array('keyid', 'user', 'name', 'path'),
 			'optional' => array('stgid' => 0, 'level' => 1, 'owner' => false)
 		);
 	}

@@ -134,7 +134,7 @@ class RelationSelectWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('result');
+		return array('result', 'total');
 	}
 	
 }

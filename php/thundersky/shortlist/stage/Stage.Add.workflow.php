@@ -12,6 +12,7 @@ require_once(SBSERVICE);
  *	@param end string End time [memory] (YYYY-MM-DD hh:mm:ss format)
  *	@param status integer Status [memory] optional default 1
  *	@param keyid long int Usage Key ID [memory]
+ *	@param user string Key User [memory]
  *	@param shlstid long int Shortlist ID [memory] optional default 0
  *	@param level integer Web level [memory] optional default 1 (shortlist admin access allowed)
  *
@@ -27,7 +28,7 @@ class StageAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'name', 'stage', 'start', 'end'),
+			'required' => array('keyid', 'user', 'name', 'stage', 'start', 'end'),
 			'optional' => array('open' => 0, 'status' => 1, 'shlstid' => 0, 'level' => 1)
 		);
 	}

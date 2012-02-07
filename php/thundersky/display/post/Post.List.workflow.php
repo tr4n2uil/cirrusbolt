@@ -9,6 +9,10 @@ require_once(SBSERVICE);
  *	@param boardid long int Board ID [memory] optional default 0
  *	@param bname string Board name [memory] optional default ''
  *
+ *	@param pgsz long int Paging Size [memory] optional default false
+ *	@param pgno long int Paging Index [memory] optional default 1
+ *	@param total long int Paging Total [memory] optional default false
+ *
  *	@return posts array Posts information [memory]
  *	@return boardid long int Board ID [memory]
  *	@return bname string Board name [memory]
@@ -25,7 +29,7 @@ class PostListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('boardid' => 0, 'bname' => '')
+			'optional' => array('boardid' => 0, 'bname' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false)
 		);
 	}
 	
@@ -38,8 +42,8 @@ class PostListWorkflow implements Service {
 			'input' => array('id' => 'boardid'),
 			'conn' => 'cbdspcn',
 			'relation' => '`posts`',
-			'sqlprj' => '`postid`, `title`, `time`, `author`',
-			'sqlcnd' => "where `postid` in \${list} order by `time` desc",
+			'sqlprj' => '`postid`, `title`, substring(`author`, 1, 50) as `post`',
+			'sqlcnd' => "where `postid` in \${list} order by `postid` desc",
 			'successmsg' => 'Posts information given successfully',
 			'output' => array('entities' => 'posts'),
 		);

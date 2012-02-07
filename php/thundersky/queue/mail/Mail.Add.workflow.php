@@ -11,6 +11,7 @@ require_once(SBSERVICE);
  *	@param attach array Attachments [memory] optional default array()
  *	@param custom array Headers [memory] optional default array()
  *	@param keyid long int Usage Key ID [memory]
+ *	@param user string Key User [memory]
  *	@param queid long int Queue ID [memory] optional default 0
  *	@param owner long int Owner Key ID [memory] optional default keyid
  *
@@ -26,7 +27,7 @@ class MailAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'to', 'subject', 'body'),
+			'required' => array('keyid', 'user', 'to', 'subject', 'body'),
 			'optional' => array('attach' => array(), 'custom' => array(), 'queid' => 0, 'owner' => false)
 		);
 	}

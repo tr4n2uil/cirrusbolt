@@ -19,6 +19,7 @@ require_once(SBSERVICE);
  *	@return pnid long int Person ID [memory]
  *	@return username string Person name [memory]
  *	@return admin integer Is admin [memory]
+ *	@return total long int Total count [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -61,7 +62,7 @@ class RoleListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('roles', 'pnid', 'username', 'admin');
+		return array('roles', 'pnid', 'username', 'admin', 'total');
 	}
 	
 }

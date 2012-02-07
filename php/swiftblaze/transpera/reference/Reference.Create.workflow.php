@@ -106,6 +106,10 @@ class ReferenceCreateWorkflow implements Service {
 			'service' => 'guard.web.add.workflow',
 			'input' => array('child' => 'id'),
 			'output' => array('id' => 'webid')
+		),
+		array(
+			'service' => 'guard.chain.count.workflow',
+			'input' => array('chainid' => 'parent')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

@@ -16,6 +16,7 @@ require_once(SBSERVICE);
  *	@param state string State value for member [memory] optional default 'A'
  *	@param istate string State value for web [memory] optional default 'A'
  *	@param root string Collation root [memory] optional default '/masterkey'
+ *	@param user string Username [memory] optional default 'unknown@reference.add'
  *	@param type string Type name [memory] optional default 'general'
  *	@param path string Collation path [memory] optional default '/'
  *	@param leaf string Collation leaf [memory] optional default 'Child ID'
@@ -49,6 +50,7 @@ class ReferenceAddWorkflow implements Service {
 				'level' => false, 
 				'owner' => false, 
 				'root' => false, 
+				'user' => 'unknown@reference.add',
 				'type' => 'general', 
 				'path' => '/', 
 				'leaf' => false, 
@@ -99,6 +101,10 @@ class ReferenceAddWorkflow implements Service {
 			'service' => 'guard.web.add.workflow',
 			'input' => array('child' => 'id'),
 			'output' => array('id' => 'webid')
+		),
+		array(
+			'service' => 'guard.chain.count.workflow',
+			'input' => array('chainid' => 'parent')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

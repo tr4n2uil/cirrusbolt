@@ -18,6 +18,7 @@ require_once(SBSERVICE);
  *	@return ename string Shortlist name [memory]
  *	@return shlstid long int Shortlist ID [memory]
  *	@return admin integer Is admin [memory]
+ *	@return total long int Total count [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -30,7 +31,7 @@ class StageListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('shlstid' => 0, 'asc' => false, 'ename' => '', 'id' => 0, 'pgsz' => false, 'pgno' => 0, 'total' => false,)
+			'optional' => array('shlstid' => 0, 'asc' => false, 'ename' => '', 'id' => 0, 'pgsz' => false, 'pgno' => 0, 'total' => false)
 		);
 	}
 	
@@ -58,7 +59,7 @@ class StageListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('stages', 'ename', 'shlstid', 'admin');
+		return array('stages', 'ename', 'shlstid', 'admin', 'total');
 	}
 	
 }

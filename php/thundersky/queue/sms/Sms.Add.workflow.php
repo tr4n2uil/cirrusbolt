@@ -9,6 +9,7 @@ require_once(SBSERVICE);
  *	@param from string Sender [memory] 
  *	@param body string Message Body [memory] 
  *	@param keyid long int Usage Key ID [memory]
+ *	@param user string Key User [memory]
  *	@param queid long int Queue ID [memory] optional default 0
  *	@param owner long int Owner Key ID [memory] optional default keyid
  *
@@ -24,7 +25,7 @@ class SmsAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'to', 'body'),
+			'required' => array('keyid', 'user', 'to', 'body'),
 			'optional' => array('queid' => 0, 'owner' => false, 'from' => '')
 		);
 	}

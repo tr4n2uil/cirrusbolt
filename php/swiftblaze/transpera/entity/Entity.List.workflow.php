@@ -19,6 +19,8 @@ require_once(SBSERVICE);
  *	@param pgno long int Paging Index [memory] optional default 1
  *	@param total long int Paging Total [memory] optional default false
  *
+ *	@Todo chpgsz, chpgno, chtotal
+ *
  *	@param acstate string State to authorize chain [memory] optional default true (false= All)
  *	@param action string Action to authorize member [memory] optional default 'list'
  *	@param astate string State to authorize member [memory] optional default true (false= None)
@@ -54,6 +56,7 @@ require_once(SBSERVICE);
  *	@return total long int Total count [memory]
  *	@return id long int Parent ID [memory]
  *	@return admin integer Is admin [memory]
+ *	@return total long int Total count [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -137,6 +140,7 @@ class EntityListWorkflow implements Service {
 			$workflow = array(
 			array(
 				'service' => 'transpera.reference.'.$memory['selection'].'.workflow',
+				'input' => array('pgsz' => 'chpgsz', 'pgno' => 'chpgno', 'total' => 'chtotal')
 			),
 			array(
 				'service' => 'cbcore.data.list.service',
@@ -203,7 +207,7 @@ class EntityListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('entities', 'id', 'admin');
+		return array('entities', 'id', 'admin', 'total');
 	}
 	
 }

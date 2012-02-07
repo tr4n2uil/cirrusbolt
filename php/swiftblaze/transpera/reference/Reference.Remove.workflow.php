@@ -69,6 +69,11 @@ class ReferenceRemoveWorkflow implements Service {
 		array(
 			'service' => 'guard.web.remove.workflow',
 			'input' => array('child' => 'id')
+		),
+		array(
+			'service' => 'guard.chain.count.workflow',
+			'input' => array('chainid' => 'parent'),
+			'remove' => true
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

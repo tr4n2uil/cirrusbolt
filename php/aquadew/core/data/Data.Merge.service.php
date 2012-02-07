@@ -29,6 +29,7 @@ class DataMergeService implements Service {
 	public function run($memory){
 		$params = $memory['params'];
 		$result = array();
+		$flag = true;
 		
 		foreach($params as $value => $keys){
 			$data = $memory[$value];
@@ -38,9 +39,11 @@ class DataMergeService implements Service {
 			foreach($data as $id => $row){
 				if(isset($result[$id]))
 					$result[$id] = array_merge($result[$id], $row);
-				else
+				elseif($flag)
 					$result[$id] = $row;
 			}
+			
+			$flag = false;
 		}
 
 		$memory['result'] = $result;

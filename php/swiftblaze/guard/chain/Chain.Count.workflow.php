@@ -2,8 +2,8 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ChainLinkWorkflow
- *	@desc Adds and removes chain links
+ *	@class ChainCountWorkflow
+ *	@desc Adds and removes chain count
  *
  *	@param chainid long int Chain ID [memory]
  *	@param remove boolean Is remove [memory] optional default false
@@ -11,7 +11,7 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ChainLinkWorkflow implements Service {
+class ChainCountWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
@@ -27,15 +27,15 @@ class ChainLinkWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = 'Chain link managed successfully';
-		$op = $memory['op'] ? '-' : '+';
+		$memory['msg'] = 'Chain count managed successfully';
+		$op = $memory['remove'] ? '-' : '+';
 		
 		$service = array(
 			'service' => 'transpera.relation.update.workflow',
 			'args' => array('chainid'),
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
-			'sqlcnd' => "set `links`=`links`".$op."1, `mtime`=now() where `chainid`=\${chainid}",
+			'sqlcnd' => "set `count`=`count`".$op."1, `mtime`=now() where `chainid`=\${chainid}",
 			'errormsg' => 'Invalid Chain ID'
 		);
 		

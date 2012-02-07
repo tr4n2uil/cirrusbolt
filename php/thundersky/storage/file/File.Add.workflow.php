@@ -11,6 +11,7 @@ require_once(SBSERVICE);
  *	@param mime string MIME type [memory] optional default 'application/force-download'
  *	@param size long int Size in bytes [memory] optional default 0
  *	@param keyid long int Usage Key ID [memory]
+ *	@param user string Key User [memory]
  *	@param dirid long int Directory ID [memory] optional default 0
  *	@param level integer Web level [memory] optional default 1 (directory admin access allowed)
  *	@param owner long int Owner Key ID [memory] optional default keyid
@@ -28,7 +29,7 @@ class FileAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid'),
+			'required' => array('keyid', 'user'),
 			'optional' => array('dirid' => 0, 'level' => 1, 'owner' => false, 'filename' => false, 'name' => 'storage', 'ext' => 'file', 'mime' => 'application/force-download', 'size' => 0, 'filekey' => false)
 		);
 	}

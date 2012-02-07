@@ -9,6 +9,7 @@ require_once(SBSERVICE);
  *	@param refer long int Refer ID [memory]
  *	@param status integer Status [memory] optional default 1
  *	@param keyid long int Usage Key ID [memory]
+ *	@param user string Key User [memory]
  *	@param owner long int Owner Key ID [memory] optional default keyid
  *	@param shlstid long int Shortlist ID [memory] optional default 0
  *	@param level integer Web level [memory] optional default false (inherit shortlist admin access)
@@ -25,7 +26,7 @@ class SelectionAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'refer', 'stageid'),
+			'required' => array('keyid', 'user', 'refer', 'stageid'),
 			'optional' => array('shlstid' => 0, 'level' => false, 'status' => 1, 'owner' => false)
 		);
 	}

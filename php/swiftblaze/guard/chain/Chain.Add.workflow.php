@@ -43,7 +43,7 @@ class ChainAddWorkflow implements Service {
 			'args' => array('parent', 'masterkey', 'level', 'root', 'user', 'authorize', 'state', 'type'),
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
-			'sqlcnd' => "(`parent`, `masterkey`, `authorize`, `state`, `level`, `root`, `user`, `type`, `ctime`, `rtime`, `wtime`) values (\${parent}, \${masterkey}, '\${authorize}', '\${state}', \${level}, '\${root}', '\${user}', '\${type}', now(), now(), now())",
+			'sqlcnd' => "(`parent`, `masterkey`, `authorize`, `state`, `level`, `root`, `user`, `author`, `type`, `ctime`, `rtime`, `wtime`) values (\${parent}, \${masterkey}, '\${authorize}', '\${state}', \${level}, '\${root}', '\${user}', '\${user}', '\${type}', now(), now(), now())",
 			'escparam' => array('root', 'user', 'authorize', 'state', 'type')
 		);
 		

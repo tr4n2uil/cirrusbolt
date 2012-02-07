@@ -8,7 +8,7 @@ require_once(SBSERVICE);
  *	@param title string Post title [memory]
  *	@param post string Post [memory]
  *	@param keyid long int Usage Key ID [memory]
- *	@param user string User email [memory]
+ *	@param user string Key User [memory]
  *	@param boardid long int Board ID [memory] optional default 0
  *	@param level integer Web level [memory] optional default false (inherit board admin access)
  *	@param owner long int Owner ID [memory] optional default keyid
@@ -36,12 +36,12 @@ class PostAddWorkflow implements Service {
 	public function run($memory){
 		$service = array(
 			'service' => 'transpera.entity.add.workflow',
-			'args' => array('title', 'post'),
+			'args' => array('post'),
 			'input' => array('parent' => 'boardid'),
 			'conn' => 'cbdspcn',
 			'relation' => '`posts`',
-			'sqlcnd' => "(`postid`, `owner`, `author`, `title`, `post`, `time`) values (\${id}, \${owner}, '\${user}', '\${title}', '\${post}', now())",
-			'escparam' => array('title', 'post', 'user'),
+			'sqlcnd' => "(`postid`, `owner`, `title`, `post`) values (\${id}, \${owner}, '\${user}', '\${post}')",
+			'escparam' => array('post'),
 			'successmsg' => 'Post added successfully',
 			'output' => array('id' => 'postid')
 		);

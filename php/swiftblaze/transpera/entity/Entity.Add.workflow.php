@@ -15,6 +15,7 @@ require_once(SBSERVICE);
  *	@param inherit integer Is inherit [memory] optional default 1
  *	@param state string State value for member [memory] optional default 'A'
  *	@param istate string State value for web [memory] optional default 'A'
+ *	@param user string Username [memory] optional default 'unknown@entity.add'
  *	@param root string Collation root [memory] optional default '/masterkey'
  *	@param type string Type name [memory] optional default 'general'
  *	@param path string Collation path [memory] optional default '/'
@@ -29,7 +30,6 @@ require_once(SBSERVICE);
  *	@param construct array Construction Workflow [memory] optional default false
  *	@param cparam array Construction Parameters [memory] optional default array()
  *
- *	@param user string Username [memory] optional default 'unknown@entity.add'
  *	@param relation string Relation name [memory]
  *	@param owner long int Owner ID [memory] optional default keyid
  *	@param sqlcnd string SQL condition [memory]
