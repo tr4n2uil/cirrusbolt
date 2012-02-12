@@ -10,7 +10,6 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key [memory] optional default false
  *	@param context string Usage Context [memory] optional default false
  *	@param type string response type [memory] ('json', 'wddx', 'xml', 'plain', 'html') optional default 'json'
- *	@param uiconf array UI data [memory]
  *
  *	@result result string Result [memory]
  *	@result message object Response [memory]
@@ -27,7 +26,7 @@ class LaunchWorkflowWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('message'),
-			'optional' => array('user' => false, 'keyid' => false, 'context' => false, 'type' => 'json', 'uiconf' => false)
+			'optional' => array('user' => false, 'keyid' => false, 'context' => false, 'type' => 'json')
 		);
 	}
 	

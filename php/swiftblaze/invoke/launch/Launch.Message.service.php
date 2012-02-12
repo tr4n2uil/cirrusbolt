@@ -6,7 +6,6 @@ require_once(SBSERVICE);
  *	@desc Launches workflows from messages
  *
  *	@param message array Message to be launched [memory]
- *	@param uiconf array UI data [memory] optional default false
  *
  *	@return message array Output parameters for service execution [memory]
  *
@@ -20,8 +19,7 @@ class LaunchMessageService implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('message'),
-			'optional' => array('uiconf' => false)
+			'required' => array('message')
 		);
 	}
 	
@@ -58,9 +56,6 @@ class LaunchMessageService implements Service {
 		 *	Set UI data
 		**/
 		list($root, $service, $operation) = explode('.' ,$uri);
-		if($memory['uiconf'] && file_exists($memory['uiconf'].$root.'/'.$service.'/uidata.php') && $uidata = include($memory['uiconf'].$root.'/'.$service.'/uidata.php')){
-			$message['ui'] = isset($uidata[$operation]) ? $uidata[$operation] : array();
-		}
 		
 		$memory['message'] = $message;
 		$memory['valid'] = true;

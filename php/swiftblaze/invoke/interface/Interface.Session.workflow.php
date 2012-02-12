@@ -66,6 +66,7 @@ class InterfaceSessionWorkflow implements Service {
 					
 			if($memory['valid']){
 				$memory['value'] = 0;
+				$memory['continue'] = $session['root'];
 				//header('Location: '. isset($memory['continue']) ? $memory['continue'] : $session['root']);
 				//exit;
 			}
