@@ -9,7 +9,7 @@ require_once(SBSERVICE);
  *	@param access array Array of allowed values for controlling workflows executed [memory] optional default array()
  *
  *	@return message array Message to be launched [memory]
- *	@return response array Output parameters for service execution [memory]
+ *	@return uri string Service URI [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *	
@@ -31,6 +31,7 @@ class LaunchCheckService implements Service {
 	public function run($memory){
 		$message = $memory['message'];
 		$access = $memory['access'];
+		$alias = false;
 		
 			/**
 			 *	Check for invalid service check
@@ -84,6 +85,7 @@ class LaunchCheckService implements Service {
 					
 					if(!$flag){
 						if(isset($access['maps']) && isset($access['maps'][$message['service']])){
+							$alias = $message['service'];
 							$uri = $access['maps'][$message['service']];
 						}
 						else {
@@ -93,7 +95,6 @@ class LaunchCheckService implements Service {
 							$message['details'] = "Access denied for the service : ".$message['service'];
 						}
 					}
-			
 				}
 			}
 		
@@ -101,9 +102,10 @@ class LaunchCheckService implements Service {
 		 *	Run the service using WorkflowKernel
 		**/
 		unset($memory['msg']);
-		$message['service'] = $uri = $uri.'.workflow';
+		$message['service'] = $uri.'.workflow';
 		
 		$memory['message'] = $message;
+		$memory['uri'] = $alias ? $alias : $uri;
 		$memory['valid'] = true;
 		$memory['msg'] = 'Checked Successfully';
 		$memory['status'] = 200;
@@ -115,7 +117,7 @@ class LaunchCheckService implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('message');
+		return array('message', 'uri');
 	}
 	
 }

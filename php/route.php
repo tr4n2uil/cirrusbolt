@@ -4,12 +4,23 @@
 	 * 	@init Router
 	 *
 	 *	@config $DEFAULT_PAGE default page to route to
-	 *	@config $FIRST_PARAM key of first param
+	 *	@config $FIRST_PARAM key of first param (deprecated)
 	 *	@config $FWD default forward page
+	 *	@config $URI_FROM default 'path_info' ('path_info', 'get')
 	 *
 	**/
-	$uri = count($_GET) ? array_keys($_GET) : array('/'.$DEFAULT_PAGE);
-	$args = explode('!', $uri[0]);
+	switch($URI_FROM){
+		case 'get' :
+			$URI = count($_GET) ? array_keys($_GET) : array('/'.$DEFAULT_PAGE);
+			$URI = $URI[0];
+			break;
+		case 'path_info' :
+		default :
+			$URI = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/'.$DEFAULT_PAGE;
+			break;
+	}
+	
+	$args = explode('!', $URI);
 	$map = array();
 	
 	/**
@@ -40,10 +51,12 @@
 		}
 		
 		$len--;
-		for($i=0; $i<$len; $i+=2){
+		for($i=1; $i<$len; $i+=2){
 			$map[$params[$i]] = str_replace('_', '.', $params[$i+1]);
 		}
 	}
+	else 
+		$URI .= '~/';
 	
 	/**
 	 * 	@save Router

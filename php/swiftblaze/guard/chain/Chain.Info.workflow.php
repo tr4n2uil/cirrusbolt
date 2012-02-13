@@ -35,7 +35,7 @@ class ChainInfoWorkflow implements Service {
 			'args' => array('chainid'),
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
-			'sqlprj' => '`authorize`, `state`, `parent`, `user`, `mtime`',
+			'sqlprj' => '`authorize`, `state`, `parent`, `user`, `count`, `mtime`',
 			'sqlcnd' => "where `chainid`=\${chainid}",
 			'errormsg' => 'Invalid Chain ID'
 		),
