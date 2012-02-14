@@ -4,9 +4,9 @@
 	 * 	@init Router
 	 *
 	 *	@config $DEFAULT_PAGE default page to route to
-	 *	@config $FIRST_PARAM key of first param (deprecated)
 	 *	@config $FWD default forward page
 	 *	@config $URI_FROM default 'path_info' ('path_info', 'get')
+	 *	@config $PATH_PARAMS default array()
 	 *
 	**/
 	switch($URI_FROM){
@@ -20,29 +20,37 @@
 			break;
 	}
 	
-	$args = explode('!', $URI);
+	$args = explode('~', $URI);
 	$map = array();
 	
 	/**
 	 * 	@route Path
 	**/
 	$path = explode('/', $args[0]);
-	$map['service'] = isset($path[1]) && $path[1] != '' ? $path[1] : $DEFAULT_PAGE;
-	if(isset($path[2])){
-		if(is_numeric($path[2])){
-			$map['id'] = $path[2];
-			$map['name'] = isset($path[3]) ? $path[3] : '';
+	
+	$max = count($path) - 4;
+	for($i = 1; $i < $max; $i ++){
+		$map[(isset($PATH_PARAMS[$i]) ? $PATH_PARAMS[$i] : $i)] = $path[$i];
+	}
+	
+	$map['service'] = isset($path[$i]) && $path[$i] != '' ? $path[$i] : $DEFAULT_PAGE;
+	if(isset($path[++$i])){
+		if(is_numeric($path[$i])){
+			$map['id'] = $path[$i];
+			$map['name'] = isset($path[$i+1]) ? $path[$i+1] : '';
 		}
 		else
-			$map['name'] = $path[2];
+			$map['name'] = $path[$i];
 	}
+	
+	//echo json_encode($map); exit;
 	
 	/**
 	 * 	@route Params and Forward
 	**/
 	if(isset($args[1])){
 		$params = explode('/', $args[1]);
-		$params[0] = $FIRST_PARAM;
+		//$params[0] = $FIRST_PARAM;
 		
 		$len = count($params);
 		if($len % 2 && $params[$len-1]){

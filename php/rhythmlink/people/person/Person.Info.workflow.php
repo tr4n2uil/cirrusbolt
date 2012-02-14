@@ -16,6 +16,7 @@ require_once(SBSERVICE);
  *	@return name string Person name [memory]
  *	@return title string Person title [memory]
  *	@return thumbnail long int Person thumbnail ID [memory]
+ *	@return dirid long int Thumbnail Directory ID [memory]
  *	@return username string Person username [memory]
  *	@return peopleid long int People ID [memory]
  *	@return admin integer Is admin [memory]
@@ -43,6 +44,7 @@ class PersonInfoWorkflow implements Service {
 		$memory['msg'] = 'Person information given successfully';
 		$attr = $memory['pnid'] ? 'pnid' : ($memory['id'] ? 'pnid' : 'owner');
 		$memory['pnid'] = $memory['pnid'] ? $memory['pnid'] : ($memory['id'] ? $memory['id'] : $memory['keyid']);
+		$memory['dirid'] = PERSON_THUMB;
 		
 		// args arguments
 		$memory['auth'] = isset($memory['auth']) ? $memory['auth'] : true;
@@ -75,7 +77,7 @@ class PersonInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('person', 'contact', 'personal', 'pnid', /*'name', 'title', 'thumbnail', 'username',*/ 'peopleid', 'admin', 'chain');
+		return array('person', 'contact', 'personal', 'pnid', /*'name', 'title', 'thumbnail', 'username',*/ 'dirid', 'peopleid', 'admin', 'chain');
 	}
 	
 }
