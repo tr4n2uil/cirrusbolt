@@ -7,7 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param smsid long int SMS ID [memory]
  *	@param to string To address [memory]
- *	@param from string Sender [memory] 
+ *	@param from string Sender [memory] optional default ''
  *	@param body string Message Body [memory] 
  *	@param keyid long int Usage Key ID [memory]
  *
@@ -21,7 +21,8 @@ class SmsEditWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'smsid', 'to', 'from', 'body')
+			'required' => array('keyid', 'smsid', 'to', 'body'),
+			'optional' => array( 'from' => '')
 		);
 	}
 	
@@ -35,8 +36,8 @@ class SmsEditWorkflow implements Service {
 			'input' => array('id' => 'smsid'),
 			'conn' => 'cbqconn',
 			'relation' => '`sms`',
-			'sqlcnd' => "set `to`='\${to}', `from`='\${from}', `body`='\${body}', where `smsid`=\${id} and `state`=0",
-			'escparam' => array('to', 'subject', 'body'),
+			'sqlcnd' => "set `to`='\${to}', `from`='\${from}', `body`='\${body}' where `smsid`=\${id} and `status`=0",
+			'escparam' => array('to', 'from', 'subject', 'body'),
 			'errormsg' => 'SMS Already Sent / Invalid SMS ID',
 			'successmsg' => 'SMS edited successfully'
 		);
