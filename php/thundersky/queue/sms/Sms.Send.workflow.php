@@ -31,6 +31,7 @@ class SmsSendWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
+		$memory['msg'] = 'SMS Sent Successfully';
 		$memory['smsid'] = $memory['smsid'] ? $memory['smsid'] : $memory['id'];
 		
 		$workflow = array(

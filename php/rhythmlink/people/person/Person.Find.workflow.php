@@ -7,6 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string Person User [memory]
+ *	@param name string Person Name [memory] optional default user
  *	@param peopleid long int People ID [memory] optional default 0
  *
  *	@return person array Person information [memory]
@@ -33,7 +34,7 @@ class PersonFindWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('user', 'keyid'),
-			'optional' => array('peopleid' => 0)
+			'optional' => array('peopleid' => 0, 'name' => false)
 		);
 	}
 	
@@ -43,18 +44,19 @@ class PersonFindWorkflow implements Service {
 	public function run($memory){
 		$memory['msg'] = 'Person information given successfully';
 		$memory['dirid'] = PERSON_THUMB;
+		$memory['name'] = $memory['name'] ? $memory['name'] : $memory['user'];
 		
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.find.workflow',
 			'input' => array('parent' => 'peopleid'),
-			'args' => array('user'),
+			'args' => array('name'),
 			'idkey' => 'pnid',
 			'conn' => 'rlconn',
 			'relation' => '`persons`',
 			'sqlprj' => '`pnid`, `username`, `name`, `thumbnail`, `title`, `role`',
-			'sqlcnd' => "where `username`='\${user}'",
-			'escparam' => array('user'),
+			'sqlcnd' => "where `username`='\${name}'",
+			'escparam' => array('name'),
 			'errormsg' => 'Invalid Username',
 			'successmsg' => 'Person information given successfully',
 			'output' => array('entity' => 'person', 'id' => 'pnid')

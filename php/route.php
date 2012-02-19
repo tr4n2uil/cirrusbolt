@@ -28,7 +28,13 @@
 	**/
 	$path = explode('/', $args[0]);
 	
-	$max = count($path) - 4;
+	$max = count($path);
+	if($max > 5)
+		$max -= 4;
+	elseif($max == 4){
+		$max -= 3;
+	}
+	
 	for($i = 1; $i < $max; $i ++){
 		$map[(isset($PATH_PARAMS[$i]) ? $PATH_PARAMS[$i] : $i)] = $path[$i];
 	}
@@ -43,7 +49,7 @@
 			$map['name'] = $path[$i];
 	}
 	
-	//echo json_encode($map); exit;
+	//echo json_encode($map); //exit;
 	
 	/**
 	 * 	@route Params and Forward

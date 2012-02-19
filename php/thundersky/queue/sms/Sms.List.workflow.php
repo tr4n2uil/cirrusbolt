@@ -50,7 +50,7 @@ class SmsListWorkflow implements Service {
 			'conn' => 'cbqconn',
 			'relation' => '`sms`',
 			'sqlprj' => '`smsid`, `to`, `from`, `status`, `stime`, substring(`body`, 1, 50) as `body`',
-			'sqlcnd' => "where `smsid` in \${list} $qry order by `status` asc, `smsid` desc",
+			'sqlcnd' => "where `smsid` in \${list} $qry order by `smsid` desc",
 			'type' => 'sms',
 			'successmsg' => 'SMS information given successfully',
 			'output' => array('entities' => 'sms'),

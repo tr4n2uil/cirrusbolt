@@ -96,9 +96,10 @@ class SecureReadWorkflow implements Service {
 			if(isset($memory['result']['keyid'])) 
 				unset($memory['result']['keyid']);
 			
-			if($flag){
+			if($flag)
 				$memory['result']['keyid'] = $memory['keyid'];
-			}
+			else 
+				$memory['result']['keyid'] = -1;
 			
 			$memory['result']['user'] = $user ? $user : $memory['user'];
 		}

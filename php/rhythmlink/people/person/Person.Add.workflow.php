@@ -47,7 +47,7 @@ class PersonAddWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.reference.create.workflow',
-			'input' => array('keyvalue' => 'password', 'parent' => 'peopleid'),
+			'input' => array('keyvalue' => 'password', 'parent' => 'peopleid', 'user' => 'username'),
 			'output' => array('id' => 'pnid'),
 			'root' => '/'.$memory['username'],
 			'type' => 'person',
@@ -58,13 +58,14 @@ class PersonAddWorkflow implements Service {
 			'ext' => 'png',
 			'mime' => 'image/png',
 			'dirid' => PERSON_THUMB,
-			'input' => array('name' => 'pnid'),	//@possible 'level' => 2,
+			'input' => array('name' => 'username', 'user' => 'username'),	//@possible 'level' => 2,
 			'output' => array('fileid' => 'thumbnail')
 		),
 		array(
 			'service' => 'people.role.add.workflow',
 			'name' => 'Global',
 			'desc' => 'Default Role',
+			'input' => array('user' => 'username'),
 			'output' => array('rlid' => 'role')
 		),
 		array(

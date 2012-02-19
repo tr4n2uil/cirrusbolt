@@ -9,6 +9,7 @@ require_once(SBSERVICE);
  *	@param desc string Role description [memory] optional default ''
  *	@param priority string Role priority [memory] optional default 0
  *	@param keyid long int Usage Key ID [memory]
+ *	@param user string Key User [memory]
  *	@param pnid long int Person ID [memory] optional default 0
  *	@param owner long int Owner Key ID [memory] optional default keyid
  *
@@ -24,7 +25,7 @@ class RoleAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'name'),
+			'required' => array('keyid', 'user', 'name'),
 			'optional' => array('desc' => '', 'pnid' => 0, 'priority' => 0, 'owner' => false)
 		);
 	}

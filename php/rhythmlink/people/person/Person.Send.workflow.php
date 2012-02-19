@@ -73,7 +73,7 @@ class PersonSendWorkflow implements Service {
 				),
 				array(
 					'service' => 'queue.mail.add.workflow',
-					'input' => array('queid' => 'pnid', 'to' => 'email'),
+					'input' => array('queid' => 'pnid', 'to' => 'email', 'user' => 'username'),
 					'subject' => PERSON_SEND_MAIL_SUBJECT
 				), 
 				array(
@@ -92,7 +92,7 @@ class PersonSendWorkflow implements Service {
 				),
 				array(
 					'service' => 'queue.sms.add.workflow',
-					'input' => array('queid' => 'pnid', 'to' => 'phone'),
+					'input' => array('queid' => 'pnid', 'to' => 'phone', 'user' => 'username'),
 					'from' => PERSON_SEND_SMS_FROM
 				), 
 				array(
