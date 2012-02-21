@@ -45,6 +45,7 @@ class LaunchMessageService implements Service {
 		**/
 		$uri = $message['service'];
 		
+		//Snowblozm::$debug = true;
 		/**
 		 *	Run the service
 		**/

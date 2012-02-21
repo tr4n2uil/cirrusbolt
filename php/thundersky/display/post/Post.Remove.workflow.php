@@ -31,7 +31,7 @@ class PostRemoveWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.entity.remove.workflow',
 			'input' => array('id' => 'postid', 'parent' => 'boardid'),
-			'conn' => 'cbdspcn',
+			'conn' => 'cbdconn',
 			'relation' => '`posts`',
 			'sqlcnd' => "where `postid`=\${id}",
 			'errormsg' => 'Invalid Post ID',

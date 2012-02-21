@@ -1,6 +1,5 @@
 <?php 
 require_once(SBSERVICE);
-require_once(PHPMAILER);
 
 /**
  *	@class SmsSendmtpService

@@ -56,6 +56,11 @@
 		'location' => 'local'
 	));
 	
+	Snowblozm::add('display', array(
+		'root' => CBROOT.'thundersky/display/',
+		'location' => 'local'
+	));
+	
 	Snowblozm::add('queue', array(
 		'root' => CBROOT.'thundersky/queue/',
 		'location' => 'local'

@@ -32,7 +32,7 @@ class PostEditWorkflow implements Service {
 			'service' => 'transpera.entity.edit.workflow',
 			'args' => array('title', 'post'),
 			'input' => array('id' => 'postid'),
-			'conn' => 'cbdspcn',
+			'conn' => 'cbdconn',
 			'relation' => '`posts`',
 			'sqlcnd' => "set `title`='\${title}', `post`='\${post}', `time`=now() where `postid`=\${id}",
 			'escparam' => array('title', 'post'),

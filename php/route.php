@@ -43,7 +43,7 @@
 			$map['name'] = $path[$i];
 	}
 	
-	echo json_encode($map); exit;
+	//echo json_encode($map); exit;
 	
 	/**
 	 * 	@route Params and Forward

@@ -7,6 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param message array Message to be launched [memory] optional default array()
  *	@param access array Array of allowed values for controlling workflows executed [memory] optional default array()
+ *	@param params array Array of allowed values to push into message [memory] optional default array()
  *
  *	@return message array Message to be launched [memory]
  *	@return uri string Service URI [memory]
@@ -21,7 +22,7 @@ class LaunchCheckService implements Service {
 	**/
 	public function input(){
 		return array(
-			'optional' => array('message' => array(), 'access' => array())
+			'optional' => array('message' => array(), 'access' => array(), 'params' => array())
 		);
 	}
 	
@@ -88,6 +89,9 @@ class LaunchCheckService implements Service {
 							$alias = $message['service'];
 							$uri = $access['maps'][$message['service']];
 						}
+						elseif(isset($access['maps']['default'])){
+							$uri = $access['maps']['default'];
+						}
 						else {
 							$message['valid'] = false;
 							$message['msg'] =  'Access Denied';
@@ -99,9 +103,11 @@ class LaunchCheckService implements Service {
 			}
 		
 		/**
-		 *	Run the service using WorkflowKernel
+		 *	Prepare message
 		**/
 		unset($memory['msg']);
+		foreach($memory['params'] as $arg)
+			$message[$arg] = $memory[$arg];
 		$message['service'] = $uri.'.workflow';
 		
 		$memory['message'] = $message;

@@ -26,7 +26,7 @@ class PostInfoWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('postid'),
-			'optional' => array('keyid' => false, 'bname' => '', 'boardid' => 0)
+			'optional' => array('keyid' => false, 'bname' => false, 'name' => '', 'boardid' => false, 'id' => 0)
 		); 
 	}
 	
@@ -34,10 +34,13 @@ class PostInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
+		$memory['boardid'] = $memory['boardid'] ? $memory['boardid'] : $memory['id'];
+		$memory['bname'] = $memory['bname'] ? $memory['bname'] : $memory['name'];
+		
 		$service = array(
 			'service' => 'transpera.entity.info.workflow',
 			'input' => array('id' => 'postid', 'parent' => 'boardid'),
-			'conn' => 'cbdspcn',
+			'conn' => 'cbdconn',
 			'relation' => '`posts`',
 			'sqlcnd' => "where `postid`=\${id}",
 			'errormsg' => 'Invalid Post ID',
