@@ -6,9 +6,10 @@ require_once(SBSERVICE);
  *	@desc Manages creation of new reference 
  *
  *	@param keyid long int Usage Key ID [memory]
+ *	@param user string User [memory]
  *	@param parent long int Reference ID [memory]
  *	@param level integer Web level [memory] optional default 0
- *	@param user string User [memory]
+ *	@param newuser string New User [memory]
  *	@param keyvalue string Key value [memory]
  *	@param authorize string Authorize control value [memory] optional default (inherit)
  *	@param control string Authorize control value for member [memory] optional default false='info:'.(inherit) true=(inherit)
@@ -32,6 +33,10 @@ require_once(SBSERVICE);
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
  *
+ *	@param pname string Parent name [memory] optional default ''
+ *	@param verb string Activity verb [memory] optional default 'added'
+ *	@param join string Activity join [memory] optional default 'to'
+ *
  *	@return return id long int Reference ID [memory]
  *	@return owner long int Owner Key ID [memory]
  *
@@ -45,7 +50,7 @@ class ReferenceCreateWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'parent', 'user', 'keyvalue'),
+			'required' => array('keyid', 'parent', 'user', 'keyvalue', 'newuser'),
 			'optional' => array(
 				'level' => 0, 
 				'root' => false, 
@@ -65,6 +70,9 @@ class ReferenceCreateWorkflow implements Service {
 				'aistate' => true,
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
+				'pname' => '',
+				'verb' => 'added',
+				'join' => 'to',
 				'cache' => true,
 				'expiry' => 150
 			)
@@ -81,7 +89,8 @@ class ReferenceCreateWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'guard.key.available.workflow'
+			'service' => 'guard.key.available.workflow',
+			'input' => array('user' => 'newuser')
 		),
 		array(
 			'service' => 'transpera.reference.authorize.workflow',
@@ -90,7 +99,7 @@ class ReferenceCreateWorkflow implements Service {
 		),
 		array(
 			'service' => 'guard.key.add.workflow',
-			'input' => array('key' => 'keyvalue'),
+			'input' => array('key' => 'keyvalue', 'user' => 'newuser'),
 			'output' => array('id' => 'owner')
 		),
 		array(
@@ -110,6 +119,11 @@ class ReferenceCreateWorkflow implements Service {
 		array(
 			'service' => 'guard.chain.count.workflow',
 			'input' => array('chainid' => 'parent')
+		),
+		array(
+			'service' => 'guard.chain.track.workflow',
+			'input' => array('child' => 'id', 'cname' => 'newuser'),
+			'output' => array('id' => 'trackid')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);
