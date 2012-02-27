@@ -8,6 +8,7 @@ require_once(SBSERVICE);
  *	@param chadm boolean Is chack admin [memory] optional default true
  *	@param mgchn boolean Is merge chain [memory] optional default true
  *	@param track boolean Is track [memory] optional default true
+ *	@param lsttrack boolean Is track [memory] optional default false
  *	@param selection string Selection operation [memory] optional default 'list' ('list', 'children', 'parents')
  *
  *	@param keyid long int Usage Key ID [memory]
@@ -50,9 +51,13 @@ require_once(SBSERVICE);
  *
  *	@param name string Child name [memory] optional default ''
  *	@param pname string Parent name [memory] optional default ''
- *	@param verb string Activity verb [memory] optional default 'linked'
- *	@param join string Activity join [memory] optional default 'to'
+ *	@param verb string Activity verb [memory] optional default 'enlisted'
+ *	@param join string Activity join [memory] optional default 'in'
  *	@param public integer Public log [memory] optional default 0
+ *
+ *	@param lstverb string Activity verb [memory] optional default 'viewed'
+ *	@param lstjoin string Activity join [memory] optional default 'in'
+ *	@param lstpublic integer Public log [memory] optional default 0
  *
  *	@param cache boolean Is cacheable [memory] optional default true
  *	@param expiry int Cache expiry [memory] optional default 85
@@ -81,6 +86,7 @@ class EntityListWorkflow implements Service {
 				'chadm' => true,
 				'mgchn' => true,
 				'track' => true,
+				'lsttrack' => true,
 				'selection' => 'list',
 				'type' => 'general', 
 				'state' => true, 
@@ -114,6 +120,9 @@ class EntityListWorkflow implements Service {
 				'verb' => 'enlisted',
 				'join' => 'in',
 				'public' => 0,
+				'lstverb' => 'viewed',
+				'lstjoin' => 'in',
+				'lstpublic' => 0,
 				'cache' => true,
 				'expiry' => 150
 			)
@@ -194,6 +203,16 @@ class EntityListWorkflow implements Service {
 				array(
 					'service' => 'guard.chain.track.workflow',
 					'input' => array('child' => 'id', 'cname' => 'name'),
+					'output' => array('id' => 'trackid')
+				));
+			}
+			
+			if($memory['lsttrack']){
+				array_push($workflow,
+				array(
+					'service' => 'guard.chain.track.workflow',
+					'input' => array('child' => 'list', 'cname' => 'pname', 'verb' => 'lstverb', 'join' => 'lstjoin', 'public' => 'lstpublic'),
+					'multiple' => true,
 					'output' => array('id' => 'trackid')
 				));
 			}

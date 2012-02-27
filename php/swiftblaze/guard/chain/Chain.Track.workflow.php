@@ -16,6 +16,7 @@ require_once(SBSERVICE);
  *	@param verb string Activity verb [memory] optional default 'viewed'
  *	@param join string Activity join [memory] optional default 'in'
  *	@param public integer Public log [memory] optional default 1
+ *	@param multiple boolean Is multiple [memory] optional default false
  *
  *	@return return id long int Track ID [memory]
  *
@@ -30,7 +31,7 @@ class ChainTrackWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('child', 'keyid', 'user'),
-			'optional' => array('cname' => '', 'parent' => -1, 'pname' => '', 'action' => 'info', 'verb' => 'viewed', 'join' => 'in', 'type' => 'general', 'public' => 1)
+			'optional' => array('cname' => '', 'parent' => -1, 'pname' => '', 'action' => 'info', 'verb' => 'viewed', 'join' => 'in', 'type' => 'general', 'public' => 1, 'multiple' => false)
 		);
 	}
 	
@@ -42,13 +43,23 @@ class ChainTrackWorkflow implements Service {
 		$memory['ipaddr'] = $_SERVER['REMOTE_ADDR'];
 		$memory['server'] = json_encode($_SERVER);
 		
+		$escparam = array('user', 'action', 'type', 'cname', 'pname', 'verb', 'join', 'ipaddr', 'server');
+		
+		if($memory['multiple']){
+			$qry = "select \${parent}, `chainid`, \${keyid}, '\${user}', '\${action}', '\${type}', '\${cname}', '\${pname}', '\${verb}', '\${join}', '\${ipaddr}', \${public}, now(), '\${server}' from `chains` where `chainid` in \${child}";
+			array_push($escparam, 'child');
+		}
+		else {
+			$qry = " values (\${parent}, \${child}, \${keyid}, '\${user}', '\${action}', '\${type}', '\${cname}', '\${pname}', '\${verb}', '\${join}', '\${ipaddr}', \${public}, now(), '\${server}')";
+		}
+		
 		$service = array(
 			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('parent', 'child', 'keyid', 'user', 'action', 'type', 'cname', 'pname', 'verb', 'join', 'ipaddr', 'server', 'public'),
 			'conn' => 'cbconn',
 			'relation' => '`tracks`',
-			'sqlcnd' => "(`parent`, `child`, `keyid`, `user`, `action`, `type`, `cname`, `pname`, `verb`, `join`, `ipaddr`, `public`, `ttime`, `server`) values (\${parent}, \${child}, \${keyid}, '\${user}', '\${action}', '\${type}', '\${cname}', '\${pname}', '\${verb}', '\${join}', '\${ipaddr}', \${public}, now(), '\${server}')",
-			'escparam' => array('user', 'action', 'type', 'cname', 'pname', 'verb', 'join', 'ipaddr', 'server')
+			'sqlcnd' => "(`parent`, `child`, `keyid`, `user`, `action`, `type`, `cname`, `pname`, `verb`, `join`, `ipaddr`, `public`, `ttime`, `server`) $qry",
+			'escparam' => $escparam
 		);
 		
 		return Snowblozm::run($service, $memory);
