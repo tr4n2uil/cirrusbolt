@@ -41,7 +41,13 @@ class ChainTrackWorkflow implements Service {
 	public function run($memory){
 		$memory['msg'] = 'Chain Activity Tracked Successfully';
 		$memory['ipaddr'] = $_SERVER['REMOTE_ADDR'];
-		$memory['server'] = json_encode($_SERVER);
+		$memory['server'] = json_encode(array(
+			'query' => isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '',
+			'agent' => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '',
+			'host' => isset($_SERVER['REMOTE_HOST']) ? $_SERVER['REMOTE_HOST'] : '',
+			'port' => isset($_SERVER['REMOTE_PORT']) ? $_SERVER['REMOTE_PORT'] : '',
+			'request' => isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : ''
+		));
 		
 		$escparam = array('user', 'action', 'type', 'cname', 'pname', 'verb', 'join', 'ipaddr', 'server');
 		

@@ -43,12 +43,12 @@ class PostAddWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.entity.add.workflow',
-			'args' => array('post'),
+			'args' => array('title', 'post'),
 			'input' => array('parent' => 'boardid', 'cname' => 'title', 'pname' => 'bname'),
 			'conn' => 'cbdconn',
 			'relation' => '`posts`',
-			'sqlcnd' => "(`postid`, `owner`, `title`, `post`) values (\${id}, \${owner}, '\${user}', '\${post}')",
-			'escparam' => array('post'),
+			'sqlcnd' => "(`postid`, `owner`, `title`, `post`) values (\${id}, \${owner}, '\${title}', '\${post}')",
+			'escparam' => array('title', 'post'),
 			'successmsg' => 'Post added successfully',
 			'output' => array('id' => 'postid')
 		);

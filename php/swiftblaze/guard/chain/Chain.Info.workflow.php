@@ -6,6 +6,7 @@ require_once(SBSERVICE);
  *	@desc Returns chain information
  *
  *	@param chainid long int Chain ID [memory]
+ *	@param keyid long int Key ID [memory]
  *
  *	@return chain array Chain data information [memory]
  *
@@ -19,7 +20,7 @@ class ChainInfoWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('chainid')
+			'required' => array('chainid', 'keyid')
 		);
 	}
 	
@@ -32,10 +33,10 @@ class ChainInfoWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.relation.unique.workflow',
-			'args' => array('chainid'),
+			'args' => array('chainid', 'keyid'),
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
-			'sqlprj' => '`authorize`, `state`, `parent`, `user`, `count`, `mtime`',
+			'sqlprj' => "`authorize`, `state`, `parent`, `user`, `count`, `mtime`, (select count(`child`) from `tracks` where `child`=\${chainid} and `keyid`=\${keyid}) as `read`",
 			'sqlcnd' => "where `chainid`=\${chainid}",
 			'errormsg' => 'Invalid Chain ID'
 		),
