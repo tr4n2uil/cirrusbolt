@@ -32,8 +32,8 @@ class HumanRecaptchaService implements Service {
 		$service = array(
 			'service' => 'queue.curl.execute.service',
 			'post' => true,
+			'url' => $config['url'],
 			'data' => array(
-				'url' => $config['url'],
 				'privatekey' => $config['private'],
 				'remoteip' => $_SERVER['REMOTE_ADDR'],
 				'challenge' => $memory['recaptcha_challenge_field'],
@@ -47,11 +47,11 @@ class HumanRecaptchaService implements Service {
 			$memory['valid'] = false;
 			$memory['msg'] = 'Error verifying reCAPTCHA';
 			$memory['status'] = 501;
-			$memory['details'] = 'Error : in cURL request @human.recaptcha.service';
+			$memory['details'] = 'Error : in cURL request @human.recaptcha.service '.$memory['details'];
 			return $memory;
 		}
 		
-		$result = split('\n', $memory['response']);
+		$result = split("\n", $memory['response']);
 		if(trim($result[0]) != 'true'){
 			$memory['valid'] = false;
 			$memory['msg'] = 'Invalid reCAPTCHA';

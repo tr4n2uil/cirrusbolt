@@ -8,6 +8,8 @@ require_once(SBSERVICE);
  *	@param name string Person name [memory]
  *	@param username string Person username [memory]
  *	@param password string Password [memory] 
+ *	@param recaptcha_challenge_field string Challenge [memory]
+ *	@param recaptcha_response_field string Response [memory] 
  *	@param email string Email [memory] optional default false
  *	@param phone string Phone [memory] optional default false
  *	@param device string Device to verify [memory] optional default 'mail' ('mail', 'sms')
@@ -28,7 +30,7 @@ class PersonAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('name', 'username', 'password'),
+			'required' => array('name', 'username', 'password','recaptcha_challenge_field', 'recaptcha_response_field'),
 			'optional' => array('keyid' => false, 'email' => false, 'phone' => false, 'peopleid' => 5, 'level' => 1, 'location' => 0, 'device' => 'email')
 		);
 	}
@@ -42,6 +44,9 @@ class PersonAddWorkflow implements Service {
 		$memory['level'] = 1;
 		
 		$workflow = array(
+		array(
+			'service' => 'invoke.human.recaptcha.service'
+		),
 		array(
 			'service' => 'people.person.available.workflow'
 		),
