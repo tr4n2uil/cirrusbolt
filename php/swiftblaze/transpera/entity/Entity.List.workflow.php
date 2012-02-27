@@ -86,7 +86,7 @@ class EntityListWorkflow implements Service {
 				'chadm' => true,
 				'mgchn' => true,
 				'track' => true,
-				'lsttrack' => true,
+				'lsttrack' => false,
 				'selection' => 'list',
 				'type' => 'general', 
 				'state' => true, 
