@@ -34,12 +34,11 @@ class PostInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['boardid'] = $memory['boardid'] ? $memory['boardid'] : $memory['id'];
-		$memory['bname'] = $memory['bname'] ? $memory['bname'] : $memory['name'];
+		$memory['postid'] = $memory['postid'] ? $memory['postid'] : $memory['id'];
 		
 		$service = array(
 			'service' => 'transpera.entity.info.workflow',
-			'input' => array('id' => 'postid', 'parent' => 'boardid'),
+			'input' => array('id' => 'postid', 'parent' => 'boardid', 'cname' => 'name', 'pname' => 'bname'),
 			'conn' => 'cbdconn',
 			'relation' => '`posts`',
 			'sqlcnd' => "where `postid`=\${id}",

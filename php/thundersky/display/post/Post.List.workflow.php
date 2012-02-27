@@ -42,7 +42,7 @@ class PostListWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.entity.list.workflow',
-			'input' => array('id' => 'boardid'),
+			'input' => array('id' => 'boardid', 'pname' => 'bname'),
 			'conn' => 'cbdconn',
 			'relation' => '`posts`',
 			'sqlprj' => '`postid`, `title`, substring(`post`, 1, 50) as `post`',

@@ -28,10 +28,12 @@ class PostEditWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){		
+		$memory['public'] = 1;
+		
 		$service = array(
 			'service' => 'transpera.entity.edit.workflow',
 			'args' => array('title', 'post'),
-			'input' => array('id' => 'postid'),
+			'input' => array('id' => 'postid', 'cname' => 'title'),
 			'conn' => 'cbdconn',
 			'relation' => '`posts`',
 			'sqlcnd' => "set `title`='\${title}', `post`='\${post}', `time`=now() where `postid`=\${id}",
