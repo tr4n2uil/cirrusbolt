@@ -7,6 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param chadm boolean Is chack admin [memory] optional default true
  *	@param mgchn boolean Is merge chain [memory] optional default true
+ *	@param track boolean Is track [memory] optional default true
  *	@param selection string Selection operation [memory] optional default 'list' ('list', 'children', 'parents')
  *
  *	@param keyid long int Usage Key ID [memory]
@@ -47,6 +48,12 @@ require_once(SBSERVICE);
  *	@param sauthinh integer Check inherit [memory] optional default 1
  *	@param sautherror string Error msg [memory] optional default 'Unable to Authorize'
  *
+ *	@param name string Child name [memory] optional default ''
+ *	@param pname string Parent name [memory] optional default ''
+ *	@param verb string Activity verb [memory] optional default 'linked'
+ *	@param join string Activity join [memory] optional default 'to'
+ *	@param public integer Public log [memory] optional default 0
+ *
  *	@param cache boolean Is cacheable [memory] optional default true
  *	@param expiry int Cache expiry [memory] optional default 85
  *
@@ -73,6 +80,7 @@ class EntityListWorkflow implements Service {
 				'user' => 'unknown@entity.list',
 				'chadm' => true,
 				'mgchn' => true,
+				'track' => true,
 				'selection' => 'list',
 				'type' => 'general', 
 				'state' => true, 
@@ -101,6 +109,11 @@ class EntityListWorkflow implements Service {
 				'escparam' => array(),
 				'mapkey' => 0,
 				'mapname' => 'entity',
+				'name' => '',
+				'pname' => '',
+				'verb' => 'enlisted',
+				'join' => 'in',
+				'public' => 0,
 				'cache' => true,
 				'expiry' => 150
 			)
@@ -173,6 +186,15 @@ class EntityListWorkflow implements Service {
 						'autherror' => 'sautherror'
 					),
 					'admin' => true,
+				));
+			}
+			
+			if($memory['track']){
+				array_push($workflow,
+				array(
+					'service' => 'guard.chain.track.workflow',
+					'input' => array('child' => 'id', 'cname' => 'name'),
+					'output' => array('id' => 'trackid')
 				));
 			}
 			

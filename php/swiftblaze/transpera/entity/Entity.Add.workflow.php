@@ -42,6 +42,12 @@ require_once(SBSERVICE);
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
  *
+ *	@param cname string Child name [memory] optional default ''
+ *	@param pname string Parent name [memory] optional default ''
+ *	@param verb string Activity verb [memory] optional default 'added'
+ *	@param join string Activity join [memory] optional default 'to'
+ *	@param public integer Public log [memory] optional default 0
+ *
  *	@param conn array DataService instance configuration key [memory]
  *
  *	@return id long int Entity ID [memory]
@@ -82,6 +88,11 @@ class EntityAddWorkflow implements Service {
 				'cparam' => array(),
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
+				'cname' => '',
+				'pname' => '',
+				'verb' => 'linked',
+				'join' => 'to',
+				'public' => 0,
 				'cache' => true,
 				'expiry' => 150
 			)

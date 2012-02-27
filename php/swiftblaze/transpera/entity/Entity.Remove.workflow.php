@@ -35,6 +35,12 @@ require_once(SBSERVICE);
  *	@param sauthinh integer Check inherit [memory] optional default 1
  *	@param sautherror string Error msg [memory] optional default 'Unable to Authorize'
  *
+ *	@param cname string Child name [memory] optional default ''
+ *	@param pname string Parent name [memory] optional default ''
+ *	@param verb string Activity verb [memory] optional default 'removed'
+ *	@param join string Activity join [memory] optional default 'from'
+ *	@param public integer Public log [memory] optional default 0
+ *
  *	@param conn array DataService instance configuration key [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -70,6 +76,11 @@ class EntityRemoveWorkflow implements Service {
 				'successmsg' => 'Entity removed successfully', 
 				'errormsg' => 'Invalid Entity ID', 
 				'destruct' => false,
+				'cname' => '',
+				'pname' => '',
+				'verb' => 'removed',
+				'join' => 'from',
+				'public' => 0,
 				'cache' => true,
 				'expiry' => 150
 			)

@@ -17,7 +17,7 @@ require_once(SBSERVICE);
  *	@param successmsg string Success message [memory] optional default 'Entity information successfully'
  *
  *	@param keyid long int Usage Key ID [memory]
- *	@param parent long int Parent ID [memory] optional default 0
+ *	@param parent long int Parent ID [memory] optional default -1
  *	@param idkey string ID Key [memory]
  *
  *	@param acstate string State to authorize chain [memory] optional default true (false= All)
@@ -37,6 +37,12 @@ require_once(SBSERVICE);
  *	@param sinit boolean init flag [memory] optional default true
  *	@param sauthinh integer Check inherit [memory] optional default 1
  *	@param sautherror string Error msg [memory] optional default 'Unable to Authorize'
+ *
+ *	@param name string Child name [memory] optional default ''
+ *	@param pname string Parent name [memory] optional default ''
+ *	@param verb string Activity verb [memory] optional default 'viewed'
+ *	@param join string Activity join [memory] optional default 'in'
+ *	@param public integer Public log [memory] optional default 0
  *
  *	@param cache boolean Is cacheable [memory] optional default true
  *	@param expiry int Cache expiry [memory] optional default 150
@@ -65,7 +71,7 @@ class EntityFindWorkflow implements Service {
 				'chadm' => true,
 				'mgchn' => true,
 				'user' => 'unknown@entity.find',
-				'parent' => 0, 
+				'parent' => -1, 
 				'sqlprj' => '*', 
 				'successmsg' => 'Entity information given successfully', 
 				'errormsg' => 'Invalid Entity ID',
@@ -85,6 +91,11 @@ class EntityFindWorkflow implements Service {
 				'sinit' => true,
 				'sauthinh' => 1,
 				'sautherror' => 'Unable to Authorize',
+				'name' => '',
+				'pname' => '',
+				'verb' => 'viewed',
+				'join' => 'in',
+				'public' => 0,
 				'cache' => true,
 				'expiry' => 150
 			)
@@ -132,6 +143,11 @@ class EntityFindWorkflow implements Service {
 				array_push($workflow,
 				array(
 					'service' => 'gauge.track.read.workflow',
+				),
+				array(
+					'service' => 'guard.chain.track.workflow',
+					'input' => array('child' => 'id', 'cname' => 'name'),
+					'output' => array('id' => 'trackid')
 				));
 			}
 			

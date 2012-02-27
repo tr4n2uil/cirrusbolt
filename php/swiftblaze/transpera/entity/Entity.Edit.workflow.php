@@ -26,6 +26,12 @@ require_once(SBSERVICE);
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
  *
+ *	@param cname string Child name [memory] optional default ''
+ *	@param pname string Parent name [memory] optional default ''
+ *	@param verb string Activity verb [memory] optional default 'edited'
+ *	@param join string Activity join [memory] optional default 'in'
+ *	@param public integer Public log [memory] optional default 0
+ *
  *	@param conn array DataService instance configuration key [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -51,6 +57,11 @@ class EntityEditWorkflow implements Service {
 				'successmsg' => 'Entity edited successfully',
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
+				'cname' => '',
+				'pname' => '',
+				'verb' => 'edited',
+				'join' => 'in',
+				'public' => 0,
 				'cache' => true,
 				'expiry' => 150
 			)
@@ -73,6 +84,11 @@ class EntityEditWorkflow implements Service {
 		),
 		array(
 			'service' => 'gauge.track.write.workflow'
+		),
+		array(
+			'service' => 'guard.chain.track.workflow',
+			'input' => array('child' => 'id'),
+			'output' => array('id' => 'trackid')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);
