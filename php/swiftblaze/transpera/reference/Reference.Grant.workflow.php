@@ -6,6 +6,7 @@ require_once(SBSERVICE);
  *	@desc Manages granting of privileges to existing reference 
  *
  *	@param keyid long int Usage Key ID [memory]
+ *	@param user string User [memory]
  *	@param id long int Reference ID [memory]
  *	@param childkeyid long int Key ID to be granted [memory]
  *	@param type string Type name [memory] optional default 'general'
@@ -26,6 +27,12 @@ require_once(SBSERVICE);
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
  *
+ *	@param cname string Child name [memory] optional default ''
+ *	@param pname string Parent name [memory] optional default ''
+ *	@param verb string Activity verb [memory] optional default 'granted access of'
+ *	@param join string Activity join [memory] optional default 'in'
+ *	@param public integer Public log [memory] optional default 0
+ *
  *	@return return id long int Chain member ID [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -38,7 +45,7 @@ class ReferenceGrantWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'id', 'childkeyid'),
+			'required' => array('keyid', 'user', 'id', 'childkeyid'),
 			'optional' => array(
 				'type' => 'general', 
 				'authorize' => 'edit:add:remove:list', 
@@ -53,6 +60,11 @@ class ReferenceGrantWorkflow implements Service {
 				'aistate' => true,
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
+				'cname' => '',
+				'pname' => '',
+				'verb' => 'granted access of',
+				'join' => 'in',
+				'public' => 0,
 				'cache' => true,
 				'expiry' => 150
 			)
@@ -72,6 +84,11 @@ class ReferenceGrantWorkflow implements Service {
 		array(
 			'service' => 'guard.member.add.workflow',
 			'input' => array('chainid' => 'id', 'keyid' => 'childkeyid')
+		),
+		array(
+			'service' => 'guard.chain.track.workflow',
+			'input' => array('child' => 'id'),
+			'output' => array('id' => 'trackid')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

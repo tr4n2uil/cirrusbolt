@@ -5,9 +5,10 @@ require_once(SBSERVICE);
  *	@class ReferenceLinkWorkflow
  *	@desc Manages linking of references
  *
- *	@param keyid long int Usage Key ID [memory] optional default false
+ *	@param keyid long int Usage Key ID [memory] 
+ *	@param user string User [memory]
  *	@param parent long int Reference ID [memory]
- *	@param child long int Reference ID [memory]
+ *	@param id long int Reference ID [memory]
  *	@param authorize string Authorize control value [memory] optional default (inherit)
  *	@param icontrol string Authorize control value for web [memory] optional default false='info:'.(inherit) true=(inherit)
  *	@param inherit integer Is inherit [memory] optional default 0
@@ -28,6 +29,12 @@ require_once(SBSERVICE);
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
  *
+ *	@param cname string Child name [memory] optional default ''
+ *	@param pname string Parent name [memory] optional default ''
+ *	@param verb string Activity verb [memory] optional default 'linked'
+ *	@param join string Activity join [memory] optional default 'to'
+ *	@param public integer Public log [memory] optional default 0
+ *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
@@ -38,7 +45,7 @@ class ReferenceLinkWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'parent'),
+			'required' => array('keyid', 'user', 'parent', 'id'),
 			'optional' => array(
 				'root' => false, 
 				'type' => 'general', 
@@ -57,6 +64,11 @@ class ReferenceLinkWorkflow implements Service {
 				'aistate' => true,
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
+				'cname' => '',
+				'pname' => '',
+				'verb' => 'linked',
+				'join' => 'to',
+				'public' => 0,
 				'cache' => true,
 				'expiry' => 150
 			)
@@ -80,6 +92,11 @@ class ReferenceLinkWorkflow implements Service {
 			'service' => 'guard.web.add.workflow',
 			'input' => array('child' => 'id'),
 			'output' => array('id' => 'webid')
+		),
+		array(
+			'service' => 'guard.chain.track.workflow',
+			'input' => array('child' => 'id'),
+			'output' => array('id' => 'trackid')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

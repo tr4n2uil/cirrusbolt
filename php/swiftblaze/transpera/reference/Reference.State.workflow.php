@@ -6,6 +6,7 @@ require_once(SBSERVICE);
  *	@desc Manages editing of state value of existing reference 
  *
  *	@param keyid long int Usage Key ID [memory]
+ *	@param user string User [memory]
  *	@param id long int Reference ID [memory]
  *	@param state string State value [memory]
  *	@param multiple boolean Is multiple [memory] optional default false
@@ -21,6 +22,12 @@ require_once(SBSERVICE);
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
  *
+ *	@param cname string Child name [memory] optional default ''
+ *	@param pname string Parent name [memory] optional default ''
+ *	@param verb string Activity verb [memory] optional default 'changed state of'
+ *	@param join string Activity join [memory] optional default 'in'
+ *	@param public integer Public log [memory] optional default 0
+ *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
@@ -31,7 +38,7 @@ class ReferenceStateWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'id', 'state'),
+			'required' => array('keyid', 'user', 'id', 'state'),
 			'optional' => array(
 				'multiple' => false,
 				'acstate' => true,
@@ -41,6 +48,11 @@ class ReferenceStateWorkflow implements Service {
 				'aistate' => true,
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
+				'cname' => '',
+				'pname' => '',
+				'verb' => 'changed state of',
+				'join' => 'in',
+				'public' => 0,
 				'cache' => true,
 				'expiry' => 150
 			)
@@ -60,6 +72,11 @@ class ReferenceStateWorkflow implements Service {
 		array(
 			'service' => 'guard.chain.state.workflow',
 			'input' => array('chainid' => 'id')
+		),
+		array(
+			'service' => 'guard.chain.track.workflow',
+			'input' => array('child' => 'id'),
+			'output' => array('id' => 'trackid')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

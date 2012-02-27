@@ -15,6 +15,7 @@ require_once(SBSERVICE);
  *	@param type string Type name [memory] optional default 'general'
  *	@param verb string Activity verb [memory] optional default 'viewed'
  *	@param join string Activity join [memory] optional default 'in'
+ *	@param public integer Public log [memory] optional default 1
  *
  *	@return return id long int Track ID [memory]
  *
@@ -29,7 +30,7 @@ class ChainTrackWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('child', 'keyid', 'user'),
-			'optional' => array('cname' => '', 'parent' => -1, 'pname' => '', 'action' => 'info', 'verb' => 'viewed', 'join' => 'in', 'type' => 'general')
+			'optional' => array('cname' => '', 'parent' => -1, 'pname' => '', 'action' => 'info', 'verb' => 'viewed', 'join' => 'in', 'type' => 'general', 'public' => 1)
 		);
 	}
 	
@@ -40,13 +41,13 @@ class ChainTrackWorkflow implements Service {
 		$memory['msg'] = 'Chain Activity Tracked Successfully';
 		$memory['ipaddr'] = $_SERVER['REMOTE_ADDR'];
 		$memory['server'] = json_encode($_SERVER);
-		//Snowblozm::$debug = true;
+		
 		$service = array(
 			'service' => 'transpera.relation.insert.workflow',
-			'args' => array('parent', 'child', 'keyid', 'user', 'action', 'type', 'cname', 'pname', 'verb', 'join', 'ipaddr', 'server'),
+			'args' => array('parent', 'child', 'keyid', 'user', 'action', 'type', 'cname', 'pname', 'verb', 'join', 'ipaddr', 'server', 'public'),
 			'conn' => 'cbconn',
 			'relation' => '`tracks`',
-			'sqlcnd' => "(`parent`, `child`, `keyid`, `user`, `action`, `type`, `cname`, `pname`, `verb`, `join`, `ipaddr`, `ttime`, `server`) values (\${parent}, \${child}, \${keyid}, '\${user}', '\${action}', '\${type}', '\${cname}', '\${pname}', '\${verb}', '\${join}', '\${ipaddr}', now(), '\${server}')",
+			'sqlcnd' => "(`parent`, `child`, `keyid`, `user`, `action`, `type`, `cname`, `pname`, `verb`, `join`, `ipaddr`, `public`, `ttime`, `server`) values (\${parent}, \${child}, \${keyid}, '\${user}', '\${action}', '\${type}', '\${cname}', '\${pname}', '\${verb}', '\${join}', '\${ipaddr}', \${public}, now(), '\${server}')",
 			'escparam' => array('user', 'action', 'type', 'cname', 'pname', 'verb', 'join', 'ipaddr', 'server')
 		);
 		

@@ -37,6 +37,7 @@ require_once(SBSERVICE);
  *	@param pname string Parent name [memory] optional default ''
  *	@param verb string Activity verb [memory] optional default 'added'
  *	@param join string Activity join [memory] optional default 'to'
+ *	@param public integer Public log [memory] optional default 1
  *
  *	@return return id long int Reference ID [memory]
  *
@@ -76,6 +77,7 @@ class ReferenceAddWorkflow implements Service {
 				'pname' => '',
 				'verb' => 'added',
 				'join' => 'to',
+				'public' => 1,
 				'cache' => true,
 				'expiry' => 150
 			)

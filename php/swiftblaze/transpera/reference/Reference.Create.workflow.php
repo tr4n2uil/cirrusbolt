@@ -34,8 +34,9 @@ require_once(SBSERVICE);
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
  *
  *	@param pname string Parent name [memory] optional default ''
- *	@param verb string Activity verb [memory] optional default 'added'
- *	@param join string Activity join [memory] optional default 'to'
+ *	@param verb string Activity verb [memory] optional default 'created'
+ *	@param join string Activity join [memory] optional default 'in'
+ *	@param public integer Public log [memory] optional default 1
  *
  *	@return return id long int Reference ID [memory]
  *	@return owner long int Owner Key ID [memory]
@@ -71,8 +72,9 @@ class ReferenceCreateWorkflow implements Service {
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
 				'pname' => '',
-				'verb' => 'added',
-				'join' => 'to',
+				'verb' => 'created',
+				'join' => 'in',
+				'public' => 1,
 				'cache' => true,
 				'expiry' => 150
 			)

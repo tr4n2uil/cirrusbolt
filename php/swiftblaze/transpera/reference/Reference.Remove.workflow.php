@@ -6,6 +6,7 @@ require_once(SBSERVICE);
  *	@desc Manages removal of existing reference 
  *
  *	@param keyid long int Usage Key ID [memory]
+ *	@param user string User [memory]
  *	@param id long int Reference ID [memory]
  *	@param parent long int Reference ID [memory]
  *	@param type string Type name [memory] optional default 'general'
@@ -21,6 +22,12 @@ require_once(SBSERVICE);
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
  *
+ *	@param cname string Child name [memory] optional default ''
+ *	@param pname string Parent name [memory] optional default ''
+ *	@param verb string Activity verb [memory] optional default 'deleted'
+ *	@param join string Activity join [memory] optional default 'from'
+ *	@param public integer Public log [memory] optional default 0
+ *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
@@ -31,7 +38,7 @@ class ReferenceRemoveWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'parent', 'id'),
+			'required' => array('keyid', 'user', 'parent', 'id'),
 			'optional' => array(
 				'type' => 'general',
 				'acstate' => true,
@@ -41,6 +48,11 @@ class ReferenceRemoveWorkflow implements Service {
 				'aistate' => true,
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
+				'cname' => '',
+				'pname' => '',
+				'verb' => 'deleted',
+				'join' => 'from',
+				'public' => 0,
 				'cache' => true,
 				'expiry' => 150
 			)
@@ -74,6 +86,11 @@ class ReferenceRemoveWorkflow implements Service {
 			'service' => 'guard.chain.count.workflow',
 			'input' => array('chainid' => 'parent'),
 			'remove' => true
+		),
+		array(
+			'service' => 'guard.chain.track.workflow',
+			'input' => array('child' => 'id'),
+			'output' => array('id' => 'trackid')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);
