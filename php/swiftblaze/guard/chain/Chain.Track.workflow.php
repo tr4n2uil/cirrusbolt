@@ -40,13 +40,13 @@ class ChainTrackWorkflow implements Service {
 		$memory['msg'] = 'Chain Activity Tracked Successfully';
 		$memory['ipaddr'] = $_SERVER['REMOTE_ADDR'];
 		$memory['server'] = json_encode($_SERVER);
-		
+		//Snowblozm::$debug = true;
 		$service = array(
 			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('parent', 'child', 'keyid', 'user', 'action', 'type', 'cname', 'pname', 'verb', 'join', 'ipaddr', 'server'),
 			'conn' => 'cbconn',
 			'relation' => '`tracks`',
-			'sqlcnd' => "(`parent`, `child`, `keyid`, `user`, `action`, `type`, `cname`, `pname`, `verb`, `join`, `ipaddr`, `ttime`, `server`) values (\${parent}, \${child}, \${keyid}, '\${user}', '\${action}', \${type}, '\${cname}', '\${pname}', '\${verb}', '\${join}', '\${ipaddr}', now(), '\${server}')",
+			'sqlcnd' => "(`parent`, `child`, `keyid`, `user`, `action`, `type`, `cname`, `pname`, `verb`, `join`, `ipaddr`, `ttime`, `server`) values (\${parent}, \${child}, \${keyid}, '\${user}', '\${action}', '\${type}', '\${cname}', '\${pname}', '\${verb}', '\${join}', '\${ipaddr}', now(), '\${server}')",
 			'escparam' => array('user', 'action', 'type', 'cname', 'pname', 'verb', 'join', 'ipaddr', 'server')
 		);
 		

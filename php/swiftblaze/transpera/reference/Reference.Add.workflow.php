@@ -33,6 +33,11 @@ require_once(SBSERVICE);
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
  *
+ *	@param cname string Child name [memory] optional default ''
+ *	@param pname string Parent name [memory] optional default ''
+ *	@param verb string Activity verb [memory] optional default 'added'
+ *	@param join string Activity join [memory] optional default 'to'
+ *
  *	@return return id long int Reference ID [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -67,6 +72,10 @@ class ReferenceAddWorkflow implements Service {
 				'aistate' => true,
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
+				'cname' => '',
+				'pname' => '',
+				'verb' => 'added',
+				'join' => 'to',
 				'cache' => true,
 				'expiry' => 150
 			)
@@ -105,6 +114,11 @@ class ReferenceAddWorkflow implements Service {
 		array(
 			'service' => 'guard.chain.count.workflow',
 			'input' => array('chainid' => 'parent')
+		),
+		array(
+			'service' => 'guard.chain.track.workflow',
+			'input' => array('child' => 'id'),
+			'output' => array('id' => 'trackid')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);
