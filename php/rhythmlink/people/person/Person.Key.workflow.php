@@ -7,8 +7,9 @@ require_once(SBSERVICE);
  *
  *	@param pnid long int Person ID [memory]
  *	@param keyid long int Usage Key ID [memory]
+ *	@param user string User name [memory]
  *	@param keyvalue string Key value [memory]
- *	@param currentemail string Current Email
+ *	@param currentuser string Current Username
  *	@param currentkey string Current key value [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -21,7 +22,7 @@ class PersonKeyWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'keyvalue', 'currentkey', 'currentemail', 'pnid')
+			'required' => array('keyid', 'user', 'keyvalue', 'currentkey', 'currentuser', 'pnid')
 		);
 	}
 	
@@ -52,11 +53,11 @@ class PersonKeyWorkflow implements Service {
 		),
 		array(
 			'service' => 'guard.key.authenticate.workflow',
-			'input' => array('email' => 'currentemail', 'key' => 'currentkey')
+			'input' => array('user' => 'currentuser', 'key' => 'currentkey')
 		),
 		array(
 			'service' => 'transpera.reference.master.workflow',
-			'input' => array('id' => 'pnid')
+			'input' => array('id' => 'pnid', 'cname' => 'user')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

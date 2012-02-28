@@ -56,6 +56,14 @@ class PersonSendWorkflow implements Service {
 			'sqlcnd' => "set `verify`='\${verify}' where `pnid`=\${pnid}",
 			'escparam' => array('verify'),
 			'errormsg' => 'Invalid Person ID'
+		),
+		array(
+			'service' => 'guard.chain.track.workflow',
+			'input' => array('child' => 'pnid', 'cname' => 'user'),
+			'verb' => 'sent verification of',
+			'join' => 'in',
+			'public' => 0,
+			'output' => array('id' => 'trackid')
 		));
 		
 		$memory = Snowblozm::execute($workflow, $memory);

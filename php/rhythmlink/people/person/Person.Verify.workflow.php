@@ -52,7 +52,7 @@ class PersonVerifyWorkflow implements Service {
 		array(
 			'service' => 'cbcore.data.select.service',
 			'args' => array('result'),
-			'params' => array('result.0.owner' => 'owner')
+			'params' => array('result.0.owner' => 'owner', 'result.0.pnid' => 'pnid')
 		),
 		array(
 			'service' => 'guard.key.verify.workflow',
@@ -66,6 +66,14 @@ class PersonVerifyWorkflow implements Service {
 			'relation' => '`persons`',
 			'sqlcnd' => "set `verify`='', `device`='' where `owner`=\${owner}",
 			'errormsg' => 'Invalid Person'
+		),
+		array(
+			'service' => 'guard.chain.track.workflow',
+			'input' => array('child' => 'pnid', 'cname' => 'username'),
+			'verb' => 'verified account of',
+			'join' => 'in',
+			'public' => 0,
+			'output' => array('id' => 'trackid')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

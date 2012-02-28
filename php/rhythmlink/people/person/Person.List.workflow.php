@@ -6,7 +6,8 @@ require_once(SBSERVICE);
  *	@desc Returns all persons information in people container
  *
  *	@param keyid long int Usage Key ID [memory]
- *	@param peopleid long int People ID [memory] optional default 0
+ *	@param string user User name [memory]
+ *	@param peopleid long int People ID [memory] optional default 5
  *	@param plname string People name [memory] optional default ''
  *	@param pgsz long int Paging Size [memory] optional default false
  *	@param pgno long int Paging Index [memory] optional default 1
@@ -28,8 +29,8 @@ class PersonListWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid'),
-			'optional' => array('peopleid' => 0, 'plname' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false)
+			'required' => array('keyid', 'user'),
+			'optional' => array('peopleid' => 5, 'plname' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false)
 		);
 	}
 	
@@ -39,7 +40,7 @@ class PersonListWorkflow implements Service {
 	public function run($memory){
 		$service = array(
 			'service' => 'transpera.entity.list.workflow',
-			'input' => array('id' => 'peopleid'),
+			'input' => array('id' => 'peopleid', 'pname' => 'plname'),
 			'conn' => 'rlconn',
 			'relation' => '`persons`',
 			'sqlprj' => '`pnid`, `username`, `name`, `thumbnail`, `title`',

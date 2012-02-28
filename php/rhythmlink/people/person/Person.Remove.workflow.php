@@ -6,7 +6,7 @@ require_once(SBSERVICE);
  *	@desc Removes person by ID
  *
  *	@param pnid long int Person ID [memory]
- *	@param peopleid long int People ID [memory] optional default 0
+ *	@param peopleid long int People ID [memory] optional default 5
  *	@param keyid long int Usage Key ID [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -20,7 +20,7 @@ class PersonRemoveWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'pnid'),
-			'optional' => array('peopleid' => 0)
+			'optional' => array('peopleid' => 5)
 		);
 	}
 	

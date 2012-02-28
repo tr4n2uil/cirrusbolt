@@ -11,6 +11,7 @@ require_once(CBQUEUECONF);
  *	@param email string Person email [memory] optional default false
  *	@param phone string Person phone [memory] optional default false
  *	@param keyid long int Usage Key ID [memory]
+ *	@param user string User name [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -22,7 +23,7 @@ class PersonUpdateWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'pnid'),
+			'required' => array('keyid', 'pnid', 'user'),
 			'optional' => array('email' => false, 'phone' => false, 'device' => 'mail')
 		);
 	}
@@ -79,6 +80,14 @@ class PersonUpdateWorkflow implements Service {
 				'service' => 'guard.key.reset.workflow',
 				'input' => array('id' => 'keyid'),
 				'context' => CONTEXT
+			),
+			array(
+				'service' => 'guard.chain.track.workflow',
+				'input' => array('child' => 'pnid', 'cname' => 'user'),
+				'verb' => 'updated devices of',
+				'join' => 'in',
+				'public' => 0,
+				'output' => array('id' => 'trackid')
 			),
 			array(
 				'service' => 'invoke.interface.session.workflow'

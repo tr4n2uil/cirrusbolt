@@ -7,7 +7,8 @@ require_once(SBSERVICE);
  *
  *	@param pnid/id string Person ID [memory] optional default false
  *	@param keyid long int Usage Key ID [memory]
- *	@param peopleid long int People ID [memory] optional default 0
+ *	@param user string User name [memory]
+ *	@param peopleid long int People ID [memory] optional default 5
  *
  *	@return person array Person information [memory]
  *	@return contact array Person contact information [memory]
@@ -32,8 +33,8 @@ class PersonInfoWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid'),
-			'optional' => array('pnid' => false, 'peopleid' => 0, 'id' => 0)
+			'required' => array('keyid', 'user'),
+			'optional' => array('pnid' => false, 'peopleid' => 5, 'id' => 0)
 		);
 	}
 	
@@ -52,7 +53,7 @@ class PersonInfoWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.info.workflow',
-			'input' => array('id' => 'pnid', 'parent' => 'peopleid'),
+			'input' => array('id' => 'pnid', 'parent' => 'peopleid', 'cname' => 'user'),
 			'conn' => 'rlconn',
 			'relation' => '`persons`',
 			'sqlprj' => '`pnid`, `username`, `name`, `thumbnail`, `title`',
