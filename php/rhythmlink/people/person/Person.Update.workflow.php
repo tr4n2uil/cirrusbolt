@@ -59,6 +59,7 @@ class PersonUpdateWorkflow implements Service {
 			'relation' => '`persons`',
 			'sqlcnd' => "set `$attr`='\${".$attr."}' where `pnid`=\${id}",
 			'escparam' => array($attr),
+			'check' => false,
 			'successmsg' => 'Person updated successfully',
 			'errormsg' => 'No Change / Invalid Person ID'
 		));
