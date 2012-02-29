@@ -49,12 +49,13 @@ class PersonEditWorkflow implements Service {
 	
 		$service = array(
 			'service' => 'transpera.entity.edit.workflow',
-			'args' => array('name', 'title', 'dateofbirth', 'gender', 'address', 'location'),
+			'args' => array('name', 'title', 'dateofbirth', 'gender', 'address', 'location', 'country'),
 			'input' => array('id' => 'pnid', 'cname' => 'user'),
 			'conn' => 'rlconn',
 			'relation' => '`persons`',
-			'sqlcnd' => "set `name`='\${name}', `title`='\${title}', `dateofbirth`=$dob, `gender`='\${gender}', `address`='\${address}', `location`=\${location} where `pnid`=\${id}",
-			'escparam' => array('name', 'title', 'dateofbirth', 'gender', 'address'),
+			'sqlcnd' => "set `name`='\${name}', `title`='\${title}', `dateofbirth`=$dob, `gender`='\${gender}', `address`='\${address}', `location`=\${location}, `country`='\${country}' where `pnid`=\${id}",
+			'escparam' => array('name', 'title', 'dateofbirth', 'gender', 'address', 'country'),
+			'check' => false,
 			'successmsg' => 'Person edited successfully',
 			'errormsg' => 'No Change / Invalid Person ID'
 		);

@@ -35,7 +35,7 @@ class ChainListWorkflow implements Service {
 			'args' => array('chainid', 'keyid'),
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
-			'sqlprj' => "`chainid`, `authorize`, `state`, `parent`, `user`, `count`, `mtime`, (select count(`child`) from `tracks` where `child`=`chainid` and `keyid`=\${keyid}) as `read`",
+			'sqlprj' => "`chainid`, `authorize`, `state`, `parent`, `user`, `count`, `mtime`, if( exists (select `child` from `tracks` where `child`=\${chainid} and `keyid`=\${keyid} limit 1), 1, 0) as `read`",
 			'sqlcnd' => "where `chainid` in \${chainid}",
 			'escparam' => array('chainid'),
 			'errormsg' => 'Invalid Chain ID',

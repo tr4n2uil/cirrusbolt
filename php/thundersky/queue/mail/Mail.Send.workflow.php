@@ -34,6 +34,8 @@ class MailSendWorkflow implements Service {
 	public function run($memory){
 		$memory['mailid'] = $memory['mailid'] ? $memory['mailid'] : $memory['id'];
 		$memory['msg'] = 'Mail Sent Successfully';
+		$config = Snowblozm::get('mail');
+		$type = $config['type'];
 		//$memory['custom'][0] = 'X-Priority: 1';
 		
 		$workflow = array(
@@ -64,7 +66,7 @@ class MailSendWorkflow implements Service {
 			'output' => array('result' => 'attach')
 		),
 		array(
-			'service' => 'queue.mail.smtp.service'
+			'service' => "queue.mail.$type.service"
 		));
 		
 		$memory = Snowblozm::execute($workflow, $memory);

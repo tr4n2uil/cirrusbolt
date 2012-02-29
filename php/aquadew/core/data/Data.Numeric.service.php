@@ -34,7 +34,7 @@ class DataNumericService implements Service {
 				$memory['valid'] = false;
 				$memory['msg'] = $errormsg;
 				$memory['status'] = 505;
-				$memory['details'] = 'Value not numeric : '.$memory[$key].' @data.numeric.service';
+				$memory['details'] = 'Value not numeric : '.$key.' = '.$memory[$key].' @data.numeric.service';
 				return $memory;
 			}
 		}

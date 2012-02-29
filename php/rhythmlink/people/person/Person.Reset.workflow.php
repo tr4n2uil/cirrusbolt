@@ -1,5 +1,6 @@
 <?php 
 require_once(SBSERVICE);
+require_once(CBQUEUECONF);
 
 /**
  *	@class PersonResetWorkflow

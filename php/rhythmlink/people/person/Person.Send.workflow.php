@@ -59,7 +59,7 @@ class PersonSendWorkflow implements Service {
 		),
 		array(
 			'service' => 'guard.chain.track.workflow',
-			'input' => array('child' => 'pnid', 'cname' => 'user'),
+			'input' => array('child' => 'pnid', 'cname' => 'username', 'user' => 'username'),
 			'verb' => 'sent verification of',
 			'join' => 'in',
 			'public' => 0,

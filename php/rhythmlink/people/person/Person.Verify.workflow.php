@@ -35,7 +35,7 @@ class PersonVerifyWorkflow implements Service {
 			return $memory;
 		}
 		
-		$memory['msg'] = 'Person verified successfully';
+		$memory['msg'] = 'Verified successfully';
 		//$attr = $memory['phone'] ? 'phone' : 'email';
 		//$memory['phone'] = $memory['phone'] ? $memory['phone'] : $memory['email'];
 		
@@ -69,7 +69,7 @@ class PersonVerifyWorkflow implements Service {
 		),
 		array(
 			'service' => 'guard.chain.track.workflow',
-			'input' => array('child' => 'pnid', 'cname' => 'username'),
+			'input' => array('child' => 'pnid', 'cname' => 'username', 'keyid' => 'owner', 'user' => 'username'),
 			'verb' => 'verified account of',
 			'join' => 'in',
 			'public' => 0,

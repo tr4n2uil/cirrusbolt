@@ -7,10 +7,10 @@ require_once(SBSERVICE);
  *
  *	@param to string To address [memory]
  *	@param subject string Subject [memory] 
- *	@param message string Message [memory] 
+ *	@param body string Message body [memory] 
  *	@param headers string Additional headers [memory] optional default 'From: '.$mail['user'].' <'.$mail['email'].'>\r\nReply-To: '.$mail['user'].' <'.$mail['email'].'>\r\nX-Mailer: PHP/'.phpversion()
  *	@param params string Additional parameters [memory] optional default ''
- *	@param mail array Mail configuration [Snowblozm] (type, host, port, secure, user, email, pass)
+ *	@param mail array Mail configuration [Snowblozm] (type, host, port, secure, user, email, pass, params)
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *	
@@ -22,7 +22,7 @@ class MailSendService implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('to', 'subject', 'message'),
+			'required' => array('to', 'subject', 'body'),
 			'optional' => array('headers' => false, 'params' => '')
 		);
 	}
@@ -34,9 +34,9 @@ class MailSendService implements Service {
 		$mail = Snowblozm::get('mail');
 		$to = $memory['to'];
 		$subject = $memory['subject'];
-		$message = $memory['message'];
-		$headers = $memory['headers']) ? $memory['headers'] : 'From: '.$mail['user'].' <'.$mail['email'].'>\r\nReply-To: '.$mail['user'].' <'.$mail['email'].'>\r\nX-Mailer: PHP/'.phpversion();
-		$params = $memory['params'];
+		$message = strip_tags($memory['body']);
+		$headers = $memory['headers'] ? $memory['headers'] : "From: ".$mail['user'].' <'.$mail['email'].">\r\nReply-To: ".$mail['user'].' <'.$mail['email'].">\r\nX-Mailer: PHP/".phpversion();
+		$params = $mail['params'];
 		
 		if(!mail($to, $subject, $message, $headers, $params)){
 			$memory['valid'] = false;
