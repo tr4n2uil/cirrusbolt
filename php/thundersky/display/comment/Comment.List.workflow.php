@@ -2,8 +2,8 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ReplyListWorkflow
- *	@desc Returns all replies information in post
+ *	@class CommentListWorkflow
+ *	@desc Returns all comments information in post
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param postid/id long int Post ID [memory] optional default 0
@@ -13,7 +13,7 @@ require_once(SBSERVICE);
  *	@param pgno long int Paging Index [memory] optional default 1
  *	@param total long int Paging Total [memory] optional default false
  *
- *	@return replies array Replies information [memory]
+ *	@return comments array Comments information [memory]
  *	@return postid long int Post ID [memory]
  *	@return pname string Post name [memory]
  *	@return admin integer Is admin [memory]
@@ -21,7 +21,7 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ReplyListWorkflow implements Service {
+class CommentListWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
@@ -44,12 +44,12 @@ class ReplyListWorkflow implements Service {
 			'service' => 'transpera.entity.list.workflow',
 			'input' => array('id' => 'postid', 'pname' => 'pname'),
 			'conn' => 'cbdconn',
-			'relation' => '`replies`',
-			'sqlprj' => '`replyid`, substring(`reply`, 1, 500) as `reply`',
-			'sqlcnd' => "where `replyid` in \${list} order by `replyid` desc",
-			'successmsg' => 'Replies information given successfully',
+			'relation' => '`comments`',
+			'sqlprj' => '`cmtid`, substring(`comment`, 1, 512) as `comment`',
+			'sqlcnd' => "where `cmtid` in \${list} order by `cmtid` desc",
+			'successmsg' => 'Comments information given successfully',
 			'lsttrack' => true,
-			'output' => array('entities' => 'replies'),
+			'output' => array('entities' => 'comments'),
 		);
 		
 		return Snowblozm::run($service, $memory);
@@ -59,7 +59,7 @@ class ReplyListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('replies', 'postid', 'pname', 'admin');
+		return array('comments', 'postid', 'pname', 'admin');
 	}
 	
 }

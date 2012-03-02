@@ -25,8 +25,7 @@ class BoardInfoWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('boardid'),
-			'optional' => array('keyid' => false, 'fname' => false, 'name' => '', 'forumid' => false, 'id' => 0)
+			'optional' => array('keyid' => false, 'bname' => '', 'id' => 0, 'boardid' => false)
 		); 
 	}
 	
@@ -38,9 +37,10 @@ class BoardInfoWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.entity.info.workflow',
-			'input' => array('id' => 'boardid', 'parent' => 'forumid', 'cname' => 'name', 'pname' => 'fname'),
+			'input' => array('id' => 'boardid', 'cname' => 'name'),
 			'conn' => 'cbdconn',
-			'relation' => '`replies`',
+			'relation' => '`boards`',
+			'type' => 'board',
 			'sqlcnd' => "where `boardid`=\${id}",
 			'errormsg' => 'Invalid Board ID',
 			'successmsg' => 'Board information given successfully',
@@ -54,7 +54,7 @@ class BoardInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('board', 'fname', 'forumid', 'admin');
+		return array('board', 'bname', 'boardid', 'admin');
 	}
 	
 }

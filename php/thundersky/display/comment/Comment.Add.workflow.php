@@ -2,10 +2,10 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ReplyAddWorkflow
- *	@desc Adds new reply
+ *	@class CommentAddWorkflow
+ *	@desc Adds new comment
  *
- *	@param reply string Reply [memory]
+ *	@param comment string Comment [memory]
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string Key User [memory]
  *	@param postid long int Post ID [memory] optional default 0
@@ -13,21 +13,21 @@ require_once(SBSERVICE);
  *	@param level integer Web level [memory] optional default false (inherit post admin access)
  *	@param owner long int Owner ID [memory] optional default keyid
  *
- *	@return replyid long int Reply ID [memory]
+ *	@return cmtid long int Comment ID [memory]
  *	@return postid long int Post ID [memory]
  *	@return pname string Post Name [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ReplyAddWorkflow implements Service {
+class CommentAddWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'reply'),
+			'required' => array('keyid', 'user', 'comment'),
 			'optional' => array('postid' => 0, 'pname' => '', 'level' => false, 'owner' => false)
 		);
 	}
@@ -42,14 +42,14 @@ class ReplyAddWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.entity.add.workflow',
-			'args' => array('reply'),
-			'input' => array('parent' => 'postid', 'cname' => 'reply', 'pname' => 'pname'),
+			'args' => array('comment'),
+			'input' => array('parent' => 'postid', 'cname' => 'comment', 'pname' => 'pname'),
 			'conn' => 'cbdconn',
-			'relation' => '`replies`',
-			'sqlcnd' => "(`replyid`, `owner`, `reply`) values (\${id}, \${owner}, '\${user}', '\${reply}')",
-			'escparam' => array('reply'),
-			'successmsg' => 'Reply added successfully',
-			'output' => array('id' => 'replyid')
+			'relation' => '`comments`',
+			'sqlcnd' => "(`cmtid`, `owner`, `comment`) values (\${id}, \${owner}, '\${user}', '\${comment}')",
+			'escparam' => array('comment'),
+			'successmsg' => 'Comment added successfully',
+			'output' => array('id' => 'cmtid')
 		);
 		
 		return Snowblozm::run($service, $memory);
@@ -59,7 +59,7 @@ class ReplyAddWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('replyid', 'postid', 'pname');
+		return array('cmtid', 'postid', 'pname');
 	}
 	
 }

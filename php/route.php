@@ -37,10 +37,10 @@
 	if(isset($path[++$i])){
 		if(is_numeric($path[$i])){
 			$map['id'] = $path[$i];
-			$map['name'] = isset($path[$i+1]) ? $path[$i+1] : '';
+			$map['name'] = isset($path[$i+1]) ? str_replace('_', ' ', $path[$i+1]) : '';
 		}
 		else
-			$map['name'] = $path[$i];
+			$map['name'] = str_replace('_', ' ', $path[$i]);
 	}
 	
 	//echo json_encode($map); exit;

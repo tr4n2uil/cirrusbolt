@@ -6,7 +6,7 @@ require_once(SBSERVICE);
  *	@desc Edits board using ID
  *
  *	@param boardid long int Board ID [memory]
- *	@param title string Board title [memory]
+ *	@param desc string Board desc [memory]
  *	@param bname string Board name [memory]
  *	@param keyid long int Usage Key ID [memory]
  *
@@ -20,7 +20,7 @@ class BoardEditWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'boardid', 'bname')
+			'required' => array('keyid', 'boardid', 'bname', 'desc')
 		);
 	}
 	
@@ -32,12 +32,13 @@ class BoardEditWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.entity.edit.workflow',
-			'args' => array('bname'),
+			'args' => array('bname', 'desc'),
 			'input' => array('id' => 'boardid', 'cname' => 'bname'),
 			'conn' => 'cbdconn',
-			'relation' => '`replies`',
-			'sqlcnd' => "set `bname`='\${bname}', `time`=now() where `boardid`=\${id}",
-			'escparam' => array('bname'),
+			'relation' => '`boards`',
+			'type' => 'board',
+			'sqlcnd' => "set `bname`='\${bname}', `desc`='\${desc}' where `boardid`=\${id}",
+			'escparam' => array('bname', 'desc'),
 			'successmsg' => 'Board edited successfully'
 		);
 		

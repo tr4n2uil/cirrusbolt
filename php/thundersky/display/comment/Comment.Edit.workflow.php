@@ -2,25 +2,24 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ReplyEditWorkflow
- *	@desc Edits reply using ID
+ *	@class CommentEditWorkflow
+ *	@desc Edits comment using ID
  *
- *	@param replyid long int Reply ID [memory]
- *	@param title string Reply title [memory]
- *	@param reply string Reply [memory]
+ *	@param cmtid long int Comment ID [memory]
+ *	@param comment string Comment [memory]
  *	@param keyid long int Usage Key ID [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ReplyEditWorkflow implements Service {
+class CommentEditWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'replyid', 'reply')
+			'required' => array('keyid', 'cmtid', 'comment')
 		);
 	}
 	
@@ -32,13 +31,13 @@ class ReplyEditWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.entity.edit.workflow',
-			'args' => array('reply'),
-			'input' => array('id' => 'replyid', 'cname' => 'reply'),
+			'args' => array('comment'),
+			'input' => array('id' => 'cmtid', 'cname' => 'comment'),
 			'conn' => 'cbdconn',
-			'relation' => '`replies`',
-			'sqlcnd' => "set `reply`='\${reply}', `time`=now() where `replyid`=\${id}",
-			'escparam' => array('reply'),
-			'successmsg' => 'Reply edited successfully'
+			'relation' => '`comments`',
+			'sqlcnd' => "set `comment`='\${comment}' where `cmtid`=\${id}",
+			'escparam' => array('comment'),
+			'successmsg' => 'Comment edited successfully'
 		);
 		
 		return Snowblozm::run($service, $memory);

@@ -2,15 +2,15 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ReplyInfoWorkflow
- *	@desc Returns reply information by ID
+ *	@class CommentInfoWorkflow
+ *	@desc Returns comment information by ID
  *
- *	@param replyid long int Reply ID [memory]
+ *	@param cmtid long int Comment ID [memory]
  *	@param keyid long int Usage Key ID [memory] optional default false
  *	@param postid long int Post ID [memory] optional default 0
  *	@param pname string Post name [memory] optional default ''
  *
- *	@return reply array Reply information [memory]
+ *	@return comment array Comment information [memory]
  *	@return pname string Post name [memory]
  *	@return postid long int Post ID [memory]
  *	@return admin integer Is admin [memory]
@@ -18,14 +18,14 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ReplyInfoWorkflow implements Service {
+class CommentInfoWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('replyid'),
+			'required' => array('cmtid'),
 			'optional' => array('keyid' => false, 'pname' => false, 'name' => '', 'postid' => false, 'id' => 0)
 		); 
 	}
@@ -34,17 +34,17 @@ class ReplyInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['replyid'] = $memory['replyid'] ? $memory['replyid'] : $memory['id'];
+		$memory['cmtid'] = $memory['cmtid'] ? $memory['cmtid'] : $memory['id'];
 		
 		$service = array(
 			'service' => 'transpera.entity.info.workflow',
-			'input' => array('id' => 'replyid', 'parent' => 'postid', 'cname' => 'name', 'pname' => 'pname'),
+			'input' => array('id' => 'cmtid', 'parent' => 'postid', 'cname' => 'name', 'pname' => 'pname'),
 			'conn' => 'cbdconn',
-			'relation' => '`replies`',
-			'sqlcnd' => "where `replyid`=\${id}",
-			'errormsg' => 'Invalid Reply ID',
-			'successmsg' => 'Reply information given successfully',
-			'output' => array('entity' => 'reply')
+			'relation' => '`comments`',
+			'sqlcnd' => "where `cmtid`=\${id}",
+			'errormsg' => 'Invalid Comment ID',
+			'successmsg' => 'Comment information given successfully',
+			'output' => array('entity' => 'comment')
 		);
 		
 		return Snowblozm::run($service, $memory);
@@ -54,7 +54,7 @@ class ReplyInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('reply', 'pname', 'postid', 'admin');
+		return array('comment', 'pname', 'postid', 'admin');
 	}
 	
 }

@@ -32,7 +32,8 @@ class BoardRemoveWorkflow implements Service {
 			'service' => 'transpera.entity.remove.workflow',
 			'input' => array('id' => 'boardid', 'parent' => 'forumid'),
 			'conn' => 'cbdconn',
-			'relation' => '`replies`',
+			'relation' => '`boards`',
+			'type' => 'board',
 			'sqlcnd' => "where `boardid`=\${id}",
 			'errormsg' => 'Invalid Board ID',
 			'successmsg' => 'Board removed successfully'

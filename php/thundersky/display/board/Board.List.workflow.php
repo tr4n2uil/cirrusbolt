@@ -3,7 +3,7 @@ require_once(SBSERVICE);
 
 /**
  *	@class BoardListWorkflow
- *	@desc Returns all replies information in forum
+ *	@desc Returns all boards information in forum
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param forumid/id long int Forum ID [memory] optional default 0
@@ -13,7 +13,7 @@ require_once(SBSERVICE);
  *	@param pgno long int Paging Index [memory] optional default 1
  *	@param total long int Paging Total [memory] optional default false
  *
- *	@return replies array Replies information [memory]
+ *	@return boards array Boards information [memory]
  *	@return forumid long int Forum ID [memory]
  *	@return fname string Forum name [memory]
  *	@return admin integer Is admin [memory]
@@ -44,12 +44,13 @@ class BoardListWorkflow implements Service {
 			'service' => 'transpera.entity.list.workflow',
 			'input' => array('id' => 'forumid', 'pname' => 'fname'),
 			'conn' => 'cbdconn',
-			'relation' => '`replies`',
-			'sqlprj' => '`boardid`, `bname`',
+			'relation' => '`boards`',
+			'type' => 'board',
 			'sqlcnd' => "where `boardid` in \${list} order by `boardid` desc",
-			'successmsg' => 'Replies information given successfully',
-			'lsttrack' => true,
-			'output' => array('entities' => 'replies'),
+			'successmsg' => 'Boards information given successfully',
+			'output' => array('entities' => 'boards'),
+			'mapkey' => 'boardid',
+			'mapname' => 'board'
 		);
 		
 		return Snowblozm::run($service, $memory);
@@ -59,7 +60,7 @@ class BoardListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('replies', 'forumid', 'fname', 'admin');
+		return array('boards', 'forumid', 'fname', 'admin');
 	}
 	
 }

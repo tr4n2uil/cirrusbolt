@@ -2,24 +2,24 @@
 require_once(SBSERVICE);
 
 /**
- *	@class ReplyRemoveWorkflow
- *	@desc Removes reply by ID
+ *	@class CommentRemoveWorkflow
+ *	@desc Removes comment by ID
  *
- *	@param replyid long int Reply ID [memory]
+ *	@param cmtid long int Comment ID [memory]
  *	@param keyid long int Usage Key ID [memory]
  *	@param postid long int Post ID [memory] optional default 0
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class ReplyRemoveWorkflow implements Service {
+class CommentRemoveWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'replyid'),
+			'required' => array('keyid', 'cmtid'),
 			'optional' => array('postid' => 0)
 		);
 	}
@@ -30,12 +30,12 @@ class ReplyRemoveWorkflow implements Service {
 	public function run($memory){
 		$service = array(
 			'service' => 'transpera.entity.remove.workflow',
-			'input' => array('id' => 'replyid', 'parent' => 'postid'),
+			'input' => array('id' => 'cmtid', 'parent' => 'postid'),
 			'conn' => 'cbdconn',
-			'relation' => '`replies`',
-			'sqlcnd' => "where `replyid`=\${id}",
-			'errormsg' => 'Invalid Reply ID',
-			'successmsg' => 'Reply removed successfully'
+			'relation' => '`comments`',
+			'sqlcnd' => "where `cmtid`=\${id}",
+			'errormsg' => 'Invalid Comment ID',
+			'successmsg' => 'Comment removed successfully'
 		);
 		
 		return Snowblozm::run($service, $memory);
