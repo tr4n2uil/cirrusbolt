@@ -36,7 +36,7 @@ class PersonResetWorkflow implements Service {
 			'args' => array('user', 'email'),
 			'conn' => 'rlconn',
 			'relation' => '`persons`',
-			'sqlcnd' => "where `username`='\${user}' and `email`='\${email}'",
+			'sqlcnd' => "where `username`='\${user}' and `email`='\${email}' and `device`=''",
 			'escparam' => array('user', 'email'),
 			'errormsg' => 'Invalid Username / Email'
 		),

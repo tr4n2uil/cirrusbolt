@@ -25,7 +25,7 @@ class PersonAvailableWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = 'Available for registration';
+		$memory['msg'] = 'Available for Registration';
 		
 		$service = array(
 			'service' => 'guard.key.available.workflow',

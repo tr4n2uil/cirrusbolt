@@ -43,17 +43,21 @@ class InterfaceConsoleWorkflow implements Service {
 		else {
 			$page = $memory['pages']['error'];
 		}
-			
-		if(is_array($page)){
-			foreach($page as $pg){
-				$memory['tiles'] .= @file_get_contents($pg.'.tile.html');
-				$memory['html'] .= @file_get_contents($pg.'.html');
-			}
-		}
-		else {
-			$memory['tiles'] .= @file_get_contents($page.'.tile.html');
-			$memory['html'] .= @file_get_contents($page.'.html');
-		}
+		
+		$memory['tiles'] = '';
+		$memory['html'] = '';
+		
+		if(file_exists(UIBASE. 'html/'.$page.'.tile.html'))
+			$memory['tiles'] .= file_get_contents(UIBASE. 'html/'.$page.'.tile.html');
+		
+		if(file_exists(UIBASE. 'html/'.$page.'.html'))
+			$memory['html'] .= file_get_contents(UIBASE. 'html/'.$page.'.html');
+		
+		if(file_exists(UIBASE. 'php/'.$page.'.tile.php'))
+			$memory['tiles'] .= self::get_include_contents(UIBASE. 'php/'.$page.'.tile.php');
+		
+		if(file_exists(UIBASE. 'php/'.$page.'.php'))
+			$memory['html'] .= self::get_include_contents(UIBASE. 'php/'.$page.'.php');
 
 		$memory['valid'] = true;
 		$memory['msg'] = 'Valid Tile UI Interface Console';
@@ -67,6 +71,17 @@ class InterfaceConsoleWorkflow implements Service {
 	**/
 	public function output(){
 		return array('html', 'tiles');
+	}
+	
+	public static function get_include_contents($filename) {
+		if (is_file($filename)) {
+			ob_start();
+			include $filename;
+			$contents = ob_get_contents();
+			ob_end_clean();
+			return $contents;
+		}
+		return false;
 	}
 	
 }
