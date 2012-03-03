@@ -35,7 +35,8 @@ class BoardInfoWorkflow implements Service {
 	public function run($memory){
 		$memory['boardid'] = $memory['boardid'] ? $memory['boardid'] : $memory['id'];
 		
-		$service = array(
+		$workflow = array(
+		array(
 			'service' => 'transpera.entity.info.workflow',
 			'input' => array('id' => 'boardid', 'cname' => 'name'),
 			'conn' => 'cbdconn',
@@ -45,16 +46,20 @@ class BoardInfoWorkflow implements Service {
 			'errormsg' => 'Invalid Board ID',
 			'successmsg' => 'Board information given successfully',
 			'output' => array('entity' => 'board')
-		);
+		),
+		array(
+			'service' => 'display.post.list.workflow',
+			'output' => array('admin' => 'postadmin')
+		));
 		
-		return Snowblozm::run($service, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('board', 'bname', 'boardid', 'admin');
+		return array('board', 'bname', 'boardid', 'chain', 'admin', 'posts', 'postadmin', 'total', 'pgsz', 'pgno');
 	}
 	
 }

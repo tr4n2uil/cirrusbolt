@@ -60,7 +60,7 @@ class BoardListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('boards', 'forumid', 'fname', 'admin');
+		return array('boards', 'forumid', 'fname', 'admin', 'total', 'pgsz');
 	}
 	
 }

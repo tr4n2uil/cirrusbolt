@@ -33,6 +33,7 @@ class PostRemoveWorkflow implements Service {
 			'input' => array('id' => 'postid', 'parent' => 'boardid'),
 			'conn' => 'cbdconn',
 			'relation' => '`posts`',
+			'type' => 'post',
 			'sqlcnd' => "where `postid`=\${id}",
 			'errormsg' => 'Invalid Post ID',
 			'successmsg' => 'Post removed successfully'

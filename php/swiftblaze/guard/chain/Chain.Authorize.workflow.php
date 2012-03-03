@@ -80,7 +80,7 @@ class ChainAuthorizeWorkflow implements Service {
 			'args' => $args,
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
-			'sqlprj' => '`masterkey`, `level`, `authorize`, `state`',
+			'sqlprj' => '`masterkey`,`level`, `authorize`, `state`',
 			'sqlcnd' => "where `chainid`=\${chainid} $last",
 			'escparam' => $escparam,
 			'errormsg' => 'Invalid Chain ID'
@@ -100,8 +100,16 @@ class ChainAuthorizeWorkflow implements Service {
 		/**
 		 *	@check masterkey, authorize
 		**/
-		if($memory['keyid'] == $memory['masterkey'] || strpos($memory['authorize'], $memory['action']) === false)
+		if($memory['keyid'] == $memory['masterkey'] || strpos($memory['authorize'], 'pb'.$memory['action']) !== false || (strpos($memory['authorize'], $memory['action']) === false && $memory['keyid'] > -1))
 			return $memory;
+		
+		if($memory['keyid'] < 0 && !$memory['admin']){
+			$memory['valid'] = false;
+			$memory['msg'] = 'Please login to continue';
+			$memory['status'] = 407;
+			$memory['details'] = 'Value -1 found for keyid @chain.authorize';
+			return $memory;
+		}
 		
 		/**
 		 *	@read level

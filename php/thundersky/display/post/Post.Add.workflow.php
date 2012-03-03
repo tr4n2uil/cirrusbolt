@@ -47,6 +47,7 @@ class PostAddWorkflow implements Service {
 			'input' => array('parent' => 'boardid', 'cname' => 'title', 'pname' => 'bname'),
 			'conn' => 'cbdconn',
 			'relation' => '`posts`',
+			'type' => 'post',
 			'sqlcnd' => "(`postid`, `owner`, `title`, `post`) values (\${id}, \${owner}, '\${title}', '\${post}')",
 			'escparam' => array('title', 'post'),
 			'successmsg' => 'Post added successfully',

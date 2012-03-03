@@ -36,7 +36,8 @@ class PostEditWorkflow implements Service {
 			'input' => array('id' => 'postid', 'cname' => 'title'),
 			'conn' => 'cbdconn',
 			'relation' => '`posts`',
-			'sqlcnd' => "set `title`='\${title}', `post`='\${post}', `time`=now() where `postid`=\${id}",
+			'type' => 'post',
+			'sqlcnd' => "set `title`='\${title}', `post`='\${post}' where `postid`=\${id}",
 			'escparam' => array('title', 'post'),
 			'successmsg' => 'Post edited successfully'
 		);

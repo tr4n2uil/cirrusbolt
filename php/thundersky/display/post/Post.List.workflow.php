@@ -17,6 +17,7 @@ require_once(SBSERVICE);
  *	@return boardid long int Board ID [memory]
  *	@return bname string Board name [memory]
  *	@return admin integer Is admin [memory]
+ *	@return total integer Total [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -29,7 +30,7 @@ class PostListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('boardid' => false, 'id' => 0, 'bname' => false, 'name' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false)
+			'optional' => array('boardid' => false, 'id' => 0, 'bname' => false, 'name' => '', 'pgsz' => 50, 'pgno' => 0, 'total' => false)
 		);
 	}
 	
@@ -45,10 +46,14 @@ class PostListWorkflow implements Service {
 			'input' => array('id' => 'boardid', 'pname' => 'bname'),
 			'conn' => 'cbdconn',
 			'relation' => '`posts`',
-			'sqlprj' => '`postid`, `title`, substring(`post`, 1, 50) as `post`',
+			'type' => 'post',
+			'sqlprj' => '`postid`, `title`, substring(`post`, 1, 1024) as `post`',
 			'sqlcnd' => "where `postid` in \${list} order by `postid` desc",
 			'successmsg' => 'Posts information given successfully',
+			'lsttrack' => true,
 			'output' => array('entities' => 'posts'),
+			'mapkey' => 'postid',
+			'mapname' => 'post'
 		);
 		
 		return Snowblozm::run($service, $memory);
@@ -58,7 +63,7 @@ class PostListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('posts', 'boardid', 'bname', 'admin');
+		return array('posts', 'boardid', 'bname', 'admin', 'total', 'pgsz', 'pgno');
 	}
 	
 }

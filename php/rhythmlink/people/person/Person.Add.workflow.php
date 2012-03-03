@@ -89,14 +89,14 @@ class PersonAddWorkflow implements Service {
 			'output' => array('id' => 'pnid'),
 			'root' => '/'.$memory['username'],
 			'type' => 'person',
-			'authorize' => 'add:remove:edit:list:con:per:rel:sub:act:eme'
+			'authorize' => 'add:remove:edit:list:con:per:rel:sub:act:eme:pbinfo'
 		),
 		array(
 			'service' => 'storage.file.add.workflow',
 			'ext' => 'png',
 			'mime' => 'image/png',
 			'dirid' => PERSON_THUMB,
-			'input' => array('name' => 'username', 'user' => 'username'),	//@possible 'level' => 2,
+			'input' => array('name' => 'username', 'user' => 'username', 'keyid' => 'owner'),	//@possible 'level' => 2,
 			'output' => array('fileid' => 'thumbnail')
 		),
 		/*array(
