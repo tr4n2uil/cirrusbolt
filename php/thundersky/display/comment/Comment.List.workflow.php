@@ -29,7 +29,7 @@ class CommentListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('postid' => false, 'id' => 0, 'pname' => false, 'name' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false)
+			'optional' => array('postid' => false, 'id' => 0, 'pname' => false, 'name' => '', 'pgsz' => 50, 'pgno' => 0, 'total' => false)
 		);
 	}
 	
@@ -45,11 +45,14 @@ class CommentListWorkflow implements Service {
 			'input' => array('id' => 'postid', 'pname' => 'pname'),
 			'conn' => 'cbdconn',
 			'relation' => '`comments`',
+			'type' => 'comment',
 			'sqlprj' => '`cmtid`, substring(`comment`, 1, 512) as `comment`',
-			'sqlcnd' => "where `cmtid` in \${list} order by `cmtid` desc",
+			'sqlcnd' => "where `cmtid` in \${list} order by `cmtid`",
 			'successmsg' => 'Comments information given successfully',
 			'lsttrack' => true,
 			'output' => array('entities' => 'comments'),
+			'mapkey' => 'cmtid',
+			'mapname' => 'comment'
 		);
 		
 		return Snowblozm::run($service, $memory);
@@ -59,7 +62,7 @@ class CommentListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('comments', 'postid', 'pname', 'admin');
+		return array('comments', 'postid', 'pname', 'admin', 'total', 'pgno', 'pgsz');
 	}
 	
 }

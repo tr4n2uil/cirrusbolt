@@ -102,7 +102,7 @@ class ChainAuthorizeWorkflow implements Service {
 		**/
 		if($memory['keyid'] == $memory['masterkey'] || strpos($memory['authorize'], 'pb'.$memory['action']) !== false || (strpos($memory['authorize'], $memory['action']) === false && $memory['keyid'] > -1))
 			return $memory;
-		
+
 		if($memory['keyid'] < 0 && !$memory['admin']){
 			$memory['valid'] = false;
 			$memory['msg'] = 'Please login to continue';

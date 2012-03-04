@@ -26,7 +26,9 @@ class CommentReplyWorkflow implements Service {
 	/**
 	 *	@interface Service
 	**/
-	public function run($memory){		
+	public function run($memory){
+		$memory['verb'] = 'replied';
+		$memory['join'] = 'on';
 		$memory['public'] = 1;
 		
 		$service = array(
@@ -36,6 +38,7 @@ class CommentReplyWorkflow implements Service {
 			'init' => false,
 			'conn' => 'cbdconn',
 			'relation' => '`comments`',
+			'type' => 'comment',
 			'sqlcnd' => "set `reply`='\${reply}' where `cmtid`=\${id}",
 			'escparam' => array('reply'),
 			'successmsg' => 'Comment replied successfully'

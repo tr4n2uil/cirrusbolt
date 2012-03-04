@@ -43,6 +43,7 @@ class CommentInfoWorkflow implements Service {
 			'relation' => '`comments`',
 			'sqlcnd' => "where `cmtid`=\${id}",
 			'errormsg' => 'Invalid Comment ID',
+			'type' => 'comment',
 			'successmsg' => 'Comment information given successfully',
 			'output' => array('entity' => 'comment')
 		);

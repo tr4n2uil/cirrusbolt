@@ -36,8 +36,8 @@ class CommentAddWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['verb'] = 'replied';
-		$memory['join'] = 'to';
+		$memory['verb'] = 'commented';
+		$memory['join'] = 'on';
 		$memory['public'] = 1;
 		
 		$service = array(
@@ -46,7 +46,8 @@ class CommentAddWorkflow implements Service {
 			'input' => array('parent' => 'postid', 'cname' => 'comment', 'pname' => 'pname'),
 			'conn' => 'cbdconn',
 			'relation' => '`comments`',
-			'sqlcnd' => "(`cmtid`, `owner`, `comment`) values (\${id}, \${owner}, '\${user}', '\${comment}')",
+			'type' => 'comment',
+			'sqlcnd' => "(`cmtid`, `owner`, `comment`) values (\${id}, \${owner}, '\${comment}')",
 			'escparam' => array('comment'),
 			'successmsg' => 'Comment added successfully',
 			'output' => array('id' => 'cmtid')

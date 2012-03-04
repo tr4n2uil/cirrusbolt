@@ -68,7 +68,7 @@ class ReferenceRemoveWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.reference.authorize.workflow',
-			'input' => array('id' => 'parent')
+			//'input' => array('id' => 'parent')
 		),
 		array(
 			'service' => 'guard.chain.remove.workflow',

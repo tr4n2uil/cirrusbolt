@@ -35,6 +35,7 @@ class CommentEditWorkflow implements Service {
 			'input' => array('id' => 'cmtid', 'cname' => 'comment'),
 			'conn' => 'cbdconn',
 			'relation' => '`comments`',
+			'type' => 'comment',
 			'sqlcnd' => "set `comment`='\${comment}' where `cmtid`=\${id}",
 			'escparam' => array('comment'),
 			'successmsg' => 'Comment edited successfully'

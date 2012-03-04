@@ -33,6 +33,7 @@ class CommentRemoveWorkflow implements Service {
 			'input' => array('id' => 'cmtid', 'parent' => 'postid'),
 			'conn' => 'cbdconn',
 			'relation' => '`comments`',
+			'type' => 'comment',
 			'sqlcnd' => "where `cmtid`=\${id}",
 			'errormsg' => 'Invalid Comment ID',
 			'successmsg' => 'Comment removed successfully'

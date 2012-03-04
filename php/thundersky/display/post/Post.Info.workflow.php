@@ -34,7 +34,8 @@ class PostInfoWorkflow implements Service {
 	public function run($memory){
 		$memory['postid'] = $memory['postid'] ? $memory['postid'] : $memory['id'];
 		
-		$service = array(
+		$workflow = array(
+		array(
 			'service' => 'transpera.entity.info.workflow',
 			'input' => array('id' => 'postid', 'parent' => 'boardid', 'cname' => 'name', 'pname' => 'bname'),
 			'conn' => 'cbdconn',
@@ -44,16 +45,20 @@ class PostInfoWorkflow implements Service {
 			'errormsg' => 'Invalid Post ID',
 			'successmsg' => 'Post information given successfully',
 			'output' => array('entity' => 'post')
-		);
+		),
+		array(
+			'service' => 'display.comment.list.workflow',
+			'output' => array('admin' => 'cmntadmin')
+		));
 		
-		return Snowblozm::run($service, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('post', 'name', 'postid', 'chain', 'admin');
+		return array('post', 'name', 'postid', 'chain', 'admin', 'comments', 'cmntadmin', 'total', 'pgsz', 'pgno');
 	}
 	
 }
