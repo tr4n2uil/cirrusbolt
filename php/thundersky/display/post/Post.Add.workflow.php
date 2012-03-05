@@ -13,6 +13,8 @@ require_once(SBSERVICE);
  *	@param bname string Board Name [memory] optional default ''
  *	@param level integer Web level [memory] optional default false (inherit board admin access)
  *	@param owner long int Owner ID [memory] optional default keyid
+ *	@param view-access char View Access [memory] optional default false ('A', 'L', 'P', false=inherit)
+ *	@param cmnt-access char Comment Access [memory] optional default false ('A', 'L', 'P', false=inherit)
  *
  *	@return postid long int Post ID [memory]
  *	@return boardid long int Board ID [memory]
@@ -29,7 +31,7 @@ class PostAddWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'title', 'post'),
-			'optional' => array('boardid' => 0, 'bname' => '', 'level' => false, 'owner' => false)
+			'optional' => array('boardid' => 0, 'bname' => '', 'level' => false, 'owner' => false, 'view-access' => false, 'cmnt-access' => false)
 		);
 	}
 	
@@ -41,6 +43,36 @@ class PostAddWorkflow implements Service {
 		$memory['join'] = 'to';
 		$memory['public'] = 1;
 		
+		$auth = 'edit:remove:';
+		
+		switch($memory['view-access']){
+			case 'P' :
+				$auth .= 'pbinfo:pblist';
+				break;
+			case 'L' :
+				$auth .= '';
+				break;
+			case 'A' :
+				$auth .= 'info:list:';
+				break;
+			default :
+				$auth = false;
+		}
+		
+		switch($memory['cmnt-access']){
+			case 'P' :
+				$auth .= 'pbadd';
+				break;
+			case 'L' :
+				$auth .= '';
+				break;
+			case 'A' :
+				$auth .= 'add:';
+				break;
+			default :
+				$auth = false;
+		}
+		
 		$service = array(
 			'service' => 'transpera.entity.add.workflow',
 			'args' => array('title', 'post'),
@@ -48,6 +80,7 @@ class PostAddWorkflow implements Service {
 			'conn' => 'cbdconn',
 			'relation' => '`posts`',
 			'type' => 'post',
+			'authorize' => $auth,
 			'sqlcnd' => "(`postid`, `owner`, `title`, `post`) values (\${id}, \${owner}, '\${title}', '\${post}')",
 			'escparam' => array('title', 'post'),
 			'successmsg' => 'Post added successfully',

@@ -46,7 +46,8 @@ class DataMergeService implements Service {
 			$flag = false;
 		}
 
-		$memory['result'] = $result;
+		//$memory['result'] = $result;
+		$memory['result'] = array_values($result);
 		$memory['valid'] = true;
 		$memory['msg'] = 'Valid Data Merging';
 		$memory['status'] = 200;

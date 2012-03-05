@@ -36,7 +36,7 @@ class ChainInfoWorkflow implements Service {
 			'args' => array('chainid', 'keyid'),
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
-			'sqlprj' => "`authorize`, `state`, `parent`, `user`, `count`, `author`, UNIX_TIMESTAMP(`mtime`)*1000 as `mtime`, if( exists (select `child` from `tracks` where `child`=\${chainid} and `keyid`=\${keyid} limit 1), 1, 0) as `read`",
+			'sqlprj' => "`authorize`, `state`, `parent`, `user`, `count`, `author`, UNIX_TIMESTAMP(`wtime`)*1000 as `mtime`, if( exists (select `child` from `tracks` where `child`=\${chainid} and `keyid`=\${keyid} limit 1), 1, 0) as `read`",
 			'sqlcnd' => "where `chainid`=\${chainid}",
 			'errormsg' => 'Invalid Chain ID'
 		),

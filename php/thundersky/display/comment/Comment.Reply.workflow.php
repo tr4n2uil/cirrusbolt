@@ -41,6 +41,7 @@ class CommentReplyWorkflow implements Service {
 			'type' => 'comment',
 			'sqlcnd' => "set `reply`='\${reply}' where `cmtid`=\${id}",
 			'escparam' => array('reply'),
+			'check' => false,
 			'successmsg' => 'Comment replied successfully'
 		);
 		

@@ -42,7 +42,9 @@ class DataMapService implements Service {
 				$result[$index] = array($mapname => $row);
 		}
 		
+		
 		$memory['result'] = $result;
+		//$memory['result'] = array_values($result);
 		$memory['valid'] = true;
 		$memory['msg'] = 'Valid Data Merging';
 		$memory['status'] = 200;

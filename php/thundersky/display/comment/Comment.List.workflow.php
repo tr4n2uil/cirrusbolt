@@ -46,16 +46,25 @@ class CommentListWorkflow implements Service {
 			'conn' => 'cbdconn',
 			'relation' => '`comments`',
 			'type' => 'comment',
-			'sqlprj' => '`cmtid`, substring(`comment`, 1, 512) as `comment`',
+			'sqlprj' => '`cmtid`, substring(`comment`, 1, 512) as `comment`, `reply`',
 			'sqlcnd' => "where `cmtid` in \${list} order by `cmtid`",
 			'successmsg' => 'Comments information given successfully',
 			'lsttrack' => true,
 			'output' => array('entities' => 'comments'),
 			'mapkey' => 'cmtid',
-			'mapname' => 'comment'
+			'mapname' => 'comment',
+			'saction' => 'add'
 		);
 		
 		return Snowblozm::run($service, $memory);
+		
+		if($memory['status'] == 403 || $memory['status'] == 407){
+			$memory['valid'] = true;
+			$memory['comments'] = array();
+			$memory['admin'] = 0;
+			return $memory;
+		}
+		return $memory;
 	}
 	
 	/**
