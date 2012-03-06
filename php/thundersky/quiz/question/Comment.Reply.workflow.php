@@ -19,7 +19,7 @@ class CommentReplyWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'cmtid', 'reply', 'postid', 'pname')
+			'required' => array('keyid', 'cmtid', 'reply')
 		);
 	}
 	
@@ -31,8 +31,7 @@ class CommentReplyWorkflow implements Service {
 		$memory['join'] = 'on';
 		$memory['public'] = 1;
 		
-		$workflow = array(
-		array(
+		$service = array(
 			'service' => 'transpera.entity.edit.workflow',
 			'args' => array('reply'),
 			'input' => array('id' => 'cmtid', 'cname' => 'reply'),
@@ -44,30 +43,16 @@ class CommentReplyWorkflow implements Service {
 			'escparam' => array('reply'),
 			'check' => false,
 			'successmsg' => 'Comment replied successfully'
-		),
-		array(
-			'service' => 'transpera.entity.info.workflow',
-			'input' => array('id' => 'cmtid', 'parent' => 'postid', 'cname' => 'name', 'pname' => 'pname'),
-			'conn' => 'cbdconn',
-			'relation' => '`comments`',
-			'sqlcnd' => "where `cmtid`=\${id}",
-			'errormsg' => 'Invalid Comment ID',
-			'type' => 'comment',
-			'successmsg' => 'Comment information given successfully',
-			'output' => array('entity' => 'comment'),
-			'auth' => false,
-			'track' => false,
-			'chadm' => false
-		));
+		);
 		
-		return Snowblozm::execute($workflow, $memory);
+		return Snowblozm::run($service, $memory);
 	}
 	
 	/**
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('postid', 'pname', 'comment', 'chain', 'admin');
+		return array();
 	}
 	
 }

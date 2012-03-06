@@ -40,8 +40,7 @@ class CommentAddWorkflow implements Service {
 		$memory['join'] = 'on';
 		$memory['public'] = 1;
 		
-		$workflow = array(
-		array(
+		$service = array(
 			'service' => 'transpera.entity.add.workflow',
 			'args' => array('comment'),
 			'input' => array('parent' => 'postid', 'cname' => 'comment', 'pname' => 'pname'),
@@ -52,30 +51,16 @@ class CommentAddWorkflow implements Service {
 			'escparam' => array('comment'),
 			'successmsg' => 'Comment added successfully',
 			'output' => array('id' => 'cmtid')
-		),
-		array(
-			'service' => 'transpera.entity.info.workflow',
-			'input' => array('id' => 'cmtid', 'parent' => 'postid', 'cname' => 'name', 'pname' => 'pname'),
-			'conn' => 'cbdconn',
-			'relation' => '`comments`',
-			'sqlcnd' => "where `cmtid`=\${id}",
-			'errormsg' => 'Invalid Comment ID',
-			'type' => 'comment',
-			'successmsg' => 'Comment information given successfully',
-			'output' => array('entity' => 'comment'),
-			'auth' => false,
-			'track' => false,
-			'chadm' => false
-		));
+		);
 		
-		return Snowblozm::execute($workflow, $memory);
+		return Snowblozm::run($service, $memory);
 	}
 	
 	/**
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('cmtid', 'postid', 'pname', 'comment', 'chain', 'admin');
+		return array('cmtid', 'postid', 'pname');
 	}
 	
 }
