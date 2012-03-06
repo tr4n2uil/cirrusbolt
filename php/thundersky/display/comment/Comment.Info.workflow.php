@@ -5,10 +5,11 @@ require_once(SBSERVICE);
  *	@class CommentInfoWorkflow
  *	@desc Returns comment information by ID
  *
- *	@param cmtid long int Comment ID [memory]
+ *	@param cmtid/id long int Comment ID [memory]
  *	@param keyid long int Usage Key ID [memory] optional default false
+ *	@param user string Key User [memory]
  *	@param postid long int Post ID [memory] optional default 0
- *	@param pname string Post name [memory] optional default ''
+ *	@param pname/name string Post name [memory] optional default ''
  *
  *	@return comment array Comment information [memory]
  *	@return pname string Post name [memory]
@@ -26,7 +27,7 @@ class CommentInfoWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('cmtid'),
-			'optional' => array('keyid' => false, 'pname' => false, 'name' => '', 'postid' => false, 'id' => 0)
+			'optional' => array('keyid' => false, 'user' => '', 'pname' => false, 'name' => '', 'postid' => false, 'id' => 0)
 		); 
 	}
 	

@@ -32,7 +32,7 @@ class PostInfoWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'optional' => array('keyid' => false, 'pname' => false, 'name' => '', 'id' => 0, 'postid' => false, 'pgsz' => 50, 'pgno' => 0, 'total' => false)
+			'optional' => array('keyid' => false, 'pname' => false, 'name' => '', 'id' => 0, 'postid' => false, 'pgsz' => 5, 'pgno' => 0, 'total' => false)
 		); 
 	}
 	
@@ -57,7 +57,8 @@ class PostInfoWorkflow implements Service {
 		),
 		array(
 			'service' => 'display.comment.list.workflow',
-			'output' => array('admin' => 'cmntadmin')
+			'output' => array('admin' => 'cmntadmin'),
+			'padmin' => false
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

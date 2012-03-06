@@ -9,14 +9,20 @@ require_once(SBSERVICE);
  *	@param postid/id long int Post ID [memory] optional default 0
  *	@param pname/name string Post name [memory] optional default ''
  *
- *	@param pgsz long int Paging Size [memory] optional default false
- *	@param pgno long int Paging Index [memory] optional default 1
+ *	@param pgsz long int Paging Size [memory] optional default 50
+ *	@param pgno long int Paging Index [memory] optional default 0
  *	@param total long int Paging Total [memory] optional default false
+ *	@param padmin boolean Is parent information needed [memory] optional default true
  *
  *	@return comments array Comments information [memory]
  *	@return postid long int Post ID [memory]
- *	@return pname string Post name [memory]
+ *	@return pname string Post Name [memory]
  *	@return admin integer Is admin [memory]
+ *	@return padmin integer Is parent admin [memory]
+ *	@return pchain array Parent chain information [memory]
+ *	@return pgsz long int Paging Size [memory]
+ *	@return pgno long int Paging Index [memory]
+ *	@return total long int Paging Total [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -29,7 +35,7 @@ class CommentListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('postid' => false, 'id' => 0, 'pname' => false, 'name' => '', 'pgsz' => 50, 'pgno' => 0, 'total' => false)
+			'optional' => array('user' => '', 'postid' => false, 'id' => 0, 'pname' => false, 'name' => '', 'pgsz' => 50, 'pgno' => 0, 'total' => false, 'padmin' => true)
 		);
 	}
 	
@@ -39,31 +45,56 @@ class CommentListWorkflow implements Service {
 	public function run($memory){
 		$memory['postid'] = $memory['postid'] ? $memory['postid'] : $memory['id'];
 		$memory['pname'] = $memory['pname'] ? $memory['pname'] : $memory['name'];
+		$memory['pchain'] = array();
 		
-		$service = array(
+		$workflow = array(
+		array(
 			'service' => 'transpera.entity.list.workflow',
 			'input' => array('id' => 'postid', 'pname' => 'pname'),
 			'conn' => 'cbdconn',
 			'relation' => '`comments`',
 			'type' => 'comment',
-			'sqlprj' => '`cmtid`, substring(`comment`, 1, 512) as `comment`, `reply`',
-			'sqlcnd' => "where `cmtid` in \${list} order by `cmtid`",
+			'sqlprj' => '`cmtid`, `comment`, `reply`',
+			'sqlcnd' => "where `cmtid` in \${list} order by `cmtid` desc",
 			'successmsg' => 'Comments information given successfully',
 			'lsttrack' => true,
 			'output' => array('entities' => 'comments'),
 			'mapkey' => 'cmtid',
 			'mapname' => 'comment',
 			'saction' => 'add'
-		);
+		));
 		
-		return Snowblozm::run($service, $memory);
+		if($memory['padmin']){
+			array_push($workflow, array(
+				'service' => 'transpera.reference.authorize.workflow',
+				'acstate' => true, 
+				'action' => 'edit', 
+				'astate' => true, 
+				'iaction' => 'edit', 
+				'iastate' => true, 
+				'init' => true,
+				'authinh' => 1,
+				'autherror' => 'Unable to Authorize',
+				'admin' => true,
+				'output' => array('admin' => 'padmin')
+			),
+			array(
+				'service' => 'guard.chain.info.workflow',
+				'input' => array('chainid' => 'postid'),
+				'output' => array('chain' => 'pchain')
+			));
+		}
 		
-		if($memory['status'] == 403 || $memory['status'] == 407){
+		$memory = Snowblozm::execute($workflow, $memory);
+		
+		/*if($memory['status'] == 403 || $memory['status'] == 407){
 			$memory['valid'] = true;
 			$memory['comments'] = array();
 			$memory['admin'] = 0;
 			return $memory;
-		}
+		}*/
+		
+		$memory['comments'] = array_reverse($memory['comments']);
 		return $memory;
 	}
 	
@@ -71,7 +102,7 @@ class CommentListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('comments', 'postid', 'pname', 'admin', 'total', 'pgno', 'pgsz');
+		return array('comments', 'postid', 'pname', 'admin', 'padmin', 'pchain', 'total', 'pgno', 'pgsz');
 	}
 	
 }
