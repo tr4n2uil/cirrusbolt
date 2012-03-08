@@ -25,11 +25,16 @@ class InterfaceConsoleWorkflow implements Service {
 	public function input(){
 		return array(
 			'optional' => array(
-				'name' => 'home', 
+				'root' => 'root',
+				'page' => 'home', 
+				'subpage' => false,
 				'pages' => array(), 
+				'id' => false,
+				'name' => false,
 				'html' => '', 
 				'tiles' => ''
-			)
+			),
+			'set' => array('root', 'page', 'subpage')
 		);
 	}
 	
@@ -37,8 +42,13 @@ class InterfaceConsoleWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		if(isset($memory['pages'][$memory['name']])){
-			$page = $memory['pages'][$memory['name']];
+		$memory['page'] = $memory['id'] ? $memory['id'] : $memory['page'];
+		$memory['subpage'] = $memory['name'] ? $memory['name'] : $memory['subpage'];
+		
+		if(isset($memory['pages'][$memory['root']])){
+			$page = $memory['pages'][$memory['root']].'/'.$memory['page'];
+			if($memory['subpage'])
+				$page .= '/'.$memory['subpage'];
 		}
 		else {
 			$page = $memory['pages']['error'];

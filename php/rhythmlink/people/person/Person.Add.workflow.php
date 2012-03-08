@@ -109,7 +109,7 @@ class PersonAddWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.insert.workflow',
 			'args' => array('pnid', 'name', 'username', 'owner', 'thumbnail', 'email', 'phone', 'location', 'role', 'device'),
-			'conn' => 'rlconn',
+			'conn' => 'cbpconn',
 			'relation' => '`persons`',
 			'sqlcnd' => "(`pnid`, `name`, `username`, `owner`, `thumbnail`, `email`, `phone`, `location`, `role`, `device`) values (\${pnid}, '\${name}', '\${username}', \${owner}, \${thumbnail}, '\${email}', '\${phone}', \${location}, \${role}, '\${device}')",
 			'escparam' => array('name', 'username',  'email', 'phone', 'device')

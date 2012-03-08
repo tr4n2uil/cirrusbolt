@@ -34,7 +34,7 @@ class PersonResetWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('user', 'email'),
-			'conn' => 'rlconn',
+			'conn' => 'cbpconn',
 			'relation' => '`persons`',
 			'sqlcnd' => "where `username`='\${user}' and `email`='\${email}' and `device`=''",
 			'escparam' => array('user', 'email'),

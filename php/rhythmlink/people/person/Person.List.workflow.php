@@ -30,7 +30,8 @@ class PersonListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user'),
-			'optional' => array('peopleid' => 5, 'plname' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false)
+			'optional' => array('peopleid' => 5, 'plname' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false),
+			'set' => array('id', 'name')
 		);
 	}
 	
@@ -41,7 +42,7 @@ class PersonListWorkflow implements Service {
 		$service = array(
 			'service' => 'transpera.entity.list.workflow',
 			'input' => array('id' => 'peopleid', 'pname' => 'plname'),
-			'conn' => 'rlconn',
+			'conn' => 'cbpconn',
 			'relation' => '`persons`',
 			'sqlprj' => '`pnid`, `username`, `name`, `thumbnail`, `title`',
 			'sqlcnd' => "where `pnid` in \${list} order by `name`",

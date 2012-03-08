@@ -51,7 +51,7 @@ class PersonEditWorkflow implements Service {
 			'service' => 'transpera.entity.edit.workflow',
 			'args' => array('name', 'title', 'dateofbirth', 'gender', 'address', 'location', 'country'),
 			'input' => array('id' => 'pnid', 'cname' => 'user'),
-			'conn' => 'rlconn',
+			'conn' => 'cbpconn',
 			'relation' => '`persons`',
 			'sqlcnd' => "set `name`='\${name}', `title`='\${title}', `dateofbirth`=$dob, `gender`='\${gender}', `address`='\${address}', `location`=\${location}, `country`='\${country}' where `pnid`=\${id}",
 			'escparam' => array('name', 'title', 'dateofbirth', 'gender', 'address', 'country'),

@@ -32,7 +32,7 @@ class PersonSendWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('username'),
-			'conn' => 'rlconn',
+			'conn' => 'cbpconn',
 			'relation' => '`persons`',
 			'sqlcnd' => "where `username`='\${username}' and `device`<>''",
 			'escparam' => array('username'),
@@ -51,7 +51,7 @@ class PersonSendWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.update.workflow',
 			'args' => array('pnid', 'verify'),
-			'conn' => 'rlconn',
+			'conn' => 'cbpconn',
 			'relation' => '`persons`',
 			'sqlcnd' => "set `verify`='\${verify}' where `pnid`=\${pnid}",
 			'escparam' => array('verify'),

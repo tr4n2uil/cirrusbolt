@@ -70,7 +70,7 @@ class CommentAddWorkflow implements Service {
 			'output' => array('entity' => 'comment'),
 			'auth' => false,
 			'track' => false,
-			'sinit' => true
+			'sinit' => false
 		),
 		array(
 			'service' => 'guard.chain.info.workflow',

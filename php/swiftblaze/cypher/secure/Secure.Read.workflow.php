@@ -7,10 +7,10 @@ require_once(SBSERVICE);
  *
  *	@param data object Data to be unsecured [memory]
  *	@param type string Decode type [memory] ('json', 'wddx', 'xml', 'plain', 'html')
- *	@param crypt string Crypt type [memory] ('none', 'rc4', 'aes', 'blowfish', 'tripledes')
+ *	@param crypt string Crypt type [memory] optional default 'none' ('none', 'rc4', 'aes', 'blowfish', 'tripledes')
  *	@param key string Key used for decryption [memory] optional default false (generated from challenge)
  *	@param keyid string Key ID returned previously [memory] optional default false
- *	@param hash string Hash type [memory] ('none', 'md5', 'sha1', 'crc32')
+ *	@param hash string Hash type [memory] optional default 'none' ('none', 'md5', 'sha1', 'crc32')
  *	@param user string Username if user not set [memory] optional default false
  *	@param context string Application context for email [memory] optional default false
  *
@@ -27,8 +27,8 @@ class SecureReadWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('data', 'crypt', 'hash'),
-			'optional' => array('key' => false, 'keyid' => false, 'user' => false, 'context' => false)
+			'required' => array('data'),
+			'optional' => array('crypt' => 'none', 'hash' => 'none', 'key' => false, 'keyid' => false, 'user' => false, 'context' => false)
 		);
 	}
 	

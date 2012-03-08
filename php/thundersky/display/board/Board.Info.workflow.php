@@ -33,7 +33,9 @@ class BoardInfoWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'optional' => array('keyid' => false, 'bname' => false, 'name' => '', 'id' => 0, 'boardid' => false, 'pgsz' => 50, 'pgno' => 0, 'total' => false)
+			'required' => array('keyid', 'user'),
+			'optional' => array('bname' => false, 'name' => '', 'id' => 0, 'boardid' => false, 'pgsz' => 10, 'pgno' => 0, 'total' => false),
+			'set' => array('id', 'name')
 		); 
 	}
 	
@@ -58,7 +60,8 @@ class BoardInfoWorkflow implements Service {
 		),
 		array(
 			'service' => 'display.post.list.workflow',
-			'output' => array('admin' => 'postadmin')
+			'output' => array('admin' => 'postadmin'),
+			'padmin' => false
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

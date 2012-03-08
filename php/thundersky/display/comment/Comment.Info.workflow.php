@@ -27,7 +27,8 @@ class CommentInfoWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('cmtid'),
-			'optional' => array('keyid' => false, 'user' => '', 'pname' => false, 'name' => '', 'postid' => false, 'id' => 0)
+			'optional' => array('keyid' => false, 'user' => '', 'pname' => false, 'name' => '', 'postid' => false, 'id' => 0),
+			'set' => array('id', 'name')
 		); 
 	}
 	

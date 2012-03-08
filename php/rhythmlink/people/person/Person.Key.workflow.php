@@ -36,7 +36,7 @@ class PersonKeyWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('pnid'),
-			'conn' => 'rlconn',
+			'conn' => 'cbpconn',
 			'relation' => '`persons`',
 			'sqlcnd' => "where `pnid`=\${pnid}",
 			'errormsg' => 'Invalid Person ID'

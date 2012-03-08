@@ -34,7 +34,8 @@ class PersonInfoWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user'),
-			'optional' => array('pnid' => false, 'peopleid' => 5, 'id' => 0)
+			'optional' => array('pnid' => false, 'peopleid' => 5, 'id' => 0),
+			'set' => array('id', 'name')
 		);
 	}
 	
@@ -54,7 +55,7 @@ class PersonInfoWorkflow implements Service {
 		array(
 			'service' => 'transpera.entity.info.workflow',
 			'input' => array('id' => 'pnid', 'parent' => 'peopleid', 'cname' => 'user'),
-			'conn' => 'rlconn',
+			'conn' => 'cbpconn',
 			'relation' => '`persons`',
 			'sqlprj' => '`pnid`, `username`, `name`, `thumbnail`, `title`',
 			'sqlcnd' => "where `$attr`='\${id}'",

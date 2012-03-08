@@ -29,7 +29,8 @@ class BoardListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('forumid' => false, 'id' => 0, 'fname' => false, 'name' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false)
+			'optional' => array('forumid' => false, 'id' => 0, 'fname' => false, 'name' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false),
+			'set' => array('id', 'name')
 		);
 	}
 	

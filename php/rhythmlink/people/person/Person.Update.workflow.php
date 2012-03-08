@@ -55,7 +55,7 @@ class PersonUpdateWorkflow implements Service {
 			'service' => 'transpera.entity.edit.workflow',
 			'args' => array($attr),
 			'input' => array('id' => 'pnid'),
-			'conn' => 'rlconn',
+			'conn' => 'cbpconn',
 			'relation' => '`persons`',
 			'sqlcnd' => "set `$attr`='\${".$attr."}' where `pnid`=\${id}",
 			'escparam' => array($attr),
@@ -70,7 +70,7 @@ class PersonUpdateWorkflow implements Service {
 			array(
 				'service' => 'transpera.relation.update.workflow',
 				'args' => array('pnid', 'device'),
-				'conn' => 'rlconn',
+				'conn' => 'cbpconn',
 				'relation' => '`persons`',
 				'sqlcnd' => "set `verify`='', `device`='\${device}' where `pnid`=\${pnid}",
 				'escparam' => array('device'),

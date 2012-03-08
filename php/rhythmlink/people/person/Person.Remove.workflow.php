@@ -37,7 +37,7 @@ class PersonRemoveWorkflow implements Service {
 		array(
 			'service' => 'transpera.entity.remove.workflow',
 			'input' => array('id' => 'pnid', 'parent' => 'peopleid'),
-			'conn' => 'rlconn',
+			'conn' => 'cbpconn',
 			'relation' => '`persons`',
 			'sqlcnd' => "where `pnid`=\${id}",
 			'errormsg' => 'Invalid Person ID',

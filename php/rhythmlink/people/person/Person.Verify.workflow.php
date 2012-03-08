@@ -43,7 +43,7 @@ class PersonVerifyWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.unique.workflow',
 			'args' => array('username', 'verify'),
-			'conn' => 'rlconn',
+			'conn' => 'cbpconn',
 			'relation' => '`persons`',
 			'sqlcnd' => "where `username`='\${username}' and `verify`='\${verify}'",
 			'escparam' => array('username', 'verify'),
@@ -62,7 +62,7 @@ class PersonVerifyWorkflow implements Service {
 		array(
 			'service' => 'transpera.relation.update.workflow',
 			'args' => array('owner'),
-			'conn' => 'rlconn',
+			'conn' => 'cbpconn',
 			'relation' => '`persons`',
 			'sqlcnd' => "set `verify`='', `device`='' where `owner`=\${owner}",
 			'errormsg' => 'Invalid Person'

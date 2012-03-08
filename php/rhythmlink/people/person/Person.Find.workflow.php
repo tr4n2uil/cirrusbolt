@@ -34,7 +34,8 @@ class PersonFindWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('user', 'keyid'),
-			'optional' => array('peopleid' => 5, 'name' => false)
+			'optional' => array('peopleid' => 5, 'name' => false),
+			'set' => array('name')
 		);
 	}
 	
@@ -52,7 +53,7 @@ class PersonFindWorkflow implements Service {
 			'input' => array('parent' => 'peopleid', 'cname' => 'user'),
 			'args' => array('name'),
 			'idkey' => 'pnid',
-			'conn' => 'rlconn',
+			'conn' => 'cbpconn',
 			'relation' => '`persons`',
 			'sqlprj' => '`pnid`, `username`, `name`, `thumbnail`, `title`, `role`',
 			'sqlcnd' => "where `username`='\${name}'",

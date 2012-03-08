@@ -90,7 +90,9 @@ class LaunchCheckService implements Service {
 							$uri = $access['maps'][$message['service']];
 						}
 						elseif(isset($access['maps']['default'])){
+							$alias = $message['service'];
 							$uri = $access['maps']['default'];
+							array_unshift($message, $alias);
 						}
 						else {
 							$message['valid'] = false;

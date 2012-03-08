@@ -17,8 +17,19 @@ require_once(SBSERVICE);
  *	@param cmnt-access char Comment Access [memory] optional default false ('A', 'L', 'P', false=inherit)
  *
  *	@return postid long int Post ID [memory]
+ *	@return pname string Post name [memory]
  *	@return boardid long int Board ID [memory]
  *	@return bname string Board Name [memory]
+ *	@return post array Post information [memory]
+ *	@return comments array Comments information [memory]
+ *	@return chain array Chain information [memory]
+ *	@return pchain array Parent chain information [memory]
+ *	@return admin integer Is admin [memory]
+ *	@return padmin integer Is parent admin [memory]
+ *	@return cmntadmin integer Is comment admin [memory]
+ *	@return pgsz long int Paging Size [memory]
+ *	@return pgno long int Paging Index [memory] 
+ *	@return total long int Paging Total [memory] 
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -73,7 +84,8 @@ class PostAddWorkflow implements Service {
 				$auth = false;
 		}
 		
-		$service = array(
+		$workflow = array(
+		array(
 			'service' => 'transpera.entity.add.workflow',
 			'args' => array('title', 'post'),
 			'input' => array('parent' => 'boardid', 'cname' => 'title', 'pname' => 'bname'),
@@ -85,16 +97,21 @@ class PostAddWorkflow implements Service {
 			'escparam' => array('title', 'post'),
 			'successmsg' => 'Post added successfully',
 			'output' => array('id' => 'postid')
-		);
+		),
+		array(
+			'service' => 'display.post.info.workflow',
+			'pgsz' => 5,
+			'padmin' => true
+		));
 		
-		return Snowblozm::run($service, $memory);
+		return Snowblozm::execute($workflow, $memory);
 	}
 	
 	/**
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('postid', 'boardid', 'bname');
+		return array('postid', 'boardid', 'bname', 'post', 'comments', 'chain', 'pchain', 'admin', 'padmin', 'cmntadmin', 'total', 'pgsz', 'pgno');
 	}
 	
 }

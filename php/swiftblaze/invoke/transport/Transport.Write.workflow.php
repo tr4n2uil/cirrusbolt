@@ -16,6 +16,7 @@ require_once(SBSERVICE);
  *	@param ui array UI data [memory] optional default false
  *
  *	@return result string Secured message [memory]
+ *	@return response object Secured message [memory]
  *	@return key long int Key used for encryption [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -50,11 +51,12 @@ class TransportWriteWorkflow implements Service {
 		array(
 			'service' => 'cbcore.data.prepare.service',
 			'args' => $args,
-			'strict' => false
+			'strict' => false,
+			'output' => array('result' => 'response')
 		),
 		array(
 			'service' => 'cbcore.data.encode.service',
-			'input' => array('data' => 'result')
+			'input' => array('data' => 'response')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);
@@ -64,7 +66,7 @@ class TransportWriteWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('result', 'key');
+		return array('result', 'response', 'key');
 	}
 	
 }

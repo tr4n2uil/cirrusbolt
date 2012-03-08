@@ -35,7 +35,8 @@ class CommentListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('user' => '', 'postid' => false, 'id' => 0, 'pname' => false, 'name' => '', 'pgsz' => 50, 'pgno' => 0, 'total' => false, 'padmin' => true)
+			'optional' => array('user' => '', 'postid' => false, 'id' => 0, 'pname' => false, 'name' => '', 'pgsz' => 50, 'pgno' => 0, 'total' => false, 'padmin' => true),
+			'set' => array('id', 'name')
 		);
 	}
 	
@@ -45,10 +46,8 @@ class CommentListWorkflow implements Service {
 	public function run($memory){
 		$memory['postid'] = $memory['postid'] ? $memory['postid'] : $memory['id'];
 		$memory['pname'] = $memory['pname'] ? $memory['pname'] : $memory['name'];
-		$memory['pchain'] = array();
 		
-		$workflow = array(
-		array(
+		$service = array(
 			'service' => 'transpera.entity.list.workflow',
 			'input' => array('id' => 'postid', 'pname' => 'pname'),
 			'conn' => 'cbdconn',
@@ -62,30 +61,11 @@ class CommentListWorkflow implements Service {
 			'mapkey' => 'cmtid',
 			'mapname' => 'comment',
 			'saction' => 'add'
-		));
+		);
 		
-		if($memory['padmin']){
-			array_push($workflow, array(
-				'service' => 'transpera.reference.authorize.workflow',
-				'acstate' => true, 
-				'action' => 'edit', 
-				'astate' => true, 
-				'iaction' => 'edit', 
-				'iastate' => true, 
-				'init' => true,
-				'authinh' => 1,
-				'autherror' => 'Unable to Authorize',
-				'admin' => true,
-				'output' => array('admin' => 'padmin')
-			),
-			array(
-				'service' => 'guard.chain.info.workflow',
-				'input' => array('chainid' => 'postid'),
-				'output' => array('chain' => 'pchain')
-			));
-		}
-		
-		$memory = Snowblozm::execute($workflow, $memory);
+		$memory = Snowblozm::run($service, $memory);
+		if(!$memory['valid'])
+			return $memory;
 		
 		/*if($memory['status'] == 403 || $memory['status'] == 407){
 			$memory['valid'] = true;

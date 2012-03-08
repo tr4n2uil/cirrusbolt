@@ -9,6 +9,7 @@ require_once(SBSERVICE);
  *	@param mgchn boolean Is merge chain [memory] optional default true
  *	@param track boolean Is track [memory] optional default true
  *	@param lsttrack boolean Is track [memory] optional default false
+ *	@param padmin boolean Is padmin [memory] optional default true
  *	@param selection string Selection operation [memory] optional default 'list' ('list', 'children', 'parents')
  *
  *	@param keyid long int Usage Key ID [memory]
@@ -20,6 +21,10 @@ require_once(SBSERVICE);
  *	@param pgsz long int Paging Size [memory] optional default false
  *	@param pgno long int Paging Index [memory] optional default 1
  *	@param total long int Paging Total [memory] optional default false
+ *
+ *	@param chpgsz long int Paging Size [memory] optional default false
+ *	@param chpgno long int Paging Index [memory] optional default 1
+ *	@param chtotal long int Paging Total [memory] optional default false
  *
  *	@Todo chpgsz, chpgno, chtotal
  *
@@ -68,6 +73,8 @@ require_once(SBSERVICE);
  *	@return total long int Total count [memory]
  *	@return id long int Parent ID [memory]
  *	@return admin integer Is admin [memory]
+ *	@return padmin integer Is parent admin [memory]
+ *	@return pchain array Parent chain information [memory]
  *	@return total long int Total count [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -87,6 +94,7 @@ class EntityListWorkflow implements Service {
 				'mgchn' => true,
 				'track' => true,
 				'lsttrack' => false,
+				'padmin' => true,
 				'selection' => 'list',
 				'type' => 'general', 
 				'state' => true, 
@@ -94,6 +102,9 @@ class EntityListWorkflow implements Service {
 				'pgsz' => false, 
 				'pgno' => 0, 
 				'total' => false,
+				'chpgsz' => false, 
+				'chpgno' => 0, 
+				'chtotal' => false,
 				'acstate' => true,
 				'action' => 'list', 
 				'astate' => true, 
@@ -109,6 +120,14 @@ class EntityListWorkflow implements Service {
 				'sinit' => true,
 				'sauthinh' => 1,
 				'sautherror' => 'Unable to Authorize',
+				'pacstate' => true, 
+				'paction' => 'edit', 
+				'pastate' => true, 
+				'piaction' => 'edit', 
+				'piastate' => true, 
+				'pinit' => true,
+				'pauthinh' => 1,
+				'pautherror' => 'Unable to Authorize',
 				'sqlprj' => '*', 
 				'successmsg' => 'Entities information given successfully', 
 				'listerror' => 'Error in Database',
@@ -231,6 +250,33 @@ class EntityListWorkflow implements Service {
 				));
 			}
 			
+			if($memory['padmin']){
+				array_push($workflow, array(
+					'service' => 'transpera.reference.authorize.workflow',
+					'input' => array(
+						'acstate' => 'pacstate', 
+						'action' => 'paction', 
+						'astate' => 'pastate', 
+						'iaction' => 'piaction', 
+						'iastate' => 'piastate', 
+						'init' => 'pinit',
+						'authinh' => 'pauthinh',
+						'autherror' => 'pautherror'
+					),
+					'admin' => true,
+					'output' => array('admin' => 'padmin')
+				),
+				array(
+					'service' => 'guard.chain.info.workflow',
+					'input' => array('chainid' => 'id'),
+					'output' => array('chain' => 'pchain')
+				));
+			}
+			else {
+				$memory['padmin'] = $memory['admin'];
+				$memory['pchain'] = array();
+			}
+			
 			$memory = Snowblozm::execute($workflow, $memory);
 			if($cache){
 				Snowblozm::run(array(
@@ -248,7 +294,7 @@ class EntityListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('entities', 'id', 'admin', 'total');
+		return array('entities', 'id', 'admin', 'total', 'padmin', 'pchain');
 	}
 	
 }
