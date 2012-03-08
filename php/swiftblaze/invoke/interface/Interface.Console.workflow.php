@@ -5,7 +5,9 @@ require_once(SBSERVICE);
  *	@class InterfaceConsoleWorkflow
  *	@desc Processes interface console requests in Tile UI
  *
- *	@param name string Tile UI content [memory] optional default 'home'
+ *	@param root string root [memory] optional default 'home'
+ *	@param page string page [memory] optional default false
+ *	@param subpage string subpage [memory] optional default false
  *	@param pages object Array of static html pages [memory] optional default array()
  *
  *	@param html string Tile UI html [memory] optional default ''
@@ -25,8 +27,8 @@ class InterfaceConsoleWorkflow implements Service {
 	public function input(){
 		return array(
 			'optional' => array(
-				'root' => 'root',
-				'page' => 'home', 
+				'root' => 'home',
+				'page' => false, 
 				'subpage' => false,
 				'pages' => array(), 
 				'id' => false,
@@ -44,30 +46,31 @@ class InterfaceConsoleWorkflow implements Service {
 	public function run($memory){
 		$memory['page'] = $memory['id'] ? $memory['id'] : $memory['page'];
 		$memory['subpage'] = $memory['name'] ? $memory['name'] : $memory['subpage'];
-		
-		if(isset($memory['pages'][$memory['root']])){
-			$page = $memory['pages'][$memory['root']].'/'.$memory['page'];
-			if($memory['subpage'])
-				$page .= '/'.$memory['subpage'];
-		}
-		else {
-			$page = $memory['pages']['error'];
-		}
-		
 		$memory['tiles'] = '';
 		$memory['html'] = '';
 		
-		if(file_exists(UIBASE. 'html/'.$page.'.tile.html'))
-			$memory['tiles'] .= file_get_contents(UIBASE. 'html/'.$page.'.tile.html');
-		
-		if(file_exists(UIBASE. 'html/'.$page.'.html'))
-			$memory['html'] .= file_get_contents(UIBASE. 'html/'.$page.'.html');
-		
-		if(file_exists(UIBASE. 'php/'.$page.'.tile.php'))
-			$memory['tiles'] .= self::get_include_contents(UIBASE. 'php/'.$page.'.tile.php');
-		
-		if(file_exists(UIBASE. 'php/'.$page.'.php'))
-			$memory['html'] .= self::get_include_contents(UIBASE. 'php/'.$page.'.php');
+		if($memory['page']){
+			if(isset($memory['pages'][$memory['root']])){
+				$page = $memory['pages'][$memory['root']].'/'.$memory['page'];
+				if($memory['subpage'])
+					$page .= '/'.$memory['subpage'];
+			}
+			else {
+				$page = $memory['pages']['error'];
+			}
+			
+			if(file_exists(UIBASE. 'html/'.$page.'.tile.html'))
+				$memory['tiles'] .= file_get_contents(UIBASE. 'html/'.$page.'.tile.html');
+			
+			if(file_exists(UIBASE. 'html/'.$page.'.html'))
+				$memory['html'] .= file_get_contents(UIBASE. 'html/'.$page.'.html');
+			
+			if(file_exists(UIBASE. 'php/'.$page.'.tile.php'))
+				$memory['tiles'] .= self::get_include_contents(UIBASE. 'php/'.$page.'.tile.php');
+			
+			if(file_exists(UIBASE. 'php/'.$page.'.php'))
+				$memory['html'] .= self::get_include_contents(UIBASE. 'php/'.$page.'.php');
+		}
 
 		$memory['valid'] = true;
 		$memory['msg'] = 'Valid Tile UI Interface Console';

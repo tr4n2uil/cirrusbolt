@@ -26,7 +26,7 @@ function path_decode($data){
 		$result[$j++] = $path[$index];
 		$max = $index-2;
 	}
-	else {
+	elseif($index > 0) {
 		$result['service'] = $path[$i++];
 	}
 	

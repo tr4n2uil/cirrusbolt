@@ -101,6 +101,9 @@ class LaunchCheckService implements Service {
 							$message['details'] = "Access denied for the service : ".$message['service'];
 						}
 					}
+					
+					$message['service'] = $uri.'.workflow';
+					$memory['uri'] = $alias ? $alias : $uri;
 				}
 			}
 		
@@ -110,10 +113,8 @@ class LaunchCheckService implements Service {
 		unset($memory['msg']);
 		foreach($memory['params'] as $arg)
 			$message[$arg] = $memory[$arg];
-		$message['service'] = $uri.'.workflow';
 		
 		$memory['message'] = $message;
-		$memory['uri'] = $alias ? $alias : $uri;
 		$memory['valid'] = true;
 		$memory['msg'] = 'Checked Successfully';
 		$memory['status'] = 200;
