@@ -36,6 +36,7 @@ require_once(SBSERVICE);
  *	@param siaction string Action to authorize inherit [memory] optional default 'edit'
  *	@param saistate string State to authorize inherit [memory] optional default true (false= All)
  *	@param sinit boolean init flag [memory] optional default true
+ *	@param sself boolean self flag [memory] optional default false
  *	@param sauthinh integer Check inherit [memory] optional default 1
  *	@param sautherror string Error msg [memory] optional default 'Unable to Authorize'
  *
@@ -83,6 +84,7 @@ class EntityInfoWorkflow implements Service {
 				'iaction' => 'info', 
 				'aistate' => true, 
 				'init' => true,
+				'self' => false,
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
 				'sacstate' => true,
@@ -91,6 +93,7 @@ class EntityInfoWorkflow implements Service {
 				'siaction' => 'edit', 
 				'saistate' => true, 
 				'sinit' => true,
+				'sself' => false,
 				'sauthinh' => 1,
 				'sautherror' => 'Unable to Authorize',
 				'name' => '',
@@ -171,6 +174,7 @@ class EntityInfoWorkflow implements Service {
 						'iaction' => 'siaction', 
 						'iastate' => 'siastate', 
 						'init' => 'sinit',
+						'self' => 'sself',
 						'authinh' => 'sauthinh',
 						'autherror' => 'sautherror'
 					),

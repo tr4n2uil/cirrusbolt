@@ -9,6 +9,7 @@ require_once(SBSERVICE);
  *	@param sqlcnd string SQL condition [memory]
  *	@param args array Query parameters [args]
  *	@param escparam array Escape parameters [memory] optional default array()
+ *	@param errormsg string Error message [memory] optional default 'Error in Database'
  *
  *	@param conn array DataService instance configuration key [memory]
  *
@@ -25,7 +26,7 @@ class RelationInsertWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('conn', 'relation', 'sqlcnd'),
-			'optional' => array('escparam' => array())
+			'optional' => array('escparam' => array(), 'errormsg' => 'Error in Database')
 		);
 	}
 	

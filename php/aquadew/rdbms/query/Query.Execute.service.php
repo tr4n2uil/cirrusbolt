@@ -43,7 +43,7 @@ class QueryExecuteService implements Service {
 		if($result === false){
 			$memory['valid'] = false;
 			$memory['msg'] = 'Error in Database';
-			$memory['status'] = 503;
+			$memory['status'] = 585;
 			$memory['details'] = 'Error : '.$conn->getError().' @query.execute.service';
 			return $memory;
 		}

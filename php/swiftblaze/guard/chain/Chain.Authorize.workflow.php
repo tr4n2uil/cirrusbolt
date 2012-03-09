@@ -14,6 +14,7 @@ require_once(SBSERVICE);
  *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
  *	@param istate string State to authorize inherit [memory] optional default false (true= Not '0')
  *	@param init boolean init flag [memory] optional default true
+ *	@param self boolean self flag [memory] optional default false
  *	@param admin boolean Is return admin flag [memory] optional default false
  *	@param inherit integer Check inherit [memory] optional default 1
  *	@param errormsg string Error msg [memory] optional default 'Unable to Authorize'
@@ -44,6 +45,7 @@ class ChainAuthorizeWorkflow implements Service {
 				'istate' => false, 
 				'admin' => false, 
 				'init' => true,
+				'self' => false,
 				'inherit' => 1,
 				'errormsg' => 'Unable to Authorize'
 			)
@@ -100,7 +102,7 @@ class ChainAuthorizeWorkflow implements Service {
 		/**
 		 *	@check masterkey, authorize
 		**/
-		if($memory['init'] && ($memory['keyid'] == $memory['masterkey'] || strpos($memory['authorize'], 'pb'.$memory['action']) !== false || (strpos($memory['authorize'], $memory['action']) === false && $memory['keyid'] > -1)))
+		if(($memory['init'] || $memory['self']) && ($memory['keyid'] == $memory['masterkey'] || strpos($memory['authorize'], 'pb'.$memory['action']) !== false || (strpos($memory['authorize'], $memory['action']) === false && $memory['keyid'] > -1)))
 			return $memory;
 
 		if($memory['keyid'] < 0 && !$memory['admin']){

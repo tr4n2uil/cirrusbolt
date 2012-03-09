@@ -51,8 +51,19 @@ require_once(SBSERVICE);
  *	@param siaction string Action to authorize inherit [memory] optional default 'edit'
  *	@param saistate string State to authorize inherit [memory] optional default true (false= All)
  *	@param sinit boolean init flag [memory] optional default true
+ *	@param sself boolean self flag [memory] optional default false
  *	@param sauthinh integer Check inherit [memory] optional default 1
  *	@param sautherror string Error msg [memory] optional default 'Unable to Authorize'
+ *
+ *	@param pacstate string State to authorize chain [memory] optional default true (false= All)
+ *	@param paction string Action to authorize [memory] optional default 'edit'
+ *	@param pastate string State to authorize member [memory] optional default true (false= All)
+ *	@param piaction string Action to authorize inherit [memory] optional default 'edit'
+ *	@param paistate string State to authorize inherit [memory] optional default true (false= All)
+ *	@param pinit boolean init flag [memory] optional default true
+ *	@param pself boolean self flag [memory] optional default false
+ *	@param pauthinh integer Check inherit [memory] optional default 1
+ *	@param pautherror string Error msg [memory] optional default 'Unable to Authorize'
  *
  *	@param name string Child name [memory] optional default ''
  *	@param pname string Parent name [memory] optional default ''
@@ -118,6 +129,7 @@ class EntityListWorkflow implements Service {
 				'siaction' => 'edit', 
 				'saistate' => true, 
 				'sinit' => true,
+				'sself' => false,
 				'sauthinh' => 1,
 				'sautherror' => 'Unable to Authorize',
 				'pacstate' => true, 
@@ -126,6 +138,7 @@ class EntityListWorkflow implements Service {
 				'piaction' => 'edit', 
 				'piastate' => true, 
 				'pinit' => true,
+				'pself' => false,
 				'pauthinh' => 1,
 				'pautherror' => 'Unable to Authorize',
 				'sqlprj' => '*', 
@@ -210,6 +223,7 @@ class EntityListWorkflow implements Service {
 						'iaction' => 'siaction', 
 						'iastate' => 'siastate', 
 						'init' => 'sinit',
+						'self' => 'sself',
 						'authinh' => 'sauthinh',
 						'autherror' => 'sautherror'
 					),
@@ -260,6 +274,7 @@ class EntityListWorkflow implements Service {
 						'iaction' => 'piaction', 
 						'iastate' => 'piastate', 
 						'init' => 'pinit',
+						'self' => 'pself',
 						'authinh' => 'pauthinh',
 						'autherror' => 'pautherror'
 					),

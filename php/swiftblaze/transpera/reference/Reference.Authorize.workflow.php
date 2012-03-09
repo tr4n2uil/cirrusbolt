@@ -14,6 +14,7 @@ require_once(SBSERVICE);
  *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
  *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *	@param init boolean init flag [memory] optional default true
+ *	@param self boolean self flag [memory] optional default false
  *
  *	@param cache boolean Is cacheable [memory] optional default true
  *	@param expiry int Cache expiry [memory] optional default 150
@@ -47,6 +48,7 @@ class ReferenceAuthorizeWorkflow implements Service {
 				'aistate' => true, 
 				'admin' => false, 
 				'init' => true,
+				'self' => false,
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
 				'cache' => true,

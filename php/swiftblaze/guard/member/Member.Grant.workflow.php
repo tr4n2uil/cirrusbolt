@@ -2,10 +2,10 @@
 require_once(SBSERVICE);
 
 /**
- *	@class MemberAddWorkflow
+ *	@class MemberGrantWorkflow
  *	@desc Adds member key to Chain
  *
- *	@param keyid long int Key ID [memory]
+ *	@param member string Key User [memory]
  *	@param chainid long int Chain ID [memory]
  *	@param type string Type name [memory] optional default 'general'
  *	@param authorize string Parent control [memory] optional default 'edit:add:remove:list'
@@ -19,14 +19,14 @@ require_once(SBSERVICE);
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
-class MemberAddWorkflow implements Service {
+class MemberGrantWorkflow implements Service {
 	
 	/**
 	 *	@interface Service
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'chainid'),
+			'required' => array('member', 'chainid'),
 			'optional' => array('type' => 'general', 'authorize' => 'edit:add:remove:list', 'control' => false, 'state' => 'A', 'path' => '/', 'leaf' => false)
 		);
 	}
@@ -41,11 +41,12 @@ class MemberAddWorkflow implements Service {
 		
 		$service = array(
 			'service' => 'transpera.relation.insert.workflow',
-			'args' => array('chainid', 'keyid', 'type', 'control', 'state', 'path', 'leaf'),
+			'args' => array('chainid', 'member', 'type', 'control', 'state', 'path', 'leaf'),
 			'conn' => 'cbconn',
 			'relation' => '`members`',
-			'sqlcnd' => "(`chainid`, `keyid`, `user`, `type`, `control`, `state`, `path`, `leaf`, `ctime`) values (\${chainid}, \${keyid}, (select `user` from `keys` where `keyid`=\${keyid}), '\${type}', '\${control}', '\${state}', '\${path}', '\${leaf}', now())",
-			'escparam' => array('type', 'control', 'state', 'path', 'leaf')
+			'sqlcnd' => "(`chainid`, `keyid`, `user`, `type`, `control`, `state`, `path`, `leaf`, `ctime`) values (\${chainid}, (select `keyid` from `keys` where `user`='\${member}'), '\${member}', '\${type}', '\${control}', '\${state}', '\${path}', '\${leaf}', now())",
+			'escparam' => array('member', 'type', 'control', 'state', 'path', 'leaf'),
+			'errormsg' => 'Invalid Username'
 		);
 		
 		return Snowblozm::run($service, $memory);

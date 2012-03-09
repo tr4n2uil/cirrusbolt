@@ -26,6 +26,7 @@ require_once(SBSERVICE);
  *	@param iaction string Action to authorize inherit [memory] optional default 'edit'
  *	@param aistate string State to authorize inherit [memory] optional default true (false= All)
  *	@param init boolean init flag [memory] optional default true
+ *	@param self boolean self flag [memory] optional default false
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
  *
@@ -35,6 +36,7 @@ require_once(SBSERVICE);
  *	@param siaction string Action to authorize inherit [memory] optional default 'edit'
  *	@param saistate string State to authorize inherit [memory] optional default true (false= All)
  *	@param sinit boolean init flag [memory] optional default true
+ *	@param sself boolean self flag [memory] optional default false
  *	@param sauthinh integer Check inherit [memory] optional default 1
  *	@param sautherror string Error msg [memory] optional default 'Unable to Authorize'
  *
@@ -81,6 +83,7 @@ class EntityFindWorkflow implements Service {
 				'iaction' => 'info', 
 				'aistate' => true, 
 				'init' => true,
+				'self' => false,
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
 				'sacstate' => true,
@@ -89,6 +92,7 @@ class EntityFindWorkflow implements Service {
 				'siaction' => 'edit', 
 				'saistate' => true, 
 				'sinit' => true,
+				'sself' => false,
 				'sauthinh' => 1,
 				'sautherror' => 'Unable to Authorize',
 				'name' => '',
@@ -163,6 +167,7 @@ class EntityFindWorkflow implements Service {
 						'iaction' => 'siaction', 
 						'iastate' => 'siastate', 
 						'init' => 'sinit',
+						'self' => 'sself',
 						'authinh' => 'sauthinh',
 						'autherror' => 'sautherror'
 					),
