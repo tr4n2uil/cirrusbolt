@@ -26,6 +26,7 @@ class InterfaceConsoleWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
+			'required' => array('keyid', 'user'),
 			'optional' => array(
 				'root' => 'home',
 				'page' => false, 
@@ -34,7 +35,8 @@ class InterfaceConsoleWorkflow implements Service {
 				'id' => false,
 				'name' => false,
 				'html' => '', 
-				'tiles' => ''
+				'tiles' => '',
+				'console' => array()
 			),
 			'set' => array('root', 'page', 'subpage')
 		);
@@ -65,11 +67,12 @@ class InterfaceConsoleWorkflow implements Service {
 			if(file_exists(UIBASE. 'html/'.$page.'.html'))
 				$memory['html'] .= file_get_contents(UIBASE. 'html/'.$page.'.html');
 			
-			if(file_exists(UIBASE. 'php/'.$page.'.tile.php'))
-				$memory['tiles'] .= self::get_include_contents(UIBASE. 'php/'.$page.'.tile.php');
-			
-			if(file_exists(UIBASE. 'php/'.$page.'.php'))
-				$memory['html'] .= self::get_include_contents(UIBASE. 'php/'.$page.'.php');
+			if(file_exists(UIBASE. 'php/'.$page.'.console.php')){
+				require_once(UIBASE. 'php/'.$page.'.console.php');
+				$console = new Console($memory['keyid'], $memory['user'], $memory['console']);
+				$memory['tiles'] .= $console->tiles();
+				$memory['html'] .= $console->html();
+			}
 		}
 
 		$memory['valid'] = true;

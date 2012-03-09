@@ -52,11 +52,11 @@ class ChainTrackWorkflow implements Service {
 		$escparam = array('user', 'action', 'type', 'cname', 'pname', 'verb', 'join', 'ipaddr', 'server');
 		
 		if($memory['multiple']){
-			$qry = "select \${parent}, `chainid`, \${keyid}, '\${user}', '\${action}', '\${type}', '\${cname}', '\${pname}', '\${verb}', '\${join}', '\${ipaddr}', \${public}, now(), '\${server}' from `chains` where `chainid` in \${child}";
+			$qry = "select \${parent}, `chainid`, \${keyid}, '\${user}', '\${action}', '\${type}', substring('\${cname}', 0, 200), substring('\${pname}', 0, 200), '\${verb}', '\${join}', '\${ipaddr}', \${public}, now(), '\${server}' from `chains` where `chainid` in \${child}";
 			array_push($escparam, 'child');
 		}
 		else {
-			$qry = " values (\${parent}, \${child}, \${keyid}, '\${user}', '\${action}', '\${type}', '\${cname}', '\${pname}', '\${verb}', '\${join}', '\${ipaddr}', \${public}, now(), '\${server}')";
+			$qry = " values (\${parent}, \${child}, \${keyid}, '\${user}', '\${action}', '\${type}', substring('\${cname}', 0, 200), substring('\${pname}', 0, 200), '\${verb}', '\${join}', '\${ipaddr}', \${public}, now(), '\${server}')";
 		}
 		
 		$service = array(
