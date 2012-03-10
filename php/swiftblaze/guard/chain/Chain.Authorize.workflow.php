@@ -104,7 +104,7 @@ class ChainAuthorizeWorkflow implements Service {
 		**/
 		if(($memory['init'] || $memory['self']) && ($memory['keyid'] == $memory['masterkey'] || strpos($memory['authorize'], 'pb'.$memory['action']) !== false || (strpos($memory['authorize'], $memory['action']) === false && $memory['keyid'] > -1)))
 			return $memory;
-
+		
 		if($memory['keyid'] < 0 && !$memory['admin']){
 			$memory['valid'] = false;
 			$memory['msg'] = 'Please login to continue';
@@ -185,7 +185,7 @@ class ChainAuthorizeWorkflow implements Service {
 			'escparam' => $escparam,
 			'errstatus' => 403
 		);
-		
+		//Snowblozm::$debug=true;
 		$memory = Snowblozm::run($service, $memory);
 		if($memory['admin'] && !$memory['valid']){
 			$memory['admin'] = false;
@@ -194,7 +194,7 @@ class ChainAuthorizeWorkflow implements Service {
 			$memory['status'] = 200;
 			$memory['details'] = 'Successfully executed';
 		}
-		
+		//Snowblozm::$debug=false;
 		return $memory;
 	}
 	

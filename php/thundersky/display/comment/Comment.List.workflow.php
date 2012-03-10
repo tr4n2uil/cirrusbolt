@@ -35,7 +35,7 @@ class CommentListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('user' => '', 'postid' => false, 'id' => 0, 'pname' => false, 'name' => '', 'pgsz' => 50, 'pgno' => 0, 'total' => false, 'padmin' => true),
+			'optional' => array('user' => '', 'postid' => false, 'id' => 0, 'pname' => false, 'name' => '', 'pgsz' => 15, 'pgno' => 0, 'total' => false, 'padmin' => true),
 			'set' => array('id', 'name')
 		);
 	}
