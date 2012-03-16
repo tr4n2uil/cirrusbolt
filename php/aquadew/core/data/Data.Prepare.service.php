@@ -31,6 +31,7 @@ class DataPrepareService implements Service {
 		if(isset($result['message']['keyid'])) unset($result['message']['keyid']);
 		if(isset($result['message']['user'])) unset($result['message']['user']);
 		if(isset($result['message']['pages'])) unset($result['message']['pages']);
+		if(isset($result['message']['emergency'])) unset($result['message']['emergency']);
 		
 		$result['valid'] = $result['message']['valid'];
 		$result['msg'] = $result['message']['msg'];

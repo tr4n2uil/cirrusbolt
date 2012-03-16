@@ -16,6 +16,8 @@ require_once(SBSERVICE);
  *
  *	@param conn array DataService instance configuration key [memory]
  *
+ *	@return sqlrc integer Row count [memory]
+ *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
 **/
@@ -49,7 +51,7 @@ class RelationUpdateWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array();
+		return array('sqlrc');
 	}
 	
 }

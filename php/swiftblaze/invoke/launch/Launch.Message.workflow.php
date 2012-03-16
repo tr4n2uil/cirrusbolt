@@ -42,7 +42,8 @@ class LaunchMessageWorkflow implements Service {
 				'pages' => array(), 
 				'user' => false, 
 				'context' => false, 
-				'raw' => false
+				'raw' => false,
+				'emergency' => false
 			)
 		);
 	}
@@ -61,8 +62,8 @@ class LaunchMessageWorkflow implements Service {
 		),
 		array(
 			'service' => 'invoke.launch.check.service',
-			'args' => array('valid', 'msg', 'status', 'details', 'pages'),
-			'params' => array('pages'),
+			'args' => array('valid', 'msg', 'status', 'details', 'pages', 'emergency'),
+			'params' => array('pages', 'emergency'),
 			'input' => array('message' => 'result'),
 			'strict' => false
 		),

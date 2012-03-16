@@ -24,6 +24,8 @@ require_once(SBSERVICE);
  *	@param verb string Activity verb [memory] optional default 'added'
  *	@param join string Activity join [memory] optional default 'to'
  *	@param public integer Public log [memory] optional default 0
+ *	@param human boolean Check human [memory] optional default true
+ *	@param authorize string Auth control [memory] optional default 'add:remove:edit:list:con:per:rel:sub:act:eme:pbinfo'
  *
  *	@return pnid long int Person ID [memory]
  *	@return owner long int Key ID [memory]
@@ -38,7 +40,7 @@ class PersonAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('name', 'username', 'password','recaptcha_challenge_field', 'recaptcha_response_field', 'country'),
+			'required' => array('name', 'username', 'password', 'recaptcha_challenge_field', 'recaptcha_response_field', 'country'),
 			'optional' => array(
 				'keyid' => -1, 
 				'user' => '',
@@ -51,7 +53,9 @@ class PersonAddWorkflow implements Service {
 				'pname' => '',
 				'verb' => 'added',
 				'join' => 'to',
-				'public' => 0
+				'public' => 0,
+				'human' => true,
+				'authorize' => 'add:remove:edit:list:con:per:rel:sub:act:eme:pbinfo'
 			)
 		);
 	}
@@ -78,9 +82,6 @@ class PersonAddWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'invoke.human.recaptcha.service'
-		),
-		array(
 			'service' => 'people.person.available.workflow'
 		),
 		array(
@@ -88,8 +89,7 @@ class PersonAddWorkflow implements Service {
 			'input' => array('keyvalue' => 'password', 'parent' => 'peopleid', 'newuser' => 'username'),
 			'output' => array('id' => 'pnid'),
 			'root' => '/'.$memory['username'],
-			'type' => 'person',
-			'authorize' => 'add:remove:edit:list:con:per:rel:sub:act:eme:pbinfo'
+			'type' => 'person'
 		),
 		array(
 			'service' => 'storage.file.add.workflow',
@@ -114,6 +114,12 @@ class PersonAddWorkflow implements Service {
 			'sqlcnd' => "(`pnid`, `name`, `username`, `owner`, `thumbnail`, `email`, `phone`, `location`, `role`, `device`) values (\${pnid}, '\${name}', '\${username}', \${owner}, \${thumbnail}, '\${email}', '\${phone}', \${location}, \${role}, '\${device}')",
 			'escparam' => array('name', 'username',  'email', 'phone', 'device')
 		));
+		
+		if($memory['human']){
+			array_unshift($workflow, array(
+				'service' => 'invoke.human.recaptcha.service'
+			));
+		}
 		
 		return Snowblozm::execute($workflow, $memory);
 	}
