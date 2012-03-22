@@ -75,7 +75,7 @@ class PersonProfileService implements Service {
 			'output' => array('entity' => 'personal'),
 			'strict' => false
 		));
-		
+		//Snowblozm::$debug = true;
 		$memory = Snowblozm::execute($workflow, $memory);
 
 		$memory['valid'] = true;

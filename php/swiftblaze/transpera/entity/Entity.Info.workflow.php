@@ -127,7 +127,7 @@ class EntityInfoWorkflow implements Service {
 		else {
 		
 			$memory['msg'] = $memory['successmsg'];
-			$memory['admin'] = $memory['chadm'] ? 0 : 1;
+			$memory['admin'] = $memory['chadm'] ? 0 : !$memory['auth'];
 			$memory['chain'] = array();
 			
 			$workflow = array();

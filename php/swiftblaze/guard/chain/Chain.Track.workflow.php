@@ -40,7 +40,11 @@ class ChainTrackWorkflow implements Service {
 	**/
 	public function run($memory){
 		$memory['msg'] = 'Chain Activity Tracked Successfully';
+		
 		$memory['ipaddr'] = $_SERVER['REMOTE_ADDR'];
+		if(isset($_SERVER["HTTP_X_FORWARDED_FOR"]))
+			$memory['ipaddr'] .= " / ".$_SERVER["HTTP_X_FORWARDED_FOR"];
+		
 		$memory['server'] = json_encode(array(
 			'query' => isset($_SERVER['QUERY_STRING']) ? $_SERVER['QUERY_STRING'] : '',
 			'agent' => isset($_SERVER['HTTP_USER_AGENT']) ? $_SERVER['HTTP_USER_AGENT'] : '',
