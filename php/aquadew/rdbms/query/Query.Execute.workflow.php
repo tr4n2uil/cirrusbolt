@@ -50,7 +50,7 @@ class QueryExecuteWorkflow implements Service {
 			case 'mysql' :
 			default :
 				require_once(CBMYSQL);
-				$dataservice = new Mysql($conn['database'], $conn['user'], $conn['pass'], $conn['host']);
+				$dataservice = new Mysql($conn['database'], $conn['user'], $conn['pass'], $conn['host'], isset($conn['persist']) ? $conn['persist'] : false);
 				break;
 		}
 		$memory['conn'] = $dataservice;

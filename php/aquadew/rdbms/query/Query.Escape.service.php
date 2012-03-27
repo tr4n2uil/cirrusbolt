@@ -38,7 +38,13 @@ class QueryEscapeService implements Service {
 		$this->output = $params = $memory['args'];
 		
 		foreach($params as $key){
-			$memory[$key] = $conn->escape($memory[$key]);
+			if(is_array($memory[$key])){
+				foreach($memory[$key] as $val){
+					$val = $conn->escape($val);
+				}
+			}
+			else
+				$memory[$key] = $conn->escape($memory[$key]);
 		}
 
 		$memory['valid'] = true;

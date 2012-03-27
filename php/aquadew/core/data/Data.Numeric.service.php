@@ -30,7 +30,18 @@ class DataNumericService implements Service {
 		$errormsg = $memory['errormsg'];
 		
 		foreach($args as $key){
-			if(!is_numeric($memory[$key])){
+			if(is_array($memory[$key])){
+				foreach($memory[$key] as $val){
+					if(!is_numeric($val)){
+						$memory['valid'] = false;
+						$memory['msg'] = $errormsg;
+						$memory['status'] = 505;
+						$memory['details'] = 'Value not numeric : '.$key.' = '.$val.' @data.numeric.service';
+						return $memory;
+					}
+				}
+			}
+			elseif(!is_numeric($memory[$key])){
 				$memory['valid'] = false;
 				$memory['msg'] = $errormsg;
 				$memory['status'] = 505;

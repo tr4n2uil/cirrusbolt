@@ -15,12 +15,13 @@ class Mysql implements DataService {
 	/** 
 	 *	@var $conn Connection resource
 	**/
-	protected $conn;
+	protected $conn, $persist;
 	
 	/** 
 	 *	@constructor 
 	**/
-	public function __construct($database, $user, $pass, $host){
+	public function __construct($database, $user, $pass, $host, $persist){
+		$this->persist = $persist;
 		$this->open($database, $user, $pass, $host);
 	}
 
@@ -28,7 +29,11 @@ class Mysql implements DataService {
 	 *	@interface DataService
 	**/
 	public function open($database, $user, $pass, $host){
-		$this->conn = @mysql_connect($host, $user, $pass);
+		if($this->persist)
+			$this->conn = @mysql_pconnect($host, $user, $pass);
+		else
+			$this->conn = @mysql_connect($host, $user, $pass);
+			
 		if( $this->conn==false ) {
 			$err = mysql_errno();
 			if( $err==1203 ) {
