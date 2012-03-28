@@ -40,11 +40,11 @@ class DirectoryArchiveWorkflow implements Service {
 			'service' => 'storage.directory.info.workflow'
 		),
 		array(
-			'service' => 'cbcore.file.archive.service',
+			'service' => 'storage.file.archive.service',
 			'input' => array('directory' => 'path')
 		),
 		array(
-			'service' => 'cbcore.file.download.service',
+			'service' => 'storage.file.download.service',
 			'input' => array('filepath' => 'path'),
 			'filename' => 'archive.zip',
 			'mime' => 'application/zip'

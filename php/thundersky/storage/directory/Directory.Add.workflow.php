@@ -45,7 +45,7 @@ class DirectoryAddWorkflow implements Service {
 			'output' => array('id' => 'dirid')
 		),
 		array(
-			'service' => 'cbcore.file.mkdir.service',
+			'service' => 'storage.file.mkdir.service',
 			'input' => array('directory' => 'path')
 		),
 		array(

@@ -7,7 +7,6 @@ require_once(SBSERVICE);
  *
  *	@param name string Person name [memory]
  *	@param username string Person username [memory]
- *	@param password string Password [memory] 
  *	@param recaptcha_challenge_field string Challenge [memory]
  *	@param recaptcha_response_field string Response [memory] 
  *	@param country string Country [memory]
@@ -29,6 +28,7 @@ require_once(SBSERVICE);
  *
  *	@return pnid long int Person ID [memory]
  *	@return owner long int Key ID [memory]
+ *	@return password string Password [memory] 
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -40,7 +40,7 @@ class PersonAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('name', 'username', 'password', 'recaptcha_challenge_field', 'recaptcha_response_field', 'country'),
+			'required' => array('name', 'username', 'recaptcha_challenge_field', 'recaptcha_response_field', 'country'),
 			'optional' => array(
 				'keyid' => -1, 
 				'user' => '',
@@ -83,6 +83,11 @@ class PersonAddWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'people.person.available.workflow'
+		),
+		array(
+			'service' => 'cbcore.random.string.service',
+			'length' => 15,
+			'output' => array('random' => 'password')
 		),
 		array(
 			'service' => 'transpera.reference.create.workflow',
@@ -128,7 +133,7 @@ class PersonAddWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('pnid', 'owner');
+		return array('pnid', 'owner', 'password');
 	}
 	
 }

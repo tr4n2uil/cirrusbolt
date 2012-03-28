@@ -19,7 +19,7 @@ class DirectoryRemoveWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'dirid'),
+			'required' => array('keyid', 'user', 'dirid'),
 			'optional' => array('stgid' => 0)
 		);
 	}
@@ -36,7 +36,8 @@ class DirectoryRemoveWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.reference.remove.workflow',
-			'input' => array('parent' => 'stgid', 'id' => 'dirid')
+			'input' => array('parent' => 'stgid', 'id' => 'dirid'),
+			'type' => 'directory'
 		),
 		array(
 			'service' => 'transpera.relation.delete.workflow',
@@ -47,13 +48,13 @@ class DirectoryRemoveWorkflow implements Service {
 			'errormsg' => 'Invalid Directory ID'
 		),
 		array(
-			'service' => 'cbcore.file.unlink.service',
-			'input' => array('filepath' => 'sppath'),
+			'service' => 'storage.file.unlink.service',
+			'input' => array('filepath' => 'path'),
 			'filename' => 'archive.zip'
 		),
 		array(
-			'service' => 'cbcore.file.rmdir.service',
-			'input' => array('directory' => 'sppath')
+			'service' => 'storage.file.rmdir.service',
+			'input' => array('directory' => 'path')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

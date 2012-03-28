@@ -27,7 +27,7 @@ class FileMkdirService implements Service {
 	public function run($memory){
 		$directory = $memory['directory'];
 		
-		if (!@mkdir($directory)){
+		if (!file_exists($directory) && !@mkdir($directory)){
 			$memory['valid'] = false;
 			$memory['msg'] = "Unable to Make Directory";
 			$memory['status'] = 505;
