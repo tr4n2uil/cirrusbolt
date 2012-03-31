@@ -56,7 +56,7 @@ class UpdateListWorkflow implements Service {
 			'sqlprj' => '`updtid`, `title`, `content`',
 			'sqlcnd' => "where `updtid` in \${list} order by `updtid` desc",
 			'successmsg' => 'Updates information given successfully',
-			'lsttrack' => true,
+			//'lsttrack' => true,
 			'output' => array('entities' => 'updates'),
 			'mapkey' => 'updtid',
 			'mapname' => 'update',

@@ -7,6 +7,7 @@ require_once(CBQUEUECONF);
  *	@desc Sends verification key for person by ID
  *
  *	@param username string Username [memory]
+ *	@param password string Password [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -18,7 +19,8 @@ class PersonSendWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('username')
+			'required' => array('username'),
+			'optional' => array('password' => 'to be reset to use your account')
 		);
 	}
 	
@@ -75,7 +77,7 @@ class PersonSendWorkflow implements Service {
 				$workflow = array(
 				array(
 					'service' => 'cbcore.data.substitute.service',
-					'args' => array('username', 'verify', 'email'),
+					'args' => array('username', 'verify', 'email', 'password'),
 					'data' => PERSON_SEND_MAIL_BODY,
 					'output' => array('result' => 'body')
 				),
@@ -94,7 +96,7 @@ class PersonSendWorkflow implements Service {
 				$workflow = array(
 				array(
 					'service' => 'cbcore.data.substitute.service',
-					'args' => array('username', 'verify', 'phone'),
+					'args' => array('username', 'verify', 'phone', 'password'),
 					'data' => PERSON_SEND_SMS_BODY,
 					'output' => array('result' => 'body')
 				),
