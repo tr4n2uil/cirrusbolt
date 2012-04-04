@@ -227,7 +227,8 @@ class EntityListWorkflow implements Service {
 						'init' => 'sinit',
 						'self' => 'sself',
 						'authinh' => 'sauthinh',
-						'autherror' => 'sautherror'
+						'autherror' => 'sautherror',
+						'authcustom' => 'sauthcustom'
 					),
 					'admin' => true,
 				));
@@ -278,7 +279,8 @@ class EntityListWorkflow implements Service {
 						'init' => 'pinit',
 						'self' => 'pself',
 						'authinh' => 'pauthinh',
-						'autherror' => 'pautherror'
+						'autherror' => 'pautherror',
+						'authcustom' => 'pauthcustom'
 					),
 					'admin' => true,
 					'output' => array('admin' => 'padmin')
