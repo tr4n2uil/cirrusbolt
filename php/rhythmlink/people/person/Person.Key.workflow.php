@@ -30,7 +30,7 @@ class PersonKeyWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = 'Person Key changed successfully';
+		$memory['msg'] = 'Password changed successfully';
 		
 		$workflow = array(
 		array(

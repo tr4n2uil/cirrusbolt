@@ -6,7 +6,7 @@ require_once(SBSERVICE);
  *	@desc Removes person by ID
  *
  *	@param pnid long int Person ID [memory]
- *	@param peopleid long int People ID [memory] optional default 5
+ *	@param peopleid long int People ID [memory] optional default PEOPLE_ID
  *	@param keyid long int Usage Key ID [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -19,8 +19,8 @@ class PersonRemoveWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'pnid'),
-			'optional' => array('peopleid' => 5)
+			'required' => array('keyid', 'user', 'pnid'),
+			'optional' => array('peopleid' => PEOPLE_ID)
 		);
 	}
 	
@@ -35,19 +35,24 @@ class PersonRemoveWorkflow implements Service {
 			'service' => 'people.person.info.workflow'
 		),
 		array(
-			'service' => 'transpera.entity.remove.workflow',
-			'input' => array('id' => 'pnid', 'parent' => 'peopleid'),
+			'service' => 'transpera.reference.delete.workflow',
+			'input' => array('parent' => 'peopleid', 'id' => 'pnid'),
+			'type' => 'person'
+		),
+		array(
+			'service' => 'transpera.relation.delete.workflow',
+			'args' => array('pnid'),
 			'conn' => 'cbpconn',
 			'relation' => '`persons`',
-			'sqlcnd' => "where `pnid`=\${id}",
+			'type' => 'person',
+			'sqlcnd' => "where `pnid`=\${pnid}",
 			'errormsg' => 'Invalid Person ID',
-			'successmsg' => 'Person removed successfully'
-			'destruct' => array(
-			array(
-				'service' => 'storage.file.remove.workflow',
-				'input' => array('fileid' => 'thumbnail'),
-				'dirid' => PERSON_THUMB
-			))
+			'successmsg' => 'Person removed successfully',
+		),
+		array(
+			'service' => 'storage.file.remove.workflow',
+			'input' => array('fileid' => 'thumbnail'),
+			'dirid' => PERSON_THUMB
 		));
 		
 		return Snowblozm::execute($workflow, $memory);

@@ -40,13 +40,14 @@ class PersonAddWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('name', 'username', 'recaptcha_challenge_field', 'recaptcha_response_field', 'country'),
+			'required' => array('name', 'username', 'recaptcha_challenge_field', 'recaptcha_response_field'),
 			'optional' => array(
 				'keyid' => -1, 
 				'user' => '',
+				'country' => 'India',
 				'email' => false, 
 				'phone' => false, 
-				'peopleid' => 5, 
+				'peopleid' => PEOPLE_ID, 
 				'level' => 1, 
 				'location' => 0, 
 				'device' => 'mail', 
@@ -120,7 +121,7 @@ class PersonAddWorkflow implements Service {
 			'escparam' => array('name', 'username',  'email', 'phone', 'device')
 		));
 		
-		if($memory['human']){
+		if($memory['human'] !== false){
 			array_unshift($workflow, array(
 				'service' => 'invoke.human.recaptcha.service'
 			));

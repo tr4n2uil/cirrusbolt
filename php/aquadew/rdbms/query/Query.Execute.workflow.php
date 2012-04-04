@@ -60,7 +60,8 @@ class QueryExecuteWorkflow implements Service {
 		if(count($numparam) != 0){
 			array_push($workflow, array(
 				'service' => 'cbcore.data.numeric.service',
-				'args' => $numparam
+				'args' => $numparam,
+				'errormsg' => $memory['errormsg'].' - Value Not Numeric'
 			));
 		}
 		

@@ -19,7 +19,7 @@ class CommentRemoveWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'cmtid'),
+			'required' => array('keyid', 'user', 'cmtid'),
 			'optional' => array('postid' => 0)
 		);
 	}

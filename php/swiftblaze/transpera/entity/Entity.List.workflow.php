@@ -35,6 +35,7 @@ require_once(SBSERVICE);
  *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
+ *	@param authcustom array Custom Check Workflow [memory] optional default false 
  *
  *	@param relation string Relation name [memory]
  *	@param sqlcnd string SQL condition [memory]
@@ -123,6 +124,7 @@ class EntityListWorkflow implements Service {
 				'aistate' => true,
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
+				'authcustom' => false,
 				'sacstate' => true,
 				'saction' => 'edit', 
 				'sastate' => true, 

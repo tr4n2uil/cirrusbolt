@@ -19,7 +19,7 @@ class FileRemoveWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'fileid'),
+			'required' => array('keyid', 'user', 'fileid'),
 			'optional' => array('dirid' => 0)
 		);
 	}
@@ -40,7 +40,8 @@ class FileRemoveWorkflow implements Service {
 		),
 		array(
 			'service' => 'transpera.reference.remove.workflow',
-			'input' => array('parent' => 'dirid', 'id' => 'fileid')
+			'input' => array('parent' => 'dirid', 'id' => 'fileid'),
+			'type' => 'file'
 		),
 		array(
 			'service' => 'transpera.relation.delete.workflow',

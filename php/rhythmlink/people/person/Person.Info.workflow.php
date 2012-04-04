@@ -8,7 +8,7 @@ require_once(SBSERVICE);
  *	@param pnid/id string Person ID [memory] optional default false
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string User name [memory]
- *	@param peopleid long int People ID [memory] optional default 5
+ *	@param peopleid long int People ID [memory] optional default PEOPLE_ID
  *
  *	@return person array Person information [memory]
  *	@return contact array Person contact information [memory]
@@ -34,7 +34,7 @@ class PersonInfoWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user'),
-			'optional' => array('pnid' => false, 'peopleid' => 5, 'id' => 0),
+			'optional' => array('pnid' => false, 'peopleid' => PEOPLE_ID, 'id' => 0),
 			'set' => array('id', 'name')
 		);
 	}
@@ -63,11 +63,11 @@ class PersonInfoWorkflow implements Service {
 			'successmsg' => 'Person information given successfully',
 			'output' => array('entity' => 'person')
 		),
-		/*array(
+		array(
 			'service' => 'cbcore.data.select.service',
 			'args' => array('person'),
-			'params' => array('person.name' => 'name', 'person.title' => 'title', 'person.thumbnail' => 'thumbnail', 'person.username' => 'username')
-		),*/
+			'params' => array(/*'person.name' => 'name', 'person.title' => 'title', 'person.username' => 'username',*/ 'person.thumbnail' => 'thumbnail')
+		),
 		array(
 			'service' => 'people.person.profile.service'
 		));
@@ -79,7 +79,7 @@ class PersonInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('person', 'contact', 'personal', 'pnid', /*'name', 'title', 'thumbnail', 'username',*/ 'dirid', 'peopleid', 'admin', 'chain');
+		return array('person', 'contact', 'personal', 'pnid', /*'name', 'title', 'username',*/ 'thumbnail', 'dirid', 'peopleid', 'admin', 'chain');
 	}
 	
 }

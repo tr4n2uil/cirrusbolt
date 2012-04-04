@@ -7,6 +7,7 @@ require_once(CBQUEUECONF);
  *	@desc Sends verification key for person by ID
  *
  *	@param username string Username [memory]
+ *	@param pnid long int Person ID [^memory] optional default false
  *	@param password string Password [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
@@ -29,6 +30,17 @@ class PersonSendWorkflow implements Service {
 	**/
 	public function run($memory){
 		$memory['msg'] = 'Verification Sent Successfully';
+		
+		if($memory['password'] === false){
+			$memory['password'] = 'not shown';
+			$qry = "`pnid`=\${username}";
+			$esc = array();
+		}
+		else {
+			$qry = "`username`='\${username}' ";
+			$esc = array('username');
+		}
+		
 		//Snowblozm::$debug = true;
 		$workflow = array(
 		array(
@@ -36,18 +48,18 @@ class PersonSendWorkflow implements Service {
 			'args' => array('username'),
 			'conn' => 'cbpconn',
 			'relation' => '`persons`',
-			'sqlcnd' => "where `username`='\${username}' and `device`<>''",
-			'escparam' => array('username'),
+			'sqlcnd' => "where $qry and `device`<>''",
+			'escparam' => $esc,
 			'errormsg' => 'Invalid Username / Nothing to Verify'
 		),
 		array(
 			'service' => 'cbcore.data.select.service',
 			'args' => array('result'),
-			'params' => array('result.0.pnid' => 'pnid', 'result.0.owner' => 'keyid', 'result.0.device' => 'device', 'result.0.email' => 'email', 'result.0.phone' => 'phone')
+			'params' => array('result.0.pnid' => 'pnid', 'result.0.username' => 'username', 'result.0.owner' => 'keyid', 'result.0.device' => 'device', 'result.0.email' => 'email', 'result.0.phone' => 'phone')
 		),
 		array(
 			'service' => 'cbcore.random.string.service',
-			'length' => 8,
+			'length' => 15,
 			'output' => array('random' => 'verify')
 		),
 		array(

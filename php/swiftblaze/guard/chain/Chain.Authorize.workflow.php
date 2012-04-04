@@ -18,6 +18,7 @@ require_once(SBSERVICE);
  *	@param admin boolean Is return admin flag [memory] optional default false
  *	@param inherit integer Check inherit [memory] optional default 1
  *	@param errormsg string Error msg [memory] optional default 'Unable to Authorize'
+ *	@param custom array Custom Check Workflow [memory] optional default false 
  *
  *	@return admin boolean Is admin [memory]
  *	@return level integer Web level [memory]
@@ -47,7 +48,8 @@ class ChainAuthorizeWorkflow implements Service {
 				'init' => true,
 				'self' => false,
 				'inherit' => 1,
-				'errormsg' => 'Unable to Authorize'
+				'errormsg' => 'Unable to Authorize',
+				'custom' => false
 			)
 		);
 	}
@@ -111,6 +113,16 @@ class ChainAuthorizeWorkflow implements Service {
 			$memory['status'] = 407;
 			$memory['details'] = 'Value -1 found for keyid @chain.authorize';
 			return $memory;
+		}
+		
+		/**
+		 *	@custom checks
+		**/
+		if($memory['custom']){
+			$memory = Snowblozm::execute($memory['custom'], $memory);
+			if($memory['valid'])
+				return $memory;
+			$memory['valid'] = true;
 		}
 		
 		/**

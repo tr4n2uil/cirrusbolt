@@ -7,7 +7,7 @@ require_once(SBSERVICE);
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param string user User name [memory]
- *	@param peopleid long int People ID [memory] optional default 5
+ *	@param peopleid long int People ID [memory] optional default PEOPLE_ID
  *	@param plname string People name [memory] optional default ''
  *	@param pgsz long int Paging Size [memory] optional default false
  *	@param pgno long int Paging Index [memory] optional default 1
@@ -30,7 +30,7 @@ class PersonListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user'),
-			'optional' => array('peopleid' => 5, 'plname' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false),
+			'optional' => array('peopleid' => PEOPLE_ID, 'plname' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false),
 			'set' => array('id', 'name')
 		);
 	}

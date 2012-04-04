@@ -8,7 +8,7 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key ID [memory]
  *	@param user string Person User [memory]
  *	@param name string Person Name [memory] optional default user
- *	@param peopleid long int People ID [memory] optional default 5
+ *	@param peopleid long int People ID [memory] optional default PEOPLE_ID
  *
  *	@return person array Person information [memory]
  *	@return contact array Person contact information [memory]
@@ -34,7 +34,7 @@ class PersonFindWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('user', 'keyid'),
-			'optional' => array('peopleid' => 5, 'name' => false),
+			'optional' => array('peopleid' => PEOPLE_ID, 'name' => false),
 			'set' => array('name')
 		);
 	}
@@ -55,7 +55,7 @@ class PersonFindWorkflow implements Service {
 			'idkey' => 'pnid',
 			'conn' => 'cbpconn',
 			'relation' => '`persons`',
-			'sqlprj' => '`pnid`, `username`, `name`, `thumbnail`, `title`, `role`',
+			'sqlprj' => '`pnid`, `username`, `name`, `thumbnail`, `title`, `country`',
 			'sqlcnd' => "where `username`='\${name}'",
 			'escparam' => array('name'),
 			'errormsg' => 'Invalid Username',
@@ -71,14 +71,18 @@ class PersonFindWorkflow implements Service {
 			'service' => 'people.person.profile.service'
 		));
 		
-		return Snowblozm::execute($workflow, $memory);
+		$memory = Snowblozm::execute($workflow, $memory);
+		if(!$memory['valid']) return $memory;
+		
+		$memory['id'] = $memory['pnid'];
+		return $memory;
 	}
 	
 	/**
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('person', 'contact', 'personal', 'pnid', /*'name', 'title', 'thumbnail', 'username',*/ 'dirid', 'peopleid', 'admin', 'chain');
+		return array('person', 'contact', 'personal', 'pnid', 'id', /*'name', 'title', 'thumbnail', 'username',*/ 'dirid', 'peopleid', 'admin', 'chain');
 	}
 	
 }

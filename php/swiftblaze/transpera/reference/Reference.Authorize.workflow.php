@@ -22,6 +22,7 @@ require_once(SBSERVICE);
  *	@param admin boolean Is return admin flag [memory] optional default false
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
+ *	@param authcustom array Custom Check Workflow [memory] optional default false 
  *
  *	@return masterkey long int Master key ID [memory]
  *	@return admin boolean Is admin [memory]
@@ -51,6 +52,7 @@ class ReferenceAuthorizeWorkflow implements Service {
 				'self' => false,
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
+				'authcustom' => false,
 				'cache' => true,
 				'expiry' => 150
 			)
@@ -100,7 +102,8 @@ class ReferenceAuthorizeWorkflow implements Service {
 					'srucache' => 'srucache',
 					'sruexpiry' => 'asruexpiry',
 					'inherit' => 'authinh',
-					'errormsg' => 'autherror'
+					'errormsg' => 'autherror',
+					'custom' => 'authcustom'
 				)
 			);
 		

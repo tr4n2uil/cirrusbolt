@@ -91,6 +91,11 @@ class PersonUpdateWorkflow implements Service {
 				'output' => array('id' => 'trackid')
 			),
 			array(
+				'service' => 'people.person.send.workflow',
+				'input' => array('username' => 'pnid'),
+				'password' => false
+			),
+			array(
 				'service' => 'invoke.interface.session.workflow'
 			));
 		}

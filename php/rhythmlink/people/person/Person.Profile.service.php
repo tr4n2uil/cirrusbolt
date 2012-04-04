@@ -6,7 +6,7 @@ require_once(SBSERVICE);
  *	@desc Returns person profile information by ID
  *
  *	@param pnid long int Person ID [memory]
- *	@param peopleid long int People ID [memory] optional default 5
+ *	@param peopleid long int People ID [memory] optional default PEOPLE_ID
  *	@param keyid long int Usage Key ID [memory]
  *
  *	@return contact array Person contact information [memory]
@@ -25,7 +25,7 @@ class PersonProfileService implements Service {
 	public function input(){
 		return array(
 			'required' => array('pnid', 'keyid'),
-			'optional' => array('peopleid' => 5)
+			'optional' => array('peopleid' => PEOPLE_ID)
 		);
 	}
 	
