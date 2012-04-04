@@ -29,6 +29,7 @@ require_once(SBSERVICE);
  *	@param init boolean init flag [memory] optional default true
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
+ *	@param authcustom array Custom Check Workflow [memory] optional default false 
  *
  *	@param sacstate string State to authorize chain [memory] optional default true (false= All)
  *	@param saction string Action to authorize [memory] optional default 'edit'
@@ -87,6 +88,7 @@ class EntityInfoWorkflow implements Service {
 				'self' => false,
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
+				'authcustom' => false,
 				'sacstate' => true,
 				'saction' => 'edit', 
 				'sastate' => true, 
@@ -176,7 +178,8 @@ class EntityInfoWorkflow implements Service {
 						'init' => 'sinit',
 						'self' => 'sself',
 						'authinh' => 'sauthinh',
-						'autherror' => 'sautherror'
+						'autherror' => 'sautherror',
+						'authcustom' => 'sauthcustom'
 					),
 					'admin' => true
 				));
