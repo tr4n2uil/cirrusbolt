@@ -12,6 +12,7 @@ require_once(SBSERVICE);
  *
  *	@return filename string Filename received [memory]
  *	@return size long int File size in bytes [memory]
+ *	@return mime string File MIME [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *	
@@ -90,6 +91,14 @@ class FileUploadService implements Service {
 			return $memory;
 		}
 		
+		//$finfo = finfo_open(FILEINFO_MIME_TYPE); 
+		//$memory['mime'] = finfo_file($finfo, $file['tmp_name']);
+		//finfo_close($finfo);
+		
+		//$memory['mime'] = mime_content_type($file['tmp_name']);
+
+		$memory['mime'] = $file['type'];
+		
 		$memory['valid'] = true;
 		$memory['msg'] = 'File Uploaded Successfully';
 		$memory['status'] = 200;
@@ -101,7 +110,7 @@ class FileUploadService implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('filename', 'size');
+		return array('filename', 'size', 'mime');
 	}
 	
 }

@@ -56,6 +56,7 @@ class WebParentsWorkflow implements Service {
 			'relation' => '`webs`',
 			'sqlcnd' => "where `type`='\${type}' and `child`=\${child} $last",
 			'escparam' => $escparam,
+			'check' => false,
 			'output' => array('result' => 'parents'),
 			'mapkey' => 'parent',
 			'mapname' => 'web'

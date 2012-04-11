@@ -27,8 +27,21 @@ class SmsQuickWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'to', 'body'),
-			'optional' => array('queid' => 0, 'owner' => false, 'from' => '')
+			'required' => array('keyid', 'user', 'body'),
+			'optional' => array(
+				'queid' => 0, 
+				'to' => false, 
+				'to_args' => array(),
+				'to_relation' => '`persons`', 
+				'to_conn' => 'cbpconn', 
+				'to_sqlcnd' => false,
+				'to_sqlprj' => '`phone`',
+				'to_errormsg' => 'Error Selecting Data',
+				'to_escparam' => array(),
+				'to_key' => 'phone',
+				'owner' => false, 
+				'from' => ''
+			)
 		);
 	}
 	
@@ -36,6 +49,21 @@ class SmsQuickWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
+		if($memory['to_sqlcnd']){
+			array_push($workflow, array(
+				'service' => 'transpera.relation.select.workflow',				
+				'args' => $memory['to_args']),
+				'input' => array('errormsg' => 'to_errormsg', 'relation' => 'to_relation', 'conn' => 'to_conn', 'escparam' => 'to_escparam', 'sqlprj' => 'to_sqlprj', 'sqlcnd' => 'to_sqlcnd', ''),
+				'ismap' => false
+			),
+			array(
+				'service' => 'cbcore.data.list.service',
+				'args' => array('result'),
+				'input' => array('attr' => 'to_key'),
+				'output' => array('list' => 'to')
+			));
+		}
+		
 		$workflow = array(
 		array(
 			'service' => 'queue.sms.add.workflow'

@@ -202,8 +202,7 @@ class EntityListWorkflow implements Service {
 				'service' => 'cbcore.data.list.service',
 				'args' => array($memory['selection']),
 				'attr' => 'child',
-				'mapname' => 'web',
-				'default' => array(-1)
+				'mapname' => 'web'
 			),
 			array(
 				'service' => 'transpera.relation.select.workflow',

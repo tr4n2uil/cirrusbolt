@@ -30,7 +30,7 @@ class FileInfoWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('fileid'),
-			'optional' => array('keyid' => false, 'dirname' => '', 'dirid' => 0)
+			'optional' => array('keyid' => false)
 		);
 	}
 	
@@ -43,7 +43,7 @@ class FileInfoWorkflow implements Service {
 		$workflow = array(
 		array(
 			'service' => 'transpera.entity.info.workflow',
-			'input' => array('id' => 'fileid', 'parent' => 'dirid'),
+			'input' => array('id' => 'fileid'),
 			'conn' => 'cbsconn',
 			'relation' => '`files`',
 			'sqlcnd' => "where `fileid`=\${id}",
@@ -52,8 +52,8 @@ class FileInfoWorkflow implements Service {
 		),
 		array(
 			'service' => 'cbcore.data.select.service',
-			'args' => array('file'),
-			'params' => array('file.filename' => 'filename', 'file.mime' => 'mime', 'file.size' => 'size', 'file.name' => 'name', 'file.owner' => 'owner')
+			'args' => array('file', 'chain'),
+			'params' => array('file.filename' => 'filename', 'file.mime' => 'mime', 'file.size' => 'size', 'file.name' => 'name', 'file.owner' => 'owner', 'chain.parent' => 'parent')
 		));
 		
 		return Snowblozm::execute($workflow, $memory);
@@ -63,7 +63,7 @@ class FileInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('fileid', 'dirid', 'dirname', 'file', 'owner', 'name', 'filename', 'mime', 'size');
+		return array('fileid', 'file', 'owner', 'name', 'filename', 'mime', 'size', 'chain', 'parent');
 	}
 	
 }

@@ -25,7 +25,7 @@ class FileWriteWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'fileid'),
-			'optional' => array('dirid' => 0, 'maxsize' => false, 'mime' => 'application/force-download', 'filekey' => 'storage')
+			'optional' => array('dirid' => 0, 'dirname' => '', 'maxsize' => false, 'mime' => 'application/force-download', 'filekey' => 'storage')
 		);
 	}
 	
@@ -57,22 +57,49 @@ class FileWriteWorkflow implements Service {
 			'args' => array('fileid', 'filename', 'mime', 'size'),
 			'conn' => 'cbsconn',
 			'relation' => '`files`',
+			'check' => false,
 			'sqlcnd' => "set `name`='\${filename}', `mime`='\${mime}', `size`=\${size} where `fileid`=\${fileid}",
 			'escparam' => array('mime', 'filename')
 		),
 		array(
 			'service' => 'gauge.track.write.workflow',
 			'input' => array('id' => 'fileid')
+		),
+		array(
+			'service' => 'transpera.entity.info.workflow',
+			'input' => array('id' => 'fileid', 'parent' => 'dirid', 'cname' => 'name', 'pname' => 'dirname'),
+			'conn' => 'cbsconn',
+			'relation' => '`files`',
+			'sqlprj' => '`fileid`, `name`, `mime`, `size`',
+			'sqlcnd' => "where `fileid`=\${id}",
+			'errormsg' => 'Invalid File ID',
+			'type' => 'file',
+			'successmsg' => 'File information given successfully',
+			'output' => array('entity' => 'file'),
+			'auth' => false,
+			'track' => false,
+			'sinit' => false
+		),
+		array(
+			'service' => 'guard.chain.info.workflow',
+			'input' => array('chainid' => 'dirid'),
+			'output' => array('chain' => 'pchain')
 		));
 		
-		return Snowblozm::execute($workflow, $memory);
+		$memory = Snowblozm::execute($workflow, $memory);
+		if(!$memory['valid'])
+			return $memory;
+		
+		$memory['padmin'] = $memory['admin'];
+		$memory['admin'] = 1;
+		return $memory;
 	}
 	
 	/**
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('filename');
+		return array('filename', 'fileid', 'dirid', 'dirname', 'file', 'chain', 'pchain', 'admin', 'padmin');
 	}
 	
 }

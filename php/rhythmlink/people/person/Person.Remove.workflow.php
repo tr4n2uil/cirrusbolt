@@ -49,11 +49,11 @@ class PersonRemoveWorkflow implements Service {
 			'errormsg' => 'Invalid Person ID',
 			'successmsg' => 'Person removed successfully',
 		),
-		array(
+		/*array(
 			'service' => 'storage.file.remove.workflow',
 			'input' => array('fileid' => 'thumbnail'),
 			'dirid' => PERSON_THUMB
-		));
+		)*/);
 		
 		return Snowblozm::execute($workflow, $memory);
 	}

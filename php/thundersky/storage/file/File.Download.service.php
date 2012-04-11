@@ -51,7 +51,11 @@ class FileDownloadService implements Service {
 			exit;
 		}
 		else {
-			$memory['valid'] = false;
+				header("HTTP/1.0 404 Not Found"); 
+				echo "<h1>Error 404 : File Not Found</h1>"; 
+				exit;
+				
+				$memory['valid'] = false;
 				$memory['msg'] = "File Not Found";
 				$memory['status'] = 504;
 				$memory['details'] = 'Error file not found : '.$file.' @file.download.service';

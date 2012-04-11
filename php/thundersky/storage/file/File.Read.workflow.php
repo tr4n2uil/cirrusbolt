@@ -19,8 +19,9 @@ class FileReadWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('fileid'),
-			'optional' => array('dirid' => 0, 'asname' => false)
+			'required' => array('fileid', 'keyid'),
+			'optional' => array('dirid' => false, 'asname' => false),
+			'set' => array('fileid', 'dirid')
 		);
 	}
 	
@@ -28,19 +29,23 @@ class FileReadWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
+		if($memory['dirid'])
+			$attr = 'dirid_old';
+		else
+			$attr = 'dirid';
+			
 		$workflow = array(
 		array(
 			'service' => 'transpera.reference.authorize.workflow',
-			'input' => array('id' => 'fileid'),
-			'action' => 'read'
+			'input' => array('id' => 'fileid')
+		),
+		array(
+			'service' => 'storage.file.info.workflow',
+			'output' => array('name' => 'asname', 'parent' => $attr)
 		),
 		array(
 			'service' => 'storage.directory.info.workflow',
 			'output' => array('path' => 'filepath')
-		),
-		array(
-			'service' => 'storage.file.info.workflow',
-			'output' => array('name' => 'asname')
 		),
 		array(
 			'service' => 'storage.file.download.service'

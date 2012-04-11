@@ -48,6 +48,7 @@ class FileRemoveWorkflow implements Service {
 			'args' => array('fileid'),
 			'conn' => 'cbsconn',
 			'relation' => '`files`',
+			'type' => 'file',
 			'sqlcnd' => "where `fileid`=\${fileid}",
 			'errormsg' => 'Invalid File ID'
 		),

@@ -60,7 +60,7 @@ class DirectoryInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('dirid', 'stgid', 'stgname', 'name', 'path');
+		return array('dirid', 'directory', 'stgid', 'stgname', 'name', 'path');
 	}
 	
 }
