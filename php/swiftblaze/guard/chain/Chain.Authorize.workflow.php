@@ -19,6 +19,7 @@ require_once(SBSERVICE);
  *	@param inherit integer Check inherit [memory] optional default 1
  *	@param errormsg string Error msg [memory] optional default 'Unable to Authorize'
  *	@param custom array Custom Check Workflow [memory] optional default false 
+ *	@param moveup boolean Moveup Flag [memory] optional default true
  *
  *	@return admin boolean Is admin [memory]
  *	@return level integer Web level [memory]
@@ -49,7 +50,8 @@ class ChainAuthorizeWorkflow implements Service {
 				'self' => false,
 				'inherit' => 1,
 				'errormsg' => 'Unable to Authorize',
-				'custom' => false
+				'custom' => false,
+				'moveup' => true
 			)
 		);
 	}
@@ -164,7 +166,7 @@ class ChainAuthorizeWorkflow implements Service {
 		$init = "(\${chainid})";
 		$chain = "(select `chainid` from `members` where `chainid` in ";
 		$chainend = " and `keyid`=\${keyid} and `control` like '%\${iaction}%' $ilast)";
-		$child = "select `parent` from `webs` where `inherit`=\${inherit} and `control` like '%\${iaction}%' $ilast and `child` in ";
+		$child = $memory['moveup'] ? "select `parent` from `webs` where `inherit`=\${inherit} and `control` like '%\${iaction}%' $ilast and `child` in " : "select `child` from `webs` where `inherit`=\${inherit} and `control` like '%\${iaction}%' $ilast and `parent` in ";
 		
 		while($level--){
 			$init = '('.$child.$init.')';

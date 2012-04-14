@@ -44,6 +44,7 @@ class MemberEditWorkflow implements Service {
 			'relation' => '`members`',
 			'sqlcnd' => "set `type`='\${type}', `control`='\${control}', `state`='\${state}', `path`='\${path}', `leaf`='\${leaf}'  where `chainid`=\${chainid} and `keyid`=(select `keyid` from `keys` where `user`='\${member}')",
 			'escparam' => array('member', 'type', 'control', 'state', 'path', 'leaf'),
+			'check' => false,
 			'errormsg' => 'Invalid Username'
 		);
 		

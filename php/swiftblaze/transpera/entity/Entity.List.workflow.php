@@ -36,6 +36,7 @@ require_once(SBSERVICE);
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
  *	@param authcustom array Custom Check Workflow [memory] optional default false 
+ *	@param authmoveup boolean Moveup Flag [memory] optional default true
  *
  *	@param relation string Relation name [memory]
  *	@param sqlcnd string SQL condition [memory]
@@ -55,6 +56,7 @@ require_once(SBSERVICE);
  *	@param sself boolean self flag [memory] optional default false
  *	@param sauthinh integer Check inherit [memory] optional default 1
  *	@param sautherror string Error msg [memory] optional default 'Unable to Authorize'
+ *	@param sauthmoveup boolean Moveup Flag [memory] optional default true
  *
  *	@param pacstate string State to authorize chain [memory] optional default true (false= All)
  *	@param paction string Action to authorize [memory] optional default 'edit'
@@ -65,6 +67,7 @@ require_once(SBSERVICE);
  *	@param pself boolean self flag [memory] optional default false
  *	@param pauthinh integer Check inherit [memory] optional default 1
  *	@param pautherror string Error msg [memory] optional default 'Unable to Authorize'
+ *	@param pauthmoveup boolean Moveup Flag [memory] optional default true
  *
  *	@param name string Child name [memory] optional default ''
  *	@param pname string Parent name [memory] optional default ''
@@ -124,6 +127,7 @@ class EntityListWorkflow implements Service {
 				'aistate' => true,
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
+				'authmoveup' => true,
 				'authcustom' => false,
 				'sacstate' => true,
 				'saction' => 'edit', 
@@ -134,6 +138,7 @@ class EntityListWorkflow implements Service {
 				'sself' => false,
 				'sauthinh' => 1,
 				'sautherror' => 'Unable to Authorize',
+				'sauthmoveup' => true,
 				'pacstate' => true, 
 				'paction' => 'edit', 
 				'pastate' => true, 
@@ -143,6 +148,7 @@ class EntityListWorkflow implements Service {
 				'pself' => false,
 				'pauthinh' => 1,
 				'pautherror' => 'Unable to Authorize',
+				'pauthmoveup' => true,
 				'sqlprj' => '*', 
 				'successmsg' => 'Entities information given successfully', 
 				'listerror' => 'Error in Database',
@@ -202,7 +208,8 @@ class EntityListWorkflow implements Service {
 				'service' => 'cbcore.data.list.service',
 				'args' => array($memory['selection']),
 				'attr' => 'child',
-				'mapname' => 'web'
+				'mapname' => 'web',
+				'default' => array(-1)
 			),
 			array(
 				'service' => 'transpera.relation.select.workflow',

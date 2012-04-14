@@ -23,6 +23,7 @@ require_once(SBSERVICE);
  *	@param aistate string State to authorize inherit [memory] optional default true (false= None)
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
+ *	@param authmoveup boolean Moveup Flag [memory] optional default true
  *
  *	@param destruct array Destruction Workflow [memory] optional default false
  *
@@ -34,6 +35,7 @@ require_once(SBSERVICE);
  *	@param sinit boolean init flag [memory] optional default true
  *	@param sauthinh integer Check inherit [memory] optional default 1
  *	@param sautherror string Error msg [memory] optional default 'Unable to Authorize'
+ *	@param sauthmoveup boolean Moveup Flag [memory] optional default true
  *
  *	@param cname string Child name [memory] optional default ''
  *	@param pname string Parent name [memory] optional default ''
@@ -65,6 +67,7 @@ class EntityRemoveWorkflow implements Service {
 				'aistate' => true,
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
+				'authmoveup' => true,
 				'sacstate' => true,
 				'saction' => 'remove', 
 				'sastate' => true, 
@@ -73,6 +76,7 @@ class EntityRemoveWorkflow implements Service {
 				'sinit' => true,
 				'sauthinh' => 1,
 				'sautherror' => 'Unable to Authorize',
+				'sauthmoveup' => true,
 				'successmsg' => 'Entity removed successfully', 
 				'errormsg' => 'Invalid Entity ID', 
 				'destruct' => false,
@@ -114,7 +118,8 @@ class EntityRemoveWorkflow implements Service {
 				'iastate' => 'siastate', 
 				'init' => 'sinit',
 				'authinh' => 'sauthinh',
-				'autherror' => 'sautherror'
+				'autherror' => 'sautherror',
+				'authmoveup' => 'sauthmoveup'
 			)
 		),
 		array(

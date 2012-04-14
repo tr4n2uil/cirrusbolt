@@ -54,8 +54,7 @@ class PermissionListWorkflow implements Service {
 		array(
 			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('id' => 'refid'),
-			'init' => false,
-			'self' => true
+			'action' => 'list'
 		),
 		array(
 			'service' => 'guard.member.all.workflow',
@@ -81,10 +80,18 @@ class PermissionListWorkflow implements Service {
 			'service' => 'guard.chain.info.workflow',
 			'input' => array('chainid' => 'refid'),
 			'output' => array('chain' => 'pchain')
+		),
+		array(
+			'service' => 'transpera.reference.authorize.workflow',
+			'input' => array('id' => 'refid'),
+			'init' => false,
+			'self' => true,
+			'admin' => true,
+			'output' => array('admin' => 'padmin')
 		));
 		
 		$memory = Snowblozm::execute($workflow, $memory);
-		$memory['admin']  = $memory['padmin'] = 1;
+		$memory['admin'] = 1;
 		
 		return $memory;
 	}

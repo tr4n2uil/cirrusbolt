@@ -14,6 +14,7 @@ require_once(SBSERVICE);
  *	@param expiry int Cache expiry [memory] optional default 150
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
+ *	@param authmoveup boolean Moveup Flag [memory] optional default true
  *
  *	@param cname string Child name [memory] optional default ''
  *	@param pname string Parent name [memory] optional default ''
@@ -32,7 +33,7 @@ class ReferenceMasterWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'id', 'keyvalue'),
-			'optional' => array('authinh' => 1, 'autherror' => 'Unable to Authorize', 'cname' => '', 'pname' => '', 'verb' => 'changed password of', 'join' => 'in', 'public' => 0, 'cache' => true, 'expiry' => 150)
+			'optional' => array('authinh' => 1, 'autherror' => 'Unable to Authorize', 'authmoveup' => true, 'cname' => '', 'pname' => '', 'verb' => 'changed password of', 'join' => 'in', 'public' => 0, 'cache' => true, 'expiry' => 150)
 		);
 	}
 	

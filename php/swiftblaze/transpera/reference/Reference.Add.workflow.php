@@ -32,6 +32,7 @@ require_once(SBSERVICE);
  *
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
+ *	@param authmoveup boolean Moveup Flag [memory] optional default true
  *
  *	@param cname string Child name [memory] optional default ''
  *	@param pname string Parent name [memory] optional default ''
@@ -73,6 +74,7 @@ class ReferenceAddWorkflow implements Service {
 				'aistate' => true,
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
+				'authmoveup' => true,
 				'cname' => '',
 				'pname' => '',
 				'verb' => 'added',
