@@ -33,7 +33,17 @@ class ReferenceMasterWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'id', 'keyvalue'),
-			'optional' => array('authinh' => 1, 'autherror' => 'Unable to Authorize', 'authmoveup' => true, 'cname' => '', 'pname' => '', 'verb' => 'changed password of', 'join' => 'in', 'public' => 0, 'cache' => true, 'expiry' => 150)
+			'optional' => array(
+				'authinh' => 1, 
+				'autherror' => 'Unable to Authorize', 
+				'authmoveup' => true, 
+				'cname' => '', 'pname' => '', 
+				'verb' => 'changed password of', 
+				'join' => 'in', 
+				'public' => 0, 
+				'cache' => true, 
+				'expiry' => 150
+			)
 		);
 	}
 	
