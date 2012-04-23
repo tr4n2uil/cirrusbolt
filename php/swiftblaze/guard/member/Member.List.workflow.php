@@ -56,7 +56,9 @@ class MemberListWorkflow implements Service {
 			'sqlprj' => '`keyid`',
 			'sqlcnd' => "where `chainid`=\${chainid} $last",
 			'escparam' => $escparam,
-			'errormsg' => 'No Members'
+			'check' => false,
+			'errormsg' => 'No Members',
+			'mapkey' => 'keyid'
 		);
 		
 		return Snowblozm::run($service, $memory);

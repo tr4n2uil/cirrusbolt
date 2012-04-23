@@ -26,7 +26,7 @@ class StageInfoWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('stageid'),
-			'optional' => array('keyid' => false, 'shlstid' => 0, 'evname' => '', 'id' => 0)
+			'optional' => array('keyid' => false, 'shlstid' => 0, 'shlstname' => '', 'id' => 0)
 		);
 	}
 	
@@ -54,7 +54,7 @@ class StageInfoWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('stage', 'shlstid', 'evname', 'admin');
+		return array('stage', 'shlstid', 'shlstname', 'admin');
 	}
 	
 }

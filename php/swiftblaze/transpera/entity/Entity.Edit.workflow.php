@@ -25,7 +25,6 @@ require_once(SBSERVICE);
  *	@param expiry int Cache expiry [memory] optional default 150
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
- *	@param authmoveup boolean Moveup Flag [memory] optional default true
  *
  *	@param cname string Child name [memory] optional default ''
  *	@param pname string Parent name [memory] optional default ''
@@ -34,6 +33,8 @@ require_once(SBSERVICE);
  *	@param public integer Public log [memory] optional default 0
  *
  *	@param conn array DataService instance configuration key [memory]
+ *
+ *	@return sqlrc integer SQL Row Count [memory]
  *
  *	@author Vibhaj Rajan <vibhaj8@gmail.com>
  *
@@ -58,7 +59,6 @@ class EntityEditWorkflow implements Service {
 				'successmsg' => 'Entity edited successfully',
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
-				'authmoveup' => true,
 				'cname' => '',
 				'pname' => '',
 				'verb' => 'edited',
@@ -100,7 +100,7 @@ class EntityEditWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array();
+		return array('sqlrc');
 	}
 	
 }

@@ -25,7 +25,8 @@ class DirectoryListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('stgid' => 0, 'stgname' => '')
+			'optional' => array('stgid' => false, 'id' => 0, 'stgname' => false, 'name' => ''),
+			'set' => array('id', 'name')
 		);
 	}
 	
@@ -33,15 +34,23 @@ class DirectoryListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
+		$memory['stgid'] = $memory['stgid'] ? $memory['stgid'] : $memory['id'];
+		$memory['stgname'] = $memory['stgname'] ? $memory['stgname'] : $memory['name'];
+		
 		$service = array(
-			'service' => 'transpera.enitity.list.workflow',
+			'service' => 'transpera.entity.list.workflow',
 			'input' => array('id' => 'stgid'),
 			'conn' => 'cbsconn',
 			'relation' => '`directories`',
-			'sqlprj' => '`dirid`, `owner`, `name`',
+			'type' => 'directory',
+			'sqlprj' => '`dirid`, `owner`, `name`, `path`',
 			'sqlcnd' => "where `dirid` in \${list} order by `name`",
 			'output' => array('entities' => 'directories'),
-			'successmsg' => 'Directories information given successfully'
+			'check' => false,
+			'successmsg' => 'Directories information given successfully',
+			'mapkey' => 'dirid',
+			'mapname' => 'directory',
+			'saction' => 'add'
 		);
 		
 		return Snowblozm::run($service, $memory);

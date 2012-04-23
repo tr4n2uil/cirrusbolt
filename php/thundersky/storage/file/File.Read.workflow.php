@@ -33,10 +33,11 @@ class FileReadWorkflow implements Service {
 			$attr = 'dirid_old';
 		else
 			$attr = 'dirid';
-			
+			//Snowblozm::$debug = true;
 		$workflow = array(
 		array(
 			'service' => 'transpera.reference.authorize.workflow',
+			'action' => 'info',
 			'input' => array('id' => 'fileid')
 		),
 		array(

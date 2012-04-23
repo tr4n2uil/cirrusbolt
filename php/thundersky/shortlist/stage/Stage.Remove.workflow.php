@@ -19,7 +19,7 @@ class StageRemoveWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'stageid'),
+			'required' => array('keyid', 'user', 'stageid'),
 			'optional' => array('shlstid' => 0)
 		);
 	}
@@ -29,10 +29,12 @@ class StageRemoveWorkflow implements Service {
 	**/
 	public function run($memory){
 		$service = array(
-			'service' => 'ad.reference.remove.workflow',
+			'service' => 'transpera.entity.remove.workflow',
+			'args' => array('files', 'shortlist', 'comid'),
 			'input' => array('id' => 'stageid', 'parent' => 'shlstid'),
 			'conn' => 'cbslconn',
 			'relation' => '`stages`',
+			'type' => 'stage',
 			'sqlcnd' => "where `stageid`=\${id}",
 			'errormsg' => 'Invalid Stage ID',
 			'successmsg' => 'Stage removed successfully'

@@ -69,8 +69,7 @@ class FileAddWorkflow implements Service {
 			'escparam' => array('filename', 'mime'),
 			'successmsg' => 'File added successfully',
 			'output' => array('id' => 'fileid'),
-			'construct' => $construct,
-			'type' => 'file'
+			'construct' => $construct
 		),
 		array(
 			'service' => 'transpera.entity.info.workflow',

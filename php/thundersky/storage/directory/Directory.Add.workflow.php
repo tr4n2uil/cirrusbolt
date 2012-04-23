@@ -26,7 +26,7 @@ class DirectoryAddWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'name', 'path'),
-			'optional' => array('stgid' => 0, 'level' => 1, 'owner' => false)
+			'optional' => array('stgid' => 0, 'stgname' => '', 'level' => 1, 'owner' => false)
 		);
 	}
 	
@@ -39,23 +39,51 @@ class DirectoryAddWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'transpera.reference.add.workflow',
+			'service' => 'transpera.entity.add.workflow',
+			'args' => array('name', 'path'),
 			'input' => array('parent' => 'stgid'),
-			'type' => 'directory',
-			'output' => array('id' => 'dirid')
-		),
-		array(
-			'service' => 'storage.file.mkdir.service',
-			'input' => array('directory' => 'path')
-		),
-		array(
-			'service' => 'transpera.relation.insert.workflow',
-			'args' => array('dirid', 'owner', 'name', 'path'),
 			'conn' => 'cbsconn',
 			'relation' => '`directories`',
-			'sqlcnd' => "(`dirid`, `owner`, `name`, `path`) values (\${dirid}, \${owner}, '\${name}', '\${path}')",
-			'escparam' => array('name', 'path')
+			'type' => 'directory',
+			'sqlcnd' => "(`dirid`, `owner`, `name`, `path`) values (\${id}, \${owner}, '\${name}', '\${path}')",
+			'escparam' => array('name', 'path'),
+			'successmsg' => 'Directory added successfully',
+			'output' => array('id' => 'dirid'),
+			'construct' => array(
+				array(
+					'service' => 'storage.file.mkdir.service',
+					'input' => array('directory' => 'path')
+				)
+			),
+		),
+		array(
+			'service' => 'transpera.entity.info.workflow',
+			'input' => array('id' => 'dirid', 'parent' => 'stgid', 'cname' => 'name', 'pname' => 'stgname'),
+			'conn' => 'cbsconn',
+			'relation' => '`directories`',
+			'type' => 'directory',
+			'sqlprj' => '`dirid`, `owner`, `name`, `path`',
+			'sqlcnd' => "where `dirid`=\${id}",
+			'errormsg' => 'Invalid Directory ID',
+			'successmsg' => 'Directory information given successfully',
+			'output' => array('entity' => 'directory'),
+			'auth' => false,
+			'track' => false,
+			'sinit' => false
+		),
+		array(
+			'service' => 'guard.chain.info.workflow',
+			'input' => array('chainid' => 'stgid'),
+			'output' => array('chain' => 'pchain')
 		));
+		
+		$memory = Snowblozm::execute($workflow, $memory);
+		if(!$memory['valid'])
+			return $memory;
+		
+		$memory['padmin'] = $memory['admin'];
+		$memory['admin'] = 1;
+		return $memory;
 		
 		return Snowblozm::execute($workflow, $memory);
 	}
@@ -64,7 +92,7 @@ class DirectoryAddWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('dirid');
+		return array('dirid', 'stgid', 'stgname', 'directory', 'chain', 'pchain', 'admin', 'padmin');
 	}
 	
 }

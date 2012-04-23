@@ -7,14 +7,14 @@ require_once(SBSERVICE);
  *
  *	@param keyid long int Usage Key ID [memory]
  *	@param shlstid long int Shortlist ID [memory] optional default 0
- *	@param evname string Series name [memory] optional default ''
+ *	@param shlstname string Series name [memory] optional default ''
  *
  *	@param pgsz long int Paging Size [memory] optional default false
  *	@param pgno long int Paging Index [memory] optional default 1
  *	@param total long int Paging Total [memory] optional default false
  *
  *	@return selections array Selections information [memory]
- *	@return evname string Shortlist name [memory]
+ *	@return shlst string Shortlist name [memory]
  *	@return shlstid long int Shortlist ID [memory]
  *	@return admin integer Is admin [memory]
  *
@@ -29,7 +29,7 @@ class SelectionListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('shlstid' => 0, 'shlstname' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false)
+			'optional' => array('shlstid' => false, 'shlstname' => false, 'id' => 0, 'name' => '', 'pgsz' => false, 'pgno' => 0, 'total' => false)
 		);
 	}
 	
@@ -37,13 +37,20 @@ class SelectionListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
+		$memory['shlstid'] = $memory['shlstid'] ? $memory['shlstid'] : $memory['id'];
+		$memory['shlstname'] = $memory['shlstname'] ? $memory['shlstname'] : $memory['name'];
+		
 		$service =  array(
 			'service' => 'transpera.entity.list.workflow',
 			'input' => array('id' => 'shlstid'),
 			'conn' => 'cbslconn',
 			'relation' => '`selections`',
+			'type' => 'selection',
 			'sqlcnd' => "where selid in \${list} order by `stageid` desc",
 			'output' => array('entities' => 'selections'),
+			'mapkey' => 'selid',
+			'mapname' => 'selection',
+			'saction' => 'add',
 			'successmsg' => 'Selections information given successfully'
 		);
 		
@@ -54,7 +61,7 @@ class SelectionListWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('selections', 'shlstid', 'evname', 'admin');
+		return array('selections', 'shlstid', 'shlstname', 'admin', 'padmin', 'pchain', 'total', 'pgno', 'pgsz');
 	}
 	
 }

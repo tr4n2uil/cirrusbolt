@@ -131,7 +131,9 @@ class ChainAuthorizeWorkflow implements Service {
 		 *	@read level
 		**/
 		$level = $memory['level'];
-		$memory['level'] = $level + 1;
+		$moveup = $level > -1;
+		$memory['level'] = $moveup ? $level + 1 : $level - 1;
+		if(!$moveup) $level = -1 * $level;
 		
 		/**
 		 *	@initialize chain query
@@ -161,12 +163,12 @@ class ChainAuthorizeWorkflow implements Service {
 		/**
 		 *	@construct quthorize query
 		**/
-		$query = $memory['init'] ? "(select `chainid` from `members` where `chainid`=\${chainid} and `keyid`=\${keyid} and `control` like '%\${action}%' $last)" : 'false';
+		$query = $memory['init'] ? "exists (select `chainid` from `members` where `chainid`=\${chainid} and `keyid`=\${keyid} and `control` like '%\${action}%' $last)" : 'false';
 		
 		$init = "(\${chainid})";
-		$chain = "(select `chainid` from `members` where `chainid` in ";
+		$chain = "exists (select `chainid` from `members` where `chainid` in ";
 		$chainend = " and `keyid`=\${keyid} and `control` like '%\${iaction}%' $ilast)";
-		$child = $memory['moveup'] ? "select `parent` from `webs` where `inherit`=\${inherit} and `control` like '%\${iaction}%' $ilast and `child` in " : "select `child` from `webs` where `inherit`=\${inherit} and `control` like '%\${iaction}%' $ilast and `parent` in ";
+		$child = $moveup ? "select `parent` from `webs` where `inherit`=\${inherit} and `control` like '%\${iaction}%' $ilast and `child` in " : "select `child` from `webs` where `inherit`=\${inherit} and `control` like '%\${iaction}%' $ilast and `parent` in ";
 		
 		while($level--){
 			$init = '('.$child.$init.')';

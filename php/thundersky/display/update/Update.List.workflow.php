@@ -60,7 +60,9 @@ class UpdateListWorkflow implements Service {
 			'output' => array('entities' => 'updates'),
 			'mapkey' => 'updtid',
 			'mapname' => 'update',
-			'saction' => 'add'
+			'saction' => 'add',
+			'siaction' => 'add',
+			'iaction' => 'add'
 		);
 		
 		return Snowblozm::run($service, $memory);

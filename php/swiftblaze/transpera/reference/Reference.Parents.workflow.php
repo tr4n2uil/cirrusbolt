@@ -25,7 +25,6 @@ require_once(SBSERVICE);
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
  *	@param authcustom array Custom Check Workflow [memory] optional default false 
- *	@param authmoveup boolean Moveup Flag [memory] optional default true
  *
  *	@return parents array Chain parents information [memory]
  *	@return total long int Paging total [memory]
@@ -55,7 +54,6 @@ class ReferenceParentsWorkflow implements Service {
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
 				'authcustom' => false,
-				'authmoveup' => true,
 				'cache' => true,
 				'expiry' => 150
 			)

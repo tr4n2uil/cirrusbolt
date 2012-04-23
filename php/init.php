@@ -71,6 +71,11 @@
 		'location' => 'local'
 	));
 	
+	Snowblozm::add('shortlist', array(
+		'root' => CBROOT.'thundersky/shortlist/',
+		'location' => 'local'
+	));
+	
 	Snowblozm::add('storage', array(
 		'root' => CBROOT.'thundersky/storage/',
 		'location' => 'local'

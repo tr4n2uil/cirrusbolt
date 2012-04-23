@@ -30,7 +30,6 @@ require_once(SBSERVICE);
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
  *	@param authcustom array Custom Check Workflow [memory] optional default false 
- *	@param authmoveup boolean Moveup Flag [memory] optional default true
  *
  *	@param sacstate string State to authorize chain [memory] optional default true (false= All)
  *	@param saction string Action to authorize [memory] optional default 'edit'
@@ -41,7 +40,6 @@ require_once(SBSERVICE);
  *	@param sself boolean self flag [memory] optional default false
  *	@param sauthinh integer Check inherit [memory] optional default 1
  *	@param sautherror string Error msg [memory] optional default 'Unable to Authorize'
- *	@param sauthmoveup boolean Moveup Flag [memory] optional default true
  *
  *	@param name string Child name [memory] optional default ''
  *	@param pname string Parent name [memory] optional default ''
@@ -90,7 +88,6 @@ class EntityInfoWorkflow implements Service {
 				'self' => false,
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
-				'authmoveup' => true,
 				'authcustom' => false,
 				'sacstate' => true,
 				'saction' => 'edit', 
@@ -101,7 +98,6 @@ class EntityInfoWorkflow implements Service {
 				'sself' => false,
 				'sauthinh' => 1,
 				'sautherror' => 'Unable to Authorize',
-				'sauthmoveup' => true,
 				'name' => '',
 				'pname' => '',
 				'verb' => 'viewed',

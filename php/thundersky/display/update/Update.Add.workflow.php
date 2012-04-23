@@ -14,6 +14,8 @@ require_once(SBSERVICE);
  *	@param level integer Web level [memory] optional default false (inherit quiz admin access)
  *	@param owner long int Owner ID [memory] optional default keyid
  *
+ *	@param mailto string Mail To [memory] optional default 'update_mailto' Snowblozm [boardid]
+ *
  *	@return updtid long int Update ID [memory]
  *	@return boardid long int Board ID [memory]
  *	@return bname string Board Name [memory]
@@ -34,7 +36,7 @@ class UpdateAddWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'title', 'content'),
-			'optional' => array('boardid' => 0, 'bname' => '', 'level' => false, 'owner' => false)
+			'optional' => array('boardid' => 0, 'bname' => '', 'level' => false, 'owner' => false, 'mailto' => false)
 		);
 	}
 	
@@ -45,6 +47,11 @@ class UpdateAddWorkflow implements Service {
 		$memory['verb'] = 'added';
 		$memory['join'] = 'on';
 		$memory['public'] = 1;
+		
+		if(!$memory['mailto']){
+			$mailto = Snowblozm::get('update_mailto');
+			$memory['mailto'] = $mailto[$memory['boardid']];
+		}
 		
 		$workflow = array(
 		array(
@@ -58,6 +65,15 @@ class UpdateAddWorkflow implements Service {
 			'escparam' => array('title', 'content'),
 			'successmsg' => 'Update added successfully',
 			'output' => array('id' => 'updtid')
+		),
+		array(
+			'service' => 'queue.mail.add.workflow',
+			'input' => array('queid' => 'updtid', 'to' => 'mailto', 'body' => 'content'),
+			'subject' => '['.$memory['bname'].'] '.$memory['title']
+		), 
+		array(
+			'service' => 'queue.mail.send.workflow',
+			'input' => array('queid' => 'updtid')
 		),
 		array(
 			'service' => 'transpera.entity.info.workflow',

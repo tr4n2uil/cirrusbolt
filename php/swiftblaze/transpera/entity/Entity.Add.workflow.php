@@ -41,7 +41,6 @@ require_once(SBSERVICE);
  *	@param expiry int Cache expiry [memory] optional default 150
  *	@param authinh integer Check inherit [memory] optional default 1
  *	@param autherror string Error msg [memory] optional default 'Unable to Authorize'
- *	@param authmoveup boolean Moveup Flag [memory] optional default true
  *
  *	@param cname string Child name [memory] optional default ''
  *	@param pname string Parent name [memory] optional default ''
@@ -89,7 +88,6 @@ class EntityAddWorkflow implements Service {
 				'cparam' => array(),
 				'authinh' => 1,
 				'autherror' => 'Unable to Authorize',
-				'authmoveup' => true,
 				'cname' => '',
 				'pname' => '',
 				'verb' => 'linked',
