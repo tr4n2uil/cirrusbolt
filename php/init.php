@@ -32,27 +32,27 @@
 	));
 	
 	Snowblozm::add('cypher', array(
-		'root' => CBROOT.'swiftblaze/cypher/',
+		'root' => CBROOT.'accessguard/cypher/',
 		'location' => 'local'
 	));
 	
 	Snowblozm::add('gauge', array(
-		'root' => CBROOT.'swiftblaze/gauge/',
+		'root' => CBROOT.'accessguard/gauge/',
 		'location' => 'local'
 	));
 	
 	Snowblozm::add('guard', array(
-		'root' => CBROOT.'swiftblaze/guard/',
+		'root' => CBROOT.'accessguard/guard/',
 		'location' => 'local'
 	));
 	
 	Snowblozm::add('invoke', array(
-		'root' => CBROOT.'swiftblaze/invoke/',
+		'root' => CBROOT.'accessguard/invoke/',
 		'location' => 'local'
 	));
 	
 	Snowblozm::add('transpera', array(
-		'root' => CBROOT.'swiftblaze/transpera/',
+		'root' => CBROOT.'accessguard/transpera/',
 		'location' => 'local'
 	));
 	
@@ -82,12 +82,7 @@
 	));
 	
 	Snowblozm::add('people', array(
-		'root' => CBROOT.'rhythmlink/people/',
-		'location' => 'local'
-	));
-	
-	Snowblozm::add('office', array(
-		'root' => CBROOT.'rhythmlink/office/',
+		'root' => CBROOT.'thundersky/people/',
 		'location' => 'local'
 	));
 	
