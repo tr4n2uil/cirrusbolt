@@ -31,28 +31,23 @@
 		'location' => 'local'
 	));
 	
-	Snowblozm::add('cypher', array(
-		'root' => CBROOT.'accessguard/cypher/',
-		'location' => 'local'
-	));
-	
-	Snowblozm::add('gauge', array(
-		'root' => CBROOT.'accessguard/gauge/',
-		'location' => 'local'
-	));
-	
 	Snowblozm::add('guard', array(
 		'root' => CBROOT.'accessguard/guard/',
 		'location' => 'local'
 	));
 	
-	Snowblozm::add('invoke', array(
-		'root' => CBROOT.'accessguard/invoke/',
+	Snowblozm::add('transpera', array(
+		'root' => CBROOT.'accessguard/transpera/',
 		'location' => 'local'
 	));
 	
-	Snowblozm::add('transpera', array(
-		'root' => CBROOT.'accessguard/transpera/',
+	Snowblozm::add('invoke', array(
+		'root' => CBROOT.'swiftblaze/invoke/',
+		'location' => 'local'
+	));
+	
+	Snowblozm::add('gauge', array(
+		'root' => CBROOT.'swiftblaze/gauge/',
 		'location' => 'local'
 	));
 	
@@ -83,6 +78,11 @@
 	
 	Snowblozm::add('people', array(
 		'root' => CBROOT.'thundersky/people/',
+		'location' => 'local'
+	));
+	
+	Snowblozm::add('cypher', array(
+		'root' => CBROOT.'vaultguard/cypher/',
 		'location' => 'local'
 	));
 	
