@@ -82,9 +82,9 @@ class PostListWorkflow implements Service {
 				'pgsz' => 3,
 				'pgno' => 0,
 				'total' => $post['chain']['count'],
-				'chpgsz' => 3,
-				'chpgno' => 0,
-				'chtotal' => $post['chain']['count']
+				//'chpgsz' => 3,
+				//'chpgno' => 0,
+				//'chtotal' => $post['chain']['count']
 			);
 			$memory['posts'][$i] = Snowblozm::run($service, $post);
 		}

@@ -81,6 +81,18 @@ class CommentAddWorkflow implements Service {
 		$memory = Snowblozm::execute($workflow, $memory);
 		if(!$memory['valid'])
 			return $memory;
+			
+		if($memory['user'] != $memory['pchain']['user']){
+			$comment = $memory['comment'];
+			Snowblozm::run(array(
+				'service' => 'people.person.alert.workflow',
+				'input' => array('chainid' => 'postid', 'queid' => 'postid'),
+				'subject' => FORUM_MAIL_SUBJECT_PREFIX.' User '.$memory['user'].' commented on your post',
+				'body' => '<strong>'.$memory['pname'].'</strong>
+				<p><em>'.$memory['user'].'</em> : '.$comment['comment'].'</p>
+				--<br />'.FORUM_MAIL_BODY_SIGNATURE
+			), $memory);
+		}
 		
 		$memory['padmin'] = $memory['admin'];
 		$memory['admin'] = 1;

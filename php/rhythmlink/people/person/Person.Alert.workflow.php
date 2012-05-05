@@ -6,6 +6,7 @@ require_once(SBSERVICE);
  *	@desc Sends alert email by membership
  *
  *	@param chainid long int Chain ID [memory]
+ *	@param queid long int Queue ID [memory]
   *	@param state string State [memory] optional default false (true= Not '0')
  *	@param subject string Subject [memory] 
  *	@param body string Message Body [memory] 
@@ -25,7 +26,7 @@ class PersonAlertWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('keyid', 'user', 'chainid', 'subject', 'body'),
+			'required' => array('keyid', 'user', 'chainid', 'queid', 'subject', 'body'),
 			'optional' => array('attach' => array(), 'custom' => array(), 'state' => false, 'device' => 'mail')
 		);
 	}
@@ -77,12 +78,10 @@ class PersonAlertWorkflow implements Service {
 				$workflow = array(
 				array(
 					'service' => 'queue.mail.add.workflow',
-					'input' => array('queid' => 'chainid'),
 					'to' => $to
 				), 
 				array(
 					'service' => 'queue.mail.send.workflow',
-					'input' => array('queid' => 'chainid')
 				));
 				break;
 			
@@ -90,12 +89,10 @@ class PersonAlertWorkflow implements Service {
 				$workflow = array(
 				array(
 					'service' => 'queue.sms.add.workflow',
-					'input' => array('queid' => 'chainid'),
 					'to' => $to
 				), 
 				array(
 					'service' => 'queue.sms.send.workflow',
-					'input' => array('queid' => 'chainid')
 				));
 				break;
 			
