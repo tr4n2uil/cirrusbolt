@@ -13,6 +13,8 @@ require_once(SBSERVICE);
  *	@param fname string Forum Name [memory] optional default ''
  *	@param level integer Web level [memory] optional default false (inherit forum admin access)
  *	@param owner long int Owner ID [memory] optional default keyid
+ *	@param view-access char View Access [memory] optional default false ('A', 'L', 'P', false=inherit)
+ *	@param post-access char Post Access [memory] optional default false ('A', 'L', 'P', false=inherit)
  *
  *	@return boardid long int Board ID [memory]
  *	@return forumid long int Forum ID [memory]
@@ -29,7 +31,7 @@ class BoardAddWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid', 'user', 'bname'),
-			'optional' => array('forumid' => 0, 'fname' => '', 'desc' => '', 'level' => false, 'owner' => false)
+			'optional' => array('forumid' => 0, 'fname' => '', 'desc' => '', 'level' => false, 'owner' => false,  'view-access' => false, 'post-access' => false)
 		);
 	}
 	
@@ -41,6 +43,36 @@ class BoardAddWorkflow implements Service {
 		$memory['join'] = 'to';
 		$memory['public'] = 1;
 		
+		$auth = 'edit:remove:';
+		
+		switch($memory['view-access']){
+			case 'P' :
+				$auth .= 'pbinfo:pblist';
+				break;
+			case 'L' :
+				$auth .= '';
+				break;
+			case 'A' :
+				$auth .= 'info:list:';
+				break;
+			default :
+				$auth = false;
+		}
+		
+		switch($memory['post-access']){
+			case 'P' :
+				$auth .= 'pbadd';
+				break;
+			case 'L' :
+				$auth .= '';
+				break;
+			case 'A' :
+				$auth .= 'add:';
+				break;
+			default :
+				$auth = false;
+		}
+		
 		$service = array(
 			'service' => 'transpera.entity.add.workflow',
 			'args' => array('bname', 'desc'),
@@ -48,6 +80,7 @@ class BoardAddWorkflow implements Service {
 			'conn' => 'cbdconn',
 			'relation' => '`boards`',
 			'type' => 'board',
+			'authorize' => $auth,
 			'sqlcnd' => "(`boardid`, `owner`, `bname`, `desc`) values (\${id}, \${owner}, '\${bname}', '\${desc}')",
 			'escparam' => array('bname', 'desc'),
 			'successmsg' => 'Board added successfully',

@@ -28,7 +28,7 @@ class PersonResetWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function run($memory){
-		$memory['msg'] = 'Person key reset successful';
+		$memory['msg'] = 'Password changed successfully. Check your inbox for new password.';
 		
 		$workflow = array(
 		array(
