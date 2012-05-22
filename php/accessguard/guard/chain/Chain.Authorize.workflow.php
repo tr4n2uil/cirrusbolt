@@ -139,7 +139,7 @@ class ChainAuthorizeWorkflow implements Service {
 		/**
 		 *	@check group
 		**/
-		if(strpos($memory['authorize'], 'gr'.$memory['action'])){
+		if(strpos($memory['authorize'], 'gr'.$memory['action']) !== false){
 			$memory = Snowblozm::execute(array(
 			array(
 				'service' => 'transpera.relation.select.workflow',

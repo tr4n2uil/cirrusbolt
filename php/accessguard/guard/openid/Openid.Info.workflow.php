@@ -36,6 +36,7 @@ class OpenidInfoWorkflow implements Service {
 			'args' => array('oid', 'keyid'),
 			'conn' => 'cbconn',
 			'relation' => '`openids`',
+			'sqlprj' => '`oid`, `email`',
 			'sqlcnd' => "where `oid`=\${oid} and `keyid`=\${keyid}",
 			'errormsg' => 'Invalid Openid ID'
 		),

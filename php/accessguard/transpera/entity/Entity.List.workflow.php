@@ -243,7 +243,7 @@ class EntityListWorkflow implements Service {
 				));
 			}
 			
-			if($memory['lsttrack']){
+			/*if($memory['lsttrack']){
 				array_push($workflow,
 				array(
 					'service' => 'guard.chain.track.workflow',
@@ -251,7 +251,7 @@ class EntityListWorkflow implements Service {
 					'multiple' => true,
 					'output' => array('id' => 'trackid')
 				));
-			}
+			}*/
 			
 			if($memory['mgchn']){
 				array_push($workflow,

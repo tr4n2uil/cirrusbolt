@@ -9,6 +9,7 @@ require_once(SBSERVICE);
  *	@param user string User [memory]
  *	@param parent long int Reference ID [memory]
  *	@param level integer Web level [memory] optional default 0
+ *	@param grlevel integer Group level [memory] optional default 0
  *	@param newuser string New User [memory]
  *	@param keyvalue string Key value [memory]
  *	@param authorize string Authorize control value [memory] optional default (inherit)
@@ -54,6 +55,7 @@ class ReferenceCreateWorkflow implements Service {
 			'required' => array('keyid', 'parent', 'user', 'keyvalue', 'newuser'),
 			'optional' => array(
 				'level' => 0, 
+				'grlevel' => 0,
 				'root' => false, 
 				'type' => 'general', 
 				'path' => '/', 

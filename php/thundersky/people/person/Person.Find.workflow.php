@@ -65,7 +65,7 @@ class PersonFindWorkflow implements Service {
 		array(
 			'service' => 'cbcore.data.select.service',
 			'args' => array('person'),
-			'params' => array('person.pnid' => 'pnid',/* 'person.name' => 'name', 'person.title' => 'title', 'person.thumbnail' => 'thumbnail', 'person.username' => 'username'*/)
+			'params' => array('person.pnid' => 'pnid', 'person.username' => 'username'/*, 'person.name' => 'name', 'person.title' => 'title', 'person.thumbnail' => 'thumbnail'*/)
 		),
 		array(
 			'service' => 'people.person.profile.service'
@@ -82,7 +82,7 @@ class PersonFindWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('person', 'contact', 'personal', 'pnid', 'id', /*'name', 'title', 'thumbnail', 'username',*/ 'dirid', 'peopleid', 'admin', 'chain');
+		return array('person', 'contact', 'personal', 'pnid', 'id', /*'name', 'title', 'thumbnail',*/ 'username', 'dirid', 'peopleid', 'admin', 'chain');
 	}
 	
 }

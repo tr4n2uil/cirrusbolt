@@ -8,6 +8,8 @@ require_once(SBSERVICE);
  *	@param data array Input matrix [memory]
  *	@param type string Export type [memory] optional default 'csv' ('csv')
  *	@param default string Export header [memory] optional default ''
+ *	@param filepath string Filepath [memory] optional default 'storage/private/exports/'
+ *	@param filename string Filename [memory]
  *
  *	@return result string Resultant string [memory]
  *
@@ -21,8 +23,8 @@ class DataExportService implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('data'),
-			'optional' => array('type' => 'csv', 'default' => '')
+			'required' => array('data', 'filename'),
+			'optional' => array('type' => 'csv', 'default' => '', 'filepath' => 'storage/private/exports/')
 		);
 	}
 	
@@ -40,6 +42,10 @@ class DataExportService implements Service {
 					$result .= implode(',', $tuple);
 					$result .= "\r\n";
 				}
+				
+				$fh = fopen($memory['filepath'].$memory['filename'], 'w');
+				fwrite($fh, $result);
+				fclose($fh);
 				break;
 			default :
 				$memory['valid'] = false;

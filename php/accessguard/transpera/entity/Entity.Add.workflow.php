@@ -8,6 +8,7 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key ID [memory]
  *	@param parent long int Reference ID [memory]
  *	@param level integer Web level [memory] optional default (inherit)
+ *	@param grlevel integer Group level [memory] optional default 0
  *	@param owner long int Owner Key ID [memory] optional default keyid
  *	@param authorize string Authorize control value [memory] optional default (inherit)
  *	@param control string Authorize control value for member [memory] optional default false='info:'.(inherit) true=(inherit)
@@ -66,6 +67,7 @@ class EntityAddWorkflow implements Service {
 			'optional' => array(
 				'user' => 'unknown@entity.add',
 				'level' => false, 
+				'grlevel' => 0,
 				'owner' => false, 
 				'root' => false, 
 				'type' => 'general', 

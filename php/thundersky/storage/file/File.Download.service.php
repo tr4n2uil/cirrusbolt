@@ -21,8 +21,8 @@ class FileDownloadService implements Service {
 	**/
 	public function input(){
 		return array(
-			'required' => array('filepath', 'filename', 'size'),
-			'optional' => array('mime' => 'application/force-download', 'asname' => false)
+			'required' => array('filepath', 'filename'),
+			'optional' => array('mime' => 'application/force-download', 'asname' => false, 'size' => false)
 		);
 	}
 	
@@ -31,11 +31,17 @@ class FileDownloadService implements Service {
 	**/
 	public function run($memory){
 		$file = $memory['filepath'].$memory['filename'];
-		$size = $memory['size'];
 		$asname = $memory['asname'] ? $memory['asname'] : $memory['filename'];
 		$mime = $memory['mime'];
 		
 		if (file_exists($file)) {
+			if($memory['size'])
+				$size = $memory['size'];
+			else {
+				$stat = stat($file);
+				$size = $stat['size'];
+			}
+			
 			set_time_limit(0);
 			header('Content-Description: File Transfer');
 			header("Content-Type: $mime");

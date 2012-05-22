@@ -24,7 +24,7 @@ class OpenidListWorkflow implements Service {
 	public function input(){
 		return array(
 			'required' => array('keyid'),
-			'optional' => array('state' => false, 'pgsz' => false, 'pgno' => 0, 'total' => false)
+			'optional' => array('pgsz' => false, 'pgno' => 0, 'total' => false)
 		);
 	}
 	
@@ -39,10 +39,12 @@ class OpenidListWorkflow implements Service {
 			'args' => array('keyid'),
 			'conn' => 'cbconn',
 			'relation' => '`openids`',
+			'sqlprj' => '`oid`, `email`',
 			'sqlcnd' => "where `keyid`=\${keyid}",
 			'check' => false,
 			'errormsg' => 'No Openids',
 			'mapkey' => 'oid',
+			'mapname' => 'identity',
 			'output' => array('result' => 'openids')
 		);
 		
