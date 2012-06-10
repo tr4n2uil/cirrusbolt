@@ -43,7 +43,8 @@ class SecureWriteWorkflow implements Service {
 		
 		$workflow = array(
 		array(
-			'service' => 'guard.key.identify.workflow'
+			'service' => 'guard.key.identify.workflow',
+			'silent' => $memory['crypt'] == 'none'
 		),
 		array(
 			'service' => 'cbcore.data.encode.service',

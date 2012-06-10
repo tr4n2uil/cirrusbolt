@@ -71,7 +71,18 @@ class InterfaceOpenidWorkflow implements Service {
 				),
 				array(
 					'service' => 'guard.key.info.workflow'
-				),
+				));
+				
+				$memory = Snowblozm::execute($workflow, $memory);
+				$register = false;
+				
+				if(!$memory['valid']){
+					$memory['valid'] = $register = true;
+					$session['expiry'] = 1;
+					$memory['user'] = $memory['email'];
+				}
+				
+				$workflow = array(
 				array(
 					'service' => 'cbcore.session.add.workflow',
 					'expiry' => $session['expiry'],
@@ -84,7 +95,7 @@ class InterfaceOpenidWorkflow implements Service {
 					return $memory;
 				
 				//header('Location: '. isset($memory['continue']) ? $memory['continue'] : $session['root']);
-				setcookie($session['key'], $memory['value'], time()+60*60*24*$session['expiry'], '/');
+				setcookie($session['key'], $memory['value'], $register ? 0 : time()+60*60*24*$session['expiry'], '/');
 			}
 			else {
 				$memory['valid'] = false;

@@ -86,6 +86,10 @@ class ReferenceDeleteWorkflow implements Service {
 			'input' => array('child' => 'id')
 		),
 		array(
+			'service' => 'guard.openid.remove.workflow',
+			'input' => array('keyid' => 'masterkey')
+		),
+		array(
 			'service' => 'guard.chain.count.workflow',
 			'input' => array('chainid' => 'parent'),
 			'remove' => true

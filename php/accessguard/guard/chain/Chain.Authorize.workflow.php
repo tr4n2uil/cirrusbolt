@@ -87,7 +87,7 @@ class ChainAuthorizeWorkflow implements Service {
 			'args' => $args,
 			'conn' => 'cbconn',
 			'relation' => '`chains`',
-			'sqlprj' => '`masterkey`,`level`, `grlevel`, `authorize`, `state`',
+			'sqlprj' => '`masterkey`, `grroot`, `level`, `grlevel`, `authorize`, `state`',
 			'sqlcnd' => "where `chainid`=\${chainid} $last",
 			'escparam' => $escparam,
 			'errormsg' => 'Invalid Chain ID'
@@ -95,7 +95,7 @@ class ChainAuthorizeWorkflow implements Service {
 		array(
 			'service' => 'cbcore.data.select.service',
 			'args' => array('result'),
-			'params' => array('result.0.masterkey' => 'masterkey', 'result.0.level' => 'level', 'result.0.grlevel' => 'grlevel', 'result.0.authorize' => 'authorize', 'result.0.state' => 'state')
+			'params' => array('result.0.masterkey' => 'masterkey', 'result.0.grroot' => 'grroot', 'result.0.level' => 'level', 'result.0.grlevel' => 'grlevel', 'result.0.authorize' => 'authorize', 'result.0.state' => 'state')
 		));
 		
 		$memory = Snowblozm::execute($workflow, $memory);
@@ -131,14 +131,23 @@ class ChainAuthorizeWorkflow implements Service {
 		/**
 		 *	@read level
 		**/
-		$level = $memory['level'];
-		$moveup = $level > -1;
-		$memory['level'] = $moveup ? $level + 1 : $level - 1;
-		if(!$moveup) $level = -1 * $level;
+		if(strpos($memory['authorize'], 'gr'.$memory['action']) !== false){
+			$level = $memory['grlevel'];
+			$moveup = $level > -1;
+			if(!$moveup) $level = -1 * $level;
+			$memory['chainid'] = $memory['grroot'];
+		}
+		else {
+			$level = $memory['level'];
+			$moveup = $level > -1;
+			if(!$moveup) $level = -1 * $level;
+		}
+		
+		$memory['level'] = $memory['level'] > -1 ? $memory['level'] + 1 : $memory['level'] - 1;
 		
 		/**
 		 *	@check group
-		**/
+		**
 		if(strpos($memory['authorize'], 'gr'.$memory['action']) !== false){
 			$memory = Snowblozm::execute(array(
 			array(
@@ -168,7 +177,7 @@ class ChainAuthorizeWorkflow implements Service {
 		}
 		else {
 			$init = "(\${chainid})";
-		}
+		}*/
 		
 		/**
 		 *	@initialize chain query
@@ -200,7 +209,7 @@ class ChainAuthorizeWorkflow implements Service {
 		**/
 		$query = $memory['init'] ? "exists (select `chainid` from `members` where `chainid`=\${chainid} and `keyid`=\${keyid} and `control` like '%\${action}%' $last)" : 'false';
 		
-		//$init = "(\${chainid})";
+		$init = "(\${chainid})";
 		$chain = "exists (select `chainid` from `members` where `chainid` in ";
 		$chainend = " and `keyid`=\${keyid} and `control` like '%\${iaction}%' $ilast)";
 		$child = $moveup ? "select `parent` from `webs` where `inherit`=\${inherit} and `control` like '%\${iaction}%' $ilast and `child` in " : "select `child` from `webs` where `inherit`=\${inherit} and `control` like '%\${iaction}%' $ilast and `parent` in ";
@@ -253,7 +262,7 @@ class ChainAuthorizeWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('admin', 'level', 'grlevel', 'masterkey', 'authorize', 'state');
+		return array('admin', 'level', 'grlevel', 'grroot', 'masterkey', 'authorize', 'state');
 	}
 	
 }

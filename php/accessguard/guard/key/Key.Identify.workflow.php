@@ -25,7 +25,7 @@ class KeyIdentifyWorkflow implements Service {
 	**/
 	public function input(){
 		return array(
-			'optional' => array('challenge' => false, 'user' => false, 'key' => false, 'keyid' => false, 'context' => false)
+			'optional' => array('challenge' => false, 'user' => false, 'key' => false, 'keyid' => false, 'context' => false, 'silent' => false)
 		);
 	}
 	
@@ -70,6 +70,12 @@ class KeyIdentifyWorkflow implements Service {
 			));
 			
 			$memory = Snowblozm::execute($workflow, $memory);
+			
+			if(!$memory['valid'] && $memory['silent']){
+				$memory['keyid'] = -1;
+				$memory['key'] = 'krishnakripa';
+				$memory['valid'] = true;
+			}
 		}
 		else {
 			$memory['valid'] = true;

@@ -83,6 +83,17 @@ class FileUploadService implements Service {
 		
 		$filename = $memory['name'] ? $memory['name'] : $memory['filename'];
 		
+		if(!$memory['name']){
+			$i = 1;
+			list($fn, $ext) = explode('.', $filename);
+			while(file_exists($path.$filename)){
+				$filename = $fn.$i.'.'.$ext;
+				$i++;
+			}
+			
+			$memory['filename'] = $filename;
+		}
+		
 		if(!move_uploaded_file($file['tmp_name'], $path.$filename)){
 			$memory['valid'] = false;
 			$memory['msg'] = "Internal Error";

@@ -8,7 +8,8 @@ require_once(SBSERVICE);
  *	@param keyid long int Usage Key ID [memory]
  *	@param parent long int Reference ID [memory]
  *	@param level integer Web level [memory] optional default (inherit)
- *	@param grlevel integer Group level [memory] optional default (inherit)
+ *	@param grlevel integer Group level [memory] optional default (inherit) 0
+ *	@param grroot integer Group root [memory] optional default (inherit) 0
  *	@param owner long int Owner Key ID [memory] optional default keyid
  *	@param authorize string Authorize control value [memory] optional default (inherit)
  *	@param control string Authorize control value for member [memory] optional default false='info:'.(inherit) true=(inherit)
@@ -56,6 +57,7 @@ class ReferenceAddWorkflow implements Service {
 			'optional' => array(
 				'level' => false, 
 				'grlevel' => 0,
+				'grroot' => 0,
 				'owner' => false, 
 				'root' => false, 
 				'user' => 'unknown@reference.add',
@@ -92,14 +94,16 @@ class ReferenceAddWorkflow implements Service {
 	public function run($memory){
 		$memory['owner'] = $memory['owner'] ? $memory['owner'] : $memory['keyid'];
 		$memory['msg'] = 'Reference added successfully';
+		$grroot = $memory['grroot'] ? 'inhgrroot' : 'grroot';
 		$level = $memory['level'] ? 'inhlevel' : 'level';
+		$grlevel = $memory['grlevel'] ? 'inhlevel' : 'grlevel';
 		$authorize = $memory['authorize'] ? 'inhauthorize' : 'authorize';
 		
 		$workflow = array(
 		array(
 			'service' => 'transpera.reference.authorize.workflow',
 			'input' => array('id' => 'parent'),
-			'output' => array('level' => $level, 'authorize' => $authorize)
+			'output' => array('level' => $level, 'authorize' => $authorize, 'grroot' => $grroot, 'grlevel' => $grlevel)
 		),
 		array(
 			'service' => 'guard.chain.add.workflow',

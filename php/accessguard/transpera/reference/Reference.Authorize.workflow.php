@@ -124,7 +124,7 @@ class ReferenceAuthorizeWorkflow implements Service {
 	 *	@interface Service
 	**/
 	public function output(){
-		return array('masterkey', 'admin', 'level', 'authorize', 'state');
+		return array('masterkey', 'grroot', 'admin', 'level', 'grlevel', 'authorize', 'state');
 	}
 	
 }

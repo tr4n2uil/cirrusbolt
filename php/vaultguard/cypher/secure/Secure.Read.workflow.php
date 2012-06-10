@@ -64,7 +64,8 @@ class SecureReadWorkflow implements Service {
 		if($flag){
 			array_push($workflow, 
 			array(
-				'service' => 'guard.key.identify.workflow'
+				'service' => 'guard.key.identify.workflow',
+				'silent' => true
 			));
 		}
 		

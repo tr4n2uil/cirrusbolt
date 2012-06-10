@@ -37,7 +37,7 @@ class PersonRemoveWorkflow implements Service {
 		array(
 			'service' => 'transpera.reference.delete.workflow',
 			'input' => array('parent' => 'peopleid', 'id' => 'pnid'),
-			'type' => 'person'
+			'type' => 'person',
 		),
 		array(
 			'service' => 'transpera.relation.delete.workflow',
