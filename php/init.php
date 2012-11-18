@@ -86,7 +86,7 @@
 	**/
 	//define('PHPMAILER', CBROOT.'../../../libraries/phpmailer/PHPMailer.class.php');
 	//define('LIGHTOPENID', CBROOT .'../../../libraries/lightopenid/LightOpenID.class.php');
-	//define('CBQUEUECONF', CBROOT. 'config.php');
+	//define('CBQUEUECONF', CBROOT. 'que-config.php');
 	//define('CACHELITE', 'Cache/Lite.php');
 	//define('CACHELITEOUTPUT', 'Cache/Lite/Output.php');
 	

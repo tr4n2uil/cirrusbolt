@@ -123,7 +123,7 @@ class PersonAddWorkflow implements Service {
 		
 		if($memory['human'] !== false){
 			array_unshift($workflow, array(
-				'service' => 'invoke.human.recaptcha.service'
+				'service' => 'cbcore.human.recaptcha.service'
 			));
 		}
 		

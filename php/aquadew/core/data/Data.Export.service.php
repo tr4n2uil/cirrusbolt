@@ -35,16 +35,18 @@ class DataExportService implements Service {
 		$data = $memory['data'];
 		$type = $memory['type'];
 		$result = $memory['default'];
+		ini_set("auto_detect_line_endings", true);
 		
 		switch($type){
 			case 'csv' :
-				foreach($data as $tuple){
-					$result .= implode(',', $tuple);
-					$result .= "\r\n";
-				}
-				
 				$fh = fopen($memory['filepath'].$memory['filename'], 'w');
 				fwrite($fh, $result);
+				foreach($data as $tuple){
+					fputcsv($fh, $tuple);
+					//$result .= implode(',', $tuple);
+					//$result .= "\r\n";
+				}
+				//fwrite($fh, $result);
 				fclose($fh);
 				break;
 			default :

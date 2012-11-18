@@ -45,14 +45,16 @@ class FileArchiveService implements Service {
 				return $memory;
 			}
 			
-			if($memory['filelist']){
+			if(is_array($memory['filelist'])){
 				foreach($memory['filelist'] as $filedesc){
-					if($zip->addFile($filedesc['filepath'].$filedesc['filename'], $filedesc['asname']) !== true){
-						$memory['valid'] = false;
-						$memory['msg'] = "Unable to add file";
-						$memory['status'] = 504;
-						$memory['details'] = 'Error adding file : '.$key.' @file.archive.service';
-						return $memory;
+					if(file_exists($filedesc['filepath'].$filedesc['filename'])){
+						if($zip->addFile($filedesc['filepath'].$filedesc['filename'], $filedesc['asname']) !== true){
+							$memory['valid'] = false;
+							$memory['msg'] = "Unable to add file";
+							$memory['status'] = 504;
+							$memory['details'] = 'Error adding file : '.$key.' @file.archive.service';
+							return $memory;
+						}
 					}
 				}
 			}
@@ -82,8 +84,8 @@ class FileArchiveService implements Service {
 			return $memory;
 		}
 		
-		$stat = stat($directory.$archive);
-		$memory['size'] = $stat['size'];
+		$stat = @stat($directory.$archive);
+		$memory['size'] = isset($stat['size']) ? $stat['size'] : 0;
 		$memory['valid'] = true;
 		$memory['msg'] = 'File Archived Successfully';
 		$memory['status'] = 200;

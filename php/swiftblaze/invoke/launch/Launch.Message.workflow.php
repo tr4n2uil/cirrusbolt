@@ -54,7 +54,7 @@ class LaunchMessageWorkflow implements Service {
 	public function run($memory){
 		$workflow = array(
 		array(
-			'service' => 'invoke.http.read.service'
+			'service' => 'cbcore.http.read.service'
 		),
 		array(
 			'service' => 'invoke.transport.read.workflow',
@@ -79,7 +79,7 @@ class LaunchMessageWorkflow implements Service {
 		
 		if(!$memory['raw']){
 			array_push($workflow, array(
-				'service' => 'invoke.http.write.service',
+				'service' => 'cbcore.http.write.service',
 				'input' => array('data' => 'result', 'type' => 'restype')
 			));
 		}
